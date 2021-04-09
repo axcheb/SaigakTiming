@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.start.StartFragment">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="ru.axcheb.saigaktiming.ui.start.StartViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/member_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_view_margin"
+            android:layout_marginEnd="@dimen/default_view_margin"
+            android:text="@{viewModel.member.name}"
+            android:textAppearance="?attr/textAppearanceHeadline3"
+            tools:text="Иван Иванов" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_view_margin"
+            android:layout_marginEnd="@dimen/default_view_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total_time"
+                android:layout_marginEnd="6dp"
+                android:textStyle="italic"
+                android:textAppearance="?attr/textAppearanceBody1"/>
+
+            <TextView
+                android:id="@+id/total_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold|italic"
+                android:text="@{viewModel.totalTimeStr}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                tools:text="02:05.321"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="?attr/dividerHorizontal" />
+
+        <!-- header-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/check"
+                android:layout_width="26dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="@dimen/default_view_margin"
+                android:contentDescription="@string/check"
+                android:src="@drawable/ic_check_24" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="?attr/dividerVertical" />
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@string/number_sign"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="?attr/dividerVertical" />
+
+            <TextView
+                android:layout_width="74dp"
+                android:layout_height="wrap_content"
+                android:text="@string/start"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="?attr/dividerVertical" />
+
+            <TextView
+                android:layout_width="74dp"
+                android:layout_height="wrap_content"
+                android:text="@string/finish"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="?attr/dividerVertical" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="@string/result"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="?attr/dividerVertical" />
+
+            <View
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="@dimen/default_view_margin" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="?attr/dividerHorizontal" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/start_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/start_item" />
+
+        <!--    кнопка Старт-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="5dp"
+            android:background="?attr/dividerHorizontal" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/start_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/start_img"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/default_view_margin"
+                android:layout_marginEnd="@dimen/default_view_margin"
+                android:contentDescription="@string/start"
+                android:src="@drawable/ic_start_arrow_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/start"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_view_margin"
+                android:layout_marginEnd="@dimen/default_view_margin"
+                android:text="@string/start"
+                android:textAppearance="?attr/textAppearanceHeadline3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/start_img"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="?attr/dividerHorizontal" />
+
+    </LinearLayout>
+</layout>

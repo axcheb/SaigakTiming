@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">SaigakTiming</string>
+
+    <string name="title_members">Members</string>
+    <string name="title_archive">Archive</string>
+    <string name="title_sensors">Sensors</string>
+    <string name="edit">Edit</string>
+    <string name="add_member">Add member</string>
+    <string name="new_member">New member</string>
+    <string name="member_already_exists">This member already exists</string>
+    <string name="added">Added</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="name">Name</string>
+    <string name="add">Add</string>
+    <string name="check">Check</string>
+    <string name="save">Save</string>
+    <string name="competition_protocol">Competition protocol</string>
+    <string name="member_list">Members</string>
+    <string name="finish">Finish</string>
+    <string name="result">Result</string>
+    <string name="track">Track</string>
+    <string name="track_results">Track results:</string>
+    <string name="to_the_end_of_list">To the end of list</string>
+    <string name="pause">Pause</string>
+    <string name="next">Next</string>
+    <string name="start_time">Start time:</string>
+    <string name="finish_time">Finish time:</string>
+
+    <string name="start_uppercase">START</string>
+    <string name="time_over">Time over</string>
+    <string name="resume">Resume</string>
+    <string name="number_sign">#</string>
+    <string name="total_time">Total time:</string>
+</resources>

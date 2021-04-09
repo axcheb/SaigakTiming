@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.memberselect.MemberSelectActivity">
+
+    <data>
+        <variable
+            name="vm"
+            type="ru.axcheb.saigaktiming.ui.memberselect.MemberSelectViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_arrow_back_24"
+                app:menu="@menu/member_select_menu"
+                app:title="@string/add_member" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- Все существующие members. -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/all_members_item_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/recycler_header_margin"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/member_select_item" />
+
+    </FrameLayout>
+</layout>
