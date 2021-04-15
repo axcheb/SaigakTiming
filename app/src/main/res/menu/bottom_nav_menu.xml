@@ -12,7 +12,7 @@
         android:title="@string/title_archive" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_sensors"
         android:icon="@drawable/ic_sensors_24"
         android:title="@string/title_sensors" />
 

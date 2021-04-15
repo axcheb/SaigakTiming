@@ -26,10 +26,10 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="ru.axcheb.saigaktiming.ui.notifications.NotificationsFragment"
+        android:id="@+id/navigation_sensors"
+        android:name="ru.axcheb.saigaktiming.ui.sensors.SensorsFragment"
         android:label="@string/title_sensors"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/sensors_fragment" />
 
     <fragment
         android:id="@+id/memberResultFragment"

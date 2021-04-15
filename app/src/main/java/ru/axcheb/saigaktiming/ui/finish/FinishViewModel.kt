@@ -202,7 +202,6 @@ class FinishViewModel(
 
         val startCountingMillis = System.currentTimeMillis()
         val endMillis = BEFORE_START_TIME + WAITING_FINISH_TIME
-
         val job = viewModelScope.launch {
             var current = System.currentTimeMillis()
             var fromStartCounting = current - startCountingMillis
