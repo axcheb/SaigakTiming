@@ -31,14 +31,18 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/timer_card"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="8dp"
+            android:layout_marginStart="@dimen/default_view_margin"
+            android:layout_marginEnd="@dimen/default_view_margin"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
             app:cardElevation="16dp"
             app:cardCornerRadius="8dp">
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/timer"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="50sp"

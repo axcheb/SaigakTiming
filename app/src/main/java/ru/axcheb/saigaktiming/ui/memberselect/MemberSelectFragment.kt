@@ -58,9 +58,8 @@ class MemberSelectFragment : Fragment() {
         }
 
         binding.toolbar.setOnMenuItemClickListener {
-            val newMemberDialog = NewMemberDialogFragment(viewModel.eventId)
             if (isAdded) {
-                newMemberDialog.show(parentFragmentManager, NEW_MEMBER_DIALOG_TAG)
+                NewMemberDialogFragment.showDialog(parentFragmentManager, viewModel.eventId)
             }
             true
         }
@@ -75,10 +74,6 @@ class MemberSelectFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val NEW_MEMBER_DIALOG_TAG = "NEW_MEMBER_DIALOG"
     }
 
 }

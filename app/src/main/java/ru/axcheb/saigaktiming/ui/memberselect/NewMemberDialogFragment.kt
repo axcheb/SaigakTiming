@@ -5,16 +5,21 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.databinding.NewMemberFragmentBinding
 
-class NewMemberDialogFragment(eventId: Long) : DialogFragment() {
+class NewMemberDialogFragment : DialogFragment() {
 
     private val TAG = this::class.qualifiedName
 
-    private val viewModel: NewMemberViewModel by viewModel { parametersOf(eventId) }
+    private val viewModel: NewMemberViewModel by viewModel {
+        parametersOf(
+            requireArguments().getLong(EVENT_ID_EXTRA)
+        )
+    }
 
     // This property is only valid between onCreateView and onDestroyView.
     private var _binding: NewMemberFragmentBinding? = null
@@ -28,7 +33,6 @@ class NewMemberDialogFragment(eventId: Long) : DialogFragment() {
         _binding = NewMemberFragmentBinding.inflate(inflater, container, false)
         binding.vm = viewModel
         binding.lifecycleOwner = this
-        retainInstance = true
         setListeners()
         observeData()
         return binding.root
@@ -75,6 +79,19 @@ class NewMemberDialogFragment(eventId: Long) : DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val EVENT_ID_EXTRA = "EVENT_ID"
+        private const val NEW_MEMBER_DIALOG_TAG = "NEW_MEMBER_DIALOG"
+
+        fun showDialog(fragmentManager: FragmentManager, eventId: Long) {
+            val args = Bundle()
+            args.putLong(EVENT_ID_EXTRA, eventId)
+            val newMemberDialog = NewMemberDialogFragment()
+            newMemberDialog.arguments = args
+            newMemberDialog.show(fragmentManager, NEW_MEMBER_DIALOG_TAG)
+        }
     }
 
 }
