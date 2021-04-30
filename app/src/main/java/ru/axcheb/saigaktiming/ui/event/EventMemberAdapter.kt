@@ -28,7 +28,7 @@ class EventMemberAdapter() :
         }
 
         fun navigateToMemberResult(item: EventMemberItem, view: View) {
-            val direction = EventFragmentDirections.actionNavigationEventToMemberResultFragment(
+            val direction = EventFragmentDirections.actionNavigationEventToNavigationStart(
                 item.eventId,
                 item.memberId
             )

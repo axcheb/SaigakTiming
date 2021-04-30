@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.axcheb.saigaktiming">
 
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
@@ -13,16 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SaigakTiming">
+        <service
+            android:name=".service.BluetoothSerialBoardService"
+            android:enabled="true"
+            android:exported="false"/>
+        
+        <activity
+            android:name=".ui.finish.FinishActivity"
+            android:noHistory="true" />
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".ui.memberselect.MemberSelectActivity"
-            android:noHistory="true" />
-        <activity android:name=".ui.finish.FinishActivity"
-            android:noHistory="true" />
-        <activity
-            android:name=".ui.launchactivity.LaunchActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

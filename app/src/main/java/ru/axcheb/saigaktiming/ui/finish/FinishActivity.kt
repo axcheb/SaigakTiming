@@ -1,8 +1,11 @@
 package ru.axcheb.saigaktiming.ui.finish
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -14,6 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.axcheb.saigaktiming.data.model.ui.ResultItem
 import ru.axcheb.saigaktiming.databinding.FinishActivityBinding
+import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService
 
 class FinishActivity : AppCompatActivity() {
 
@@ -35,6 +39,28 @@ class FinishActivity : AppCompatActivity() {
 
     private var _binding: FinishActivityBinding? = null
     private val binding get() = _binding!!
+
+    lateinit var btService: BluetoothSerialBoardService
+    private var btServiceBound: Boolean = false
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as BluetoothSerialBoardService.LocalBinder
+            btService = binder.getService()
+            btServiceBound = true
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            btServiceBound = false
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Intent(this, BluetoothSerialBoardService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,8 +123,8 @@ class FinishActivity : AppCompatActivity() {
 
         lifecycleScope.launchWhenStarted {
             viewModel.timerStr.collect { timeStr ->
-                binding.time.text = timeStr
-                binding.time.visibility = if (timeStr.isEmpty()) View.GONE else View.VISIBLE
+                binding.timer.text = timeStr
+                binding.timerCard.visibility = if (timeStr.isEmpty()) View.GONE else View.VISIBLE
             }
         }
 

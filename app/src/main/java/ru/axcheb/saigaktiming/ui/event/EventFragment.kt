@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.axcheb.saigaktiming.databinding.EventFragmentBinding
 import ru.axcheb.saigaktiming.ui.finish.FinishActivity
-import ru.axcheb.saigaktiming.ui.memberselect.MemberSelectActivity
 
 class EventFragment : Fragment() {
 
@@ -43,7 +43,10 @@ class EventFragment : Fragment() {
         binding.addMemberLine.setOnClickListener {
             val eventId = viewModel.event.value?.id
             if (eventId != null) {
-                context?.let { it1 -> MemberSelectActivity.start(eventId, it1) }
+                val direction = EventFragmentDirections.actionNavigationEventToNavigationMemberSelect(
+                    eventId
+                )
+                view?.findNavController()?.navigate(direction)
             }
         }
 

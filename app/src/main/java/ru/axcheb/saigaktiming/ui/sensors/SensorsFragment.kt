@@ -10,13 +10,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import ru.axcheb.saigaktiming.data.bluetooth.BluetoothSerialBoardServer
 import ru.axcheb.saigaktiming.databinding.SensorsFragmentBinding
+import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService
+import ru.axcheb.saigaktiming.ui.MainActivity
+import java.lang.Integer.parseInt
 
 class SensorsFragment : Fragment() {
 
@@ -56,16 +57,26 @@ class SensorsFragment : Fragment() {
         return binding.root
     }
 
+    private var x = 0
+
     private fun observeData() {
         lifecycleScope.launchWhenStarted {
-            BluetoothSerialBoardServer.inMessageFlow.collect {
-                binding.textSensors.text = it
-                showToast(it)
+            BluetoothSerialBoardService.messageFlow.collect {
+                if (x == 0) {
+                    x = parseInt(it)
+                }
+
+                if (binding.textSensors.text.length > 1000) {
+                    binding.textSensors.text = ""
+                }
+                binding.textSensors.text = it + " - " + x + "\n" + binding.textSensors.text
+                x++
+//                showToast(it)
             }
         }
 
         lifecycleScope.launchWhenStarted {
-            BluetoothSerialBoardServer.requestEnableBluetooth.collect {
+            BluetoothSerialBoardService.requestEnableBluetooth.collect {
                 if (it) {
                     enableBluetoothLauncher.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
                 }
@@ -74,9 +85,11 @@ class SensorsFragment : Fragment() {
     }
 
     private fun setListeners() {
+        val mainActivity = activity as MainActivity
+
         binding.sendMessageBtn.setOnClickListener {
             lifecycleScope.launch {
-                BluetoothSerialBoardServer.send(binding.messageInput.editText?.text.toString(), 100)
+                mainActivity.btService.send(binding.messageInput.editText?.text.toString())
                 binding.messageInput.editText?.text?.clear()
             }
         }
@@ -84,12 +97,7 @@ class SensorsFragment : Fragment() {
     }
 
     private fun startBtServer() {
-        BluetoothSerialBoardServer.startServer() // TODO вытащить на уровень старта приложения
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        BluetoothSerialBoardServer.close() // TODO вытащить на уровень старта приложения
+//        activity?.startService(Intent(activity, BluetoothSerialBoardService::class.java))
     }
 
     private fun showToast(text: String) {

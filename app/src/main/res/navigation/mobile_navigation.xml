@@ -11,8 +11,15 @@
         android:label="@string/title_members"
         tools:layout="@layout/event_fragment">
         <action
-            android:id="@+id/action_navigation_event_to_memberResultFragment"
-            app:destination="@id/memberResultFragment"
+            android:id="@+id/action_navigation_event_to_navigation_start"
+            app:destination="@id/navigation_start"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_event_to_navigation_member_select"
+            app:destination="@id/navigation_member_select"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -32,11 +39,19 @@
         tools:layout="@layout/sensors_fragment" />
 
     <fragment
-        android:id="@+id/memberResultFragment"
+        android:id="@+id/navigation_start"
         android:name="ru.axcheb.saigaktiming.ui.start.StartFragment"
         tools:layout="@layout/start_fragment">
         <argument android:name="eventId" app:argType="long" />
         <argument android:name="memberId" app:argType="long" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_member_select"
+        android:name="ru.axcheb.saigaktiming.ui.memberselect.MemberSelectFragment"
+        tools:layout="@layout/member_select_fragment">
+        <argument android:name="eventId" app:argType="long" />
+    </fragment>
+
 
 </navigation>

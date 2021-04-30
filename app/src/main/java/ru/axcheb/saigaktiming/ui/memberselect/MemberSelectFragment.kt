@@ -1,34 +1,29 @@
 package ru.axcheb.saigaktiming.ui.memberselect
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.data.model.ui.MemberSelectItem
-import ru.axcheb.saigaktiming.databinding.MemberSelectActivityBinding
+import ru.axcheb.saigaktiming.databinding.MemberSelectFragmentBinding
 
-class MemberSelectActivity : AppCompatActivity() {
+class MemberSelectFragment : Fragment() {
 
     private val TAG = this::class.qualifiedName
 
+    private val args: MemberSelectFragmentArgs by navArgs()
+
     private val viewModel: MemberSelectViewModel by viewModel {
         parametersOf(
-            intent.getLongExtra(
-                EVENT_ID_EXTRA,
-                0
-            )
+            args.eventId
         )
     }
-// TODO убрать. Оставлено для примера
-//    private val bindMemberListener: (MemberSelectItem) -> Unit = {
-//        viewModel.handleBind(it.memberId)
-//    }
 
     private fun bindMemberListener(item: MemberSelectItem) {
         viewModel.handleBind(item.memberId)
@@ -36,53 +31,54 @@ class MemberSelectActivity : AppCompatActivity() {
 
     private val adapter: MemberSelectAdapter by inject { parametersOf(::bindMemberListener) }
 
-    private var _binding: MemberSelectActivityBinding? = null
+    // This property is only valid between onCreateView and onDestroyView.
+    private var _binding: MemberSelectFragmentBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         super.onCreate(savedInstanceState)
-        _binding = DataBindingUtil.setContentView(this, R.layout.member_select_activity)
+        _binding = MemberSelectFragmentBinding.inflate(inflater, container, false)
+
         binding.vm = viewModel
         binding.lifecycleOwner = this
 
         binding.allMembersItemRecycler.adapter = adapter
         setListeners()
         observeData()
+        return binding.root
     }
 
     private fun setListeners() {
         binding.toolbar.setNavigationOnClickListener { view ->
-            onBackPressed() // TODO настроить навигацию?
-//            view.findNavController().navigateUp()
+            view.findNavController().navigateUp()
         }
 
         binding.toolbar.setOnMenuItemClickListener {
             val newMemberDialog = NewMemberDialogFragment(viewModel.eventId)
-            newMemberDialog.show(supportFragmentManager, NEW_MEMBER_DIALOG_TAG)
+            if (isAdded) {
+                newMemberDialog.show(parentFragmentManager, NEW_MEMBER_DIALOG_TAG)
+            }
             true
         }
     }
 
     private fun observeData() {
-        viewModel.members.observe(this, { members ->
+        viewModel.members.observe(viewLifecycleOwner, { members ->
             adapter.submitList(members)
         })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 
     companion object {
-        private const val EVENT_ID_EXTRA = "EVENT_ID"
         private const val NEW_MEMBER_DIALOG_TAG = "NEW_MEMBER_DIALOG"
-
-        fun start(eventId: Long, context: Context) {
-            val intent = Intent(context, MemberSelectActivity::class.java)
-            intent.putExtra(EVENT_ID_EXTRA, eventId)
-            context.startActivity(intent)
-        }
     }
 
 }
