@@ -1,7 +1,7 @@
 package ru.axcheb.saigaktiming.data.repository
 
-import androidx.room.Transaction
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import ru.axcheb.saigaktiming.data.dao.MemberDao
 import ru.axcheb.saigaktiming.data.model.domain.Member
 import ru.axcheb.saigaktiming.data.model.ui.MemberSelectItem
@@ -20,26 +20,18 @@ class MemberRepository(private val memberDao: MemberDao) {
 
     suspend fun insert(member: Member) = memberDao.insert(member)
 
-    @Transaction
     suspend fun saveNewAndBind(member: Member, eventId: Long) {
-        val memberId = memberDao.insert(member)
-        bindToEvent(eventId, memberId)
+        memberDao.insertAndBindToEvent(member, eventId)
     }
 
-    @Transaction
     suspend fun handleEventMemberBind(eventId: Long, memberId: Long) {
         val eventMember = memberDao.getEventMember(eventId, memberId).firstOrNull()
         if (eventMember == null) {
-            bindToEvent(eventId, memberId)
+            memberDao.bindToEvent(eventId, memberId)
         } else {
-            memberDao.subtractSequenceNumber(eventId, eventMember.sequenceNumber)
-            unBindToEvent(eventId, memberId)
+            memberDao.subtractSequenceNumberAndUnbind(eventId, eventMember.sequenceNumber, memberId)
         }
     }
-
-    suspend fun bindToEvent(eventId: Long, memberId: Long) = memberDao.bindToEvent(eventId, memberId)
-
-    suspend fun unBindToEvent(eventId: Long, memberId: Long) = memberDao.unBindToEvent(eventId, memberId)
 
     fun getEventMemberItems(eventId: Long) = memberDao.getEventMemberItems(eventId)
 

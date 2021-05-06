@@ -3,6 +3,7 @@ package ru.axcheb.saigaktiming.data.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 import ru.axcheb.saigaktiming.data.model.domain.EventMember
 import ru.axcheb.saigaktiming.data.model.domain.Member
@@ -83,5 +84,18 @@ interface MemberDao {
         order by sequence_number
     """)
     fun getMembers(eventId: Long): Flow<List<Member>>
+
+    @Transaction
+    suspend fun subtractSequenceNumberAndUnbind(eventId: Long, sequenceNumber: Int, memberId: Long) {
+        subtractSequenceNumber(eventId, sequenceNumber)
+        unBindToEvent(eventId, memberId)
+    }
+
+    @Transaction
+    suspend fun insertAndBindToEvent(member: Member, eventId: Long): Long {
+        val memberId = insert(member)
+        bindToEvent(eventId, memberId)
+        return memberId
+    }
 
 }
