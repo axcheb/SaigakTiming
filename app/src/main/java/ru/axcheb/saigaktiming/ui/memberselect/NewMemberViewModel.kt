@@ -17,13 +17,13 @@ class NewMemberViewModel(
 
     private val TAG = this::class.qualifiedName
 
-    private val _errorMsg = MutableLiveData<Int>()
-    val errorMsg: LiveData<Int> = _errorMsg
+    private val _errorMsg = MutableLiveData<Int?>()
+    val errorMsg: LiveData<Int?> = _errorMsg
 
-    private val _addResult = MutableLiveData<AddResult>()
-    val addResult = _addResult
+    private val _state = MutableLiveData(State.EDITING)
+    val state: LiveData<State> = _state
 
-    val name = MutableLiveData<String>()
+    val name = MutableLiveData<String?>()
 
     fun addNewMember() {
         viewModelScope.launch {
@@ -31,22 +31,27 @@ class NewMemberViewModel(
             if (!value.isNullOrEmpty()) {
                 val oldMember = memberRepository.getMember(value).firstOrNull()
                 if (oldMember != null) {
-                    _addResult.postValue(AddResult.ALREADY_EXISTS)
-                    _errorMsg.postValue(R.string.member_already_exists)
+                    _state.value = State.ALREADY_EXISTS
+                    _errorMsg.value = R.string.err_member_already_exists
+                    _state.value = State.EDITING
                 } else {
                 val member = Member(name = value)
+                    _state.value = State.SAVING
                     memberRepository.saveNewAndBind(member, eventId)
-                    _addResult.value = AddResult.OK
-                    _errorMsg.postValue(null)
-                    name.postValue(null)
-                    _addResult.postValue(null)
+                    _state.value = State.SAVED
+                    _errorMsg.value = null
+                    name.value = null
+                    _state.value = State.EDITING
                 }
             }
         }
     }
+
+    enum class State {
+        SAVED,
+        SAVING,
+        ALREADY_EXISTS,
+        EDITING
+    }
 }
 
-enum class AddResult {
-    OK,
-    ALREADY_EXISTS,
-}

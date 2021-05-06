@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SaigakTiming</string>
+
+    <string name="err_member_already_exists">Такой участник уже существует</string>
+    <string name="err_required_field">Обязательное поле</string>
+    <string name="err_value_must_be_between_1_and_5">Значение должно быть от 1 до 5</string>
+    <string name="err_value_must_be_gt_0">Значение должно быть больше 0</string>
+
     <string name="title_members">Участники</string>
     <string name="title_archive">Архив</string>
     <string name="title_sensors">Датчики</string>
@@ -12,7 +18,6 @@
     <string name="check">Выбрать</string>
     <string name="save">Сохранить</string>
     <string name="new_member">Новый участник</string>
-    <string name="member_already_exists">Такой участник уже существует</string>
     <string name="added">Добавлен</string>
     <string name="competition_protocol">Протокол соревнования</string>
     <string name="member_list">Список участников</string>
@@ -20,16 +25,20 @@
     <string name="result">Результат</string>
     <string name="track">СУ</string>
     <string name="track_results">Результаты на СУ:</string>
+    <string name="track_count">Количество СУ</string>
     <string name="stop">Стоп</string>
     <string name="to_the_end_of_list">В конец списка</string>
     <string name="pause">Пауза</string>
     <string name="next">Следующий</string>
-    <string name="start_time">Время старта:</string>
-    <string name="finish_time">Время финиша:</string>
+    <string name="start_time">Время старта</string>
+    <string name="finish_time">Время финиша</string>
+    <string name="start_date">Дата старта</string>
 
     <string name="start_uppercase">СТАРТ</string>
     <string name="time_over">Время вышло</string>
     <string name="resume">Возбновить</string>
     <string name="number_sign">#</string>
     <string name="total_time">Общее время:</string>
+    <string name="track_max_time_minutes">Время на прохожение СУ (минуты)</string>
+    <string name="colon">:</string>
 </resources>

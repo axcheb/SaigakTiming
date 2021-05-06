@@ -10,11 +10,6 @@ class MemberRepository(private val memberDao: MemberDao) {
 
     fun getMemberSelected(eventId: Long): Flow<List<MemberSelectItem>> {
         return memberDao.getMemberSelectItems(eventId)
-        // TODO оставил для примера
-//        val membersFlow = memberDao.getMembers()
-//        return eventMembersFlow.map { it.map { em -> em.id to em.sequenceNumber }.toMap() }.combine(membersFlow) { memberMap, members ->
-//            members.map { MemberSelectItem(member = it, memberMap.contains(it.id)) }
-//        }
     }
 
     fun getMember(id: Long) = memberDao.getMember(id)

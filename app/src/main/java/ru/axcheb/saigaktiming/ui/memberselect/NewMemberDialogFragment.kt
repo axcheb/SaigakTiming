@@ -66,9 +66,9 @@ class NewMemberDialogFragment : DialogFragment() {
     }
 
     private fun observeData() {
-        viewModel.addResult.observe(viewLifecycleOwner) {
+        viewModel.state.observe(viewLifecycleOwner) {
             val result = it ?: return@observe
-            if (result == AddResult.OK) {
+            if (result == NewMemberViewModel.State.SAVED) {
                 val toast = Toast.makeText(context, R.string.added, Toast.LENGTH_SHORT)
                 toast.setGravity(Gravity.CENTER, 0, 0)
                 toast.show()

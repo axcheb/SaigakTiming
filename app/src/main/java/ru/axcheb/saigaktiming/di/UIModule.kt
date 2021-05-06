@@ -4,6 +4,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import ru.axcheb.saigaktiming.data.model.ui.MemberSelectItem
 import ru.axcheb.saigaktiming.data.model.ui.ResultItem
+import ru.axcheb.saigaktiming.ui.event.EditEventViewModel
 import ru.axcheb.saigaktiming.ui.event.EventMemberAdapter
 import ru.axcheb.saigaktiming.ui.event.EventViewModel
 import ru.axcheb.saigaktiming.ui.start.StartAdapter
@@ -31,7 +32,6 @@ val uiModule = module {
             eventId = eventId
         )
     }
-
     viewModel { (eventId: Long, memberId: Long) ->
         StartViewModel(
             eventId = eventId,
@@ -49,6 +49,9 @@ val uiModule = module {
             resultRepository = get(),
             application = get()
         )
+    }
+    viewModel {
+        EditEventViewModel(eventRepository = get())
     }
 
     factory { (bindMemberListener: (MemberSelectItem) -> Unit) ->

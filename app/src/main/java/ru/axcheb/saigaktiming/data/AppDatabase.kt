@@ -18,7 +18,7 @@ import ru.axcheb.saigaktiming.data.model.domain.*
      ],
     version = 1,
     exportSchema = false)
-@TypeConverters(Converters::class)
+@TypeConverters(RoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun memberDao(): MemberDao

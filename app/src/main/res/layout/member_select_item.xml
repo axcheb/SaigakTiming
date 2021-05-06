@@ -30,7 +30,7 @@
                 android:layout_marginStart="@dimen/default_view_margin"
                 android:layout_marginEnd="@dimen/default_view_margin"
                 android:gravity="end"
-                android:text="@{item.getSequenceNumber()}"
+                android:text="@{item.getSequenceNumberStr()}"
                 android:textAppearance="?attr/textAppearanceHeadline4"
                 tools:text="42"/>
 

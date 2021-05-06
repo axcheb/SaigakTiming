@@ -24,6 +24,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_event_to_editEventFragment"
+            app:destination="@id/editEventFragment" />
     </fragment>
 
     <fragment
@@ -53,5 +56,10 @@
         <argument android:name="eventId" app:argType="long" />
     </fragment>
 
+    <fragment
+        android:id="@+id/editEventFragment"
+        android:name="ru.axcheb.saigaktiming.ui.event.EditEventFragment"
+        android:label="edit_event_fragment"
+        tools:layout="@layout/edit_event_fragment" />
 
 </navigation>

@@ -3,7 +3,7 @@ package ru.axcheb.saigaktiming.data
 import androidx.room.TypeConverter
 import java.util.*
 
-class Converters {
+class RoomConverters {
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? = date?.time
 

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.event.EditEventFragment">
+
+    <data>
+        <import type="ru.axcheb.saigaktiming.data.DataBindingConverters" />
+        <variable
+            name="viewModel"
+            type="ru.axcheb.saigaktiming.ui.event.EditEventViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_view_margin"
+            app:contentPadding="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:clipToPadding="false"
+                android:padding="@dimen/default_view_margin">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/eventDate_input"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_calendar_24"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/eventDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="@string/start_date"
+                        android:inputType="date"
+                        android:text="@{viewModel.dateStr}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/eventTime_input"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_time_24"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/eventTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="@string/start_time"
+                        android:inputType="time"
+                        android:text="@{viewModel.timeStr}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/trackCount_input"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/trackCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/track_count"
+                        android:inputType="numberDecimal"
+                        android:text="@={DataBindingConverters.intToStr(viewModel.trackCount)}"
+                        app:errorMsg="@{viewModel.trackCountError}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/trackMaxTime_input"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_timelapse_24"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/trackMaxTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/track_max_time_minutes"
+                        android:inputType="numberDecimal"
+                        android:text="@={DataBindingConverters.intToStr(viewModel.trackMaxTime)}"
+                        app:errorMsg="@{viewModel.trackMaxTimeError}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/edit_event_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="@dimen/default_view_margin"
+                    android:text="@string/save"
+                    android:enabled="@{viewModel.canSave}"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+    </ScrollView>
+</layout>

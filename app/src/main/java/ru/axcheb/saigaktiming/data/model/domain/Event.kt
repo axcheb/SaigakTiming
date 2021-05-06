@@ -12,6 +12,11 @@ import java.util.*
 )
 data class Event (
     @PrimaryKey(autoGenerate = true) var id: Long?,
+    /** Дата и время старта. */
     var date: Date,
+    /** Количество СУ. */
+    @ColumnInfo(name = "track_count") var trackCount: Int,
+    /** Время на прохождение СУ, через какое время стартует следующий участник. */
+    @ColumnInfo(name = "track_max_time") val trackMaxTime: Int,
     @ColumnInfo(name = "in_archive") var inArchive: Boolean = false
 )

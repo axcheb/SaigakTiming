@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.axcheb.saigaktiming.databinding.EventFragmentBinding
@@ -30,6 +32,8 @@ class EventFragment : Fragment() {
     ): View {
         _binding = EventFragmentBinding.inflate(inflater, container, false)
         binding.eventMemberRecycler.adapter = adapter
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         // TODO если захочется переделать на divider
 //        val divider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
 //        divider.setDrawable(ContextCompat.getDrawable(activity, R.drawable.e_m_line_divider)
@@ -41,28 +45,46 @@ class EventFragment : Fragment() {
 
     private fun setListeners() {
         binding.addMemberLine.setOnClickListener {
-            val eventId = viewModel.event.value?.id
+            val vm = viewModel
+            val eventId = viewModel.eventState.value?.id
             if (eventId != null) {
-                val direction = EventFragmentDirections.actionNavigationEventToNavigationMemberSelect(
-                    eventId
-                )
+                val direction =
+                    EventFragmentDirections.actionNavigationEventToNavigationMemberSelect(
+                        eventId
+                    )
                 view?.findNavController()?.navigate(direction)
             }
         }
 
         binding.startAllLine.setOnClickListener {
-            val eventId = viewModel.event.value?.id
+            val eventId = viewModel.eventState.value?.id
             if (eventId != null) {
                 FinishActivity.start(eventId, 0, 0, binding.root.context)
             }
         }
 
+        binding.eventCard.setOnClickListener {
+            navigateToEditEvent()
+        }
     }
 
     private fun observeData() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.eventShare.collect {
+                if (it == null) {
+                    navigateToEditEvent()
+                }
+            }
+        }
+
         viewModel.members.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
+    }
+
+    private fun navigateToEditEvent() {
+        view?.findNavController()
+            ?.navigate(EventFragmentDirections.actionNavigationEventToEditEventFragment())
     }
 
     override fun onDestroyView() {

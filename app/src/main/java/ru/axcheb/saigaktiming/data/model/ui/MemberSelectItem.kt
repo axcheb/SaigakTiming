@@ -7,7 +7,7 @@ data class MemberSelectItem(
     val name: String,
     @ColumnInfo(name = "sequence_number") val sequenceNumber: Int?
 ) {
-    fun getSequenceNumber(): String {
+    fun getSequenceNumberStr(): String {
         return sequenceNumber?.toString() ?: ""
     }
 }
