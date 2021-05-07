@@ -27,7 +27,7 @@ class EventMemberAdapter() :
             binding.executePendingBindings()
         }
 
-        fun navigateToMemberResult(item: EventMemberItem, view: View) {
+        private fun navigateToMemberResult(item: EventMemberItem, view: View) {
             val direction = EventFragmentDirections.actionNavigationEventToNavigationStart(
                 item.eventId,
                 item.memberId

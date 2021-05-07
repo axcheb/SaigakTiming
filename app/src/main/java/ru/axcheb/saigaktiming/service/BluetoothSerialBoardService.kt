@@ -18,7 +18,6 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.*
 
-
 /**
  * Синглтон для работы с последовательным модулем bluetooth (Bluetooth serial board).
  * В данном случае код заточен на работу с модулем HC-06 @see [DEVICE_NAME],
@@ -97,7 +96,7 @@ class BluetoothSerialBoardService : LifecycleService() {
         fun getService(): BluetoothSerialBoardService = this@BluetoothSerialBoardService
     }
 
-    override fun onBind(intent: Intent?): IBinder {
+    override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
         Log.d(TAG, "onBind")
         start()

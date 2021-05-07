@@ -7,7 +7,7 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "29.0.3"
+    buildToolsVersion "30.0.3"
     buildFeatures {
         dataBinding true
         viewBinding true
@@ -63,12 +63,12 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.3.0'
 
     // Asynchronous
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0-RC"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-RC"
 
     // DI
-    implementation 'org.koin:koin-androidx-scope:2.0.1'
-    implementation 'org.koin:koin-androidx-viewmodel:2.0.1'
+    // Koin main features for Android (Scope,ViewModel ...)
+    implementation "io.insert-koin:koin-android:3.0.1"
 
     // UI
     implementation 'com.google.android.material:material:1.3.0'

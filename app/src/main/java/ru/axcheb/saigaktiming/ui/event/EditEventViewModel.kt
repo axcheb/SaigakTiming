@@ -73,8 +73,8 @@ class EditEventViewModel(
         if (trackCountVal == null) {
             return R.string.err_required_field
         }
-        if (trackCountVal >= 5 || trackCountVal <= 0) {
-            return R.string.err_value_must_be_between_1_and_5
+        if (trackCountVal < 1) {
+            return R.string.err_value_must_be_gt_0
         }
         return null
     }

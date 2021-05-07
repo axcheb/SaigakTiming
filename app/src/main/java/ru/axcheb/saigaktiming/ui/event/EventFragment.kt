@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.axcheb.saigaktiming.databinding.EventFragmentBinding
@@ -70,7 +72,7 @@ class EventFragment : Fragment() {
 
     private fun observeData() {
         lifecycleScope.launchWhenStarted {
-            viewModel.eventShare.collect {
+            viewModel.eventShare.map { it?.id }.distinctUntilChanged().collect {
                 if (it == null) {
                     navigateToEditEvent()
                 }
