@@ -99,11 +99,11 @@ class FinishViewModel(
         _startIdFlow.flatMapLatest { startId -> resultRepository.getFinishResults(startId) }
             .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    val onNextEnabled: StateFlow<Boolean> =
+    val isNextEnabled: StateFlow<Boolean> =
         _status.map { it == Status.WAITING_START || it == Status.STARTED_WAITING_FINISH }
             .stateIn(viewModelScope, SharingStarted.Lazily, true)
 
-    val onPauseEnabled: StateFlow<Boolean> =
+    val isPauseEnabled: StateFlow<Boolean> =
         _status.map {
             it == Status.WAITING_START
                     || it == Status.STARTED_WAITING_FINISH
@@ -113,7 +113,7 @@ class FinishViewModel(
     val pauseOrResume: StateFlow<Boolean> =
         _status.map { it != Status.PAUSED }.stateIn(viewModelScope, SharingStarted.Lazily, true)
 
-    val toEndEnabled: StateFlow<Boolean> = _status.map { it == Status.WAITING_START }
+    val isToEndEnabled: StateFlow<Boolean> = _status.map { it == Status.WAITING_START }
         .stateIn(viewModelScope, SharingStarted.Lazily, true)
 
     /**
@@ -280,7 +280,7 @@ class FinishViewModel(
     }
 
     fun onPause() {
-        if (!onPauseEnabled.value) return
+        if (!isPauseEnabled.value) return
         if (!pauseOrResume.value) return
 
         viewModelScope.launch {
@@ -311,7 +311,7 @@ class FinishViewModel(
      * Кнопку следующий можно нажаеть, только если статус = WAITING_START.
      */
     fun onNext() {
-        if (!onNextEnabled.value) return
+        if (!isNextEnabled.value) return
 
         if (_status.value == Status.WAITING_START) {
             viewModelScope.launch {
@@ -336,7 +336,7 @@ class FinishViewModel(
      * Кнопку следующий можно нажаеть, только если статус = WAITING_START.
      */
     fun toEnd() {
-        if (!toEndEnabled.value) return
+        if (!isToEndEnabled.value) return
 
         viewModelScope.launch {
             cancelJobs()

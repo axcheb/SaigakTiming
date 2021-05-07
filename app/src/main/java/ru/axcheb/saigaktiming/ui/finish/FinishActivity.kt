@@ -6,9 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import android.view.KeyEvent
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
@@ -66,7 +64,7 @@ class FinishActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = FinishActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.finishRecycler.adapter = adapter
 
@@ -81,11 +79,10 @@ class FinishActivity : AppCompatActivity() {
         val view = binding.root
         view.isFocusableInTouchMode = true
         view.requestFocus()
-        view.setOnKeyListener { v, keyCode, event ->
+        view.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN) {
                 when (keyCode) {
                     KeyEvent.KEYCODE_VOLUME_DOWN, KeyEvent.KEYCODE_VOLUME_UP -> {
-                        Log.i(TAG, "KEYCODE_VOLUME")
                         viewModel.newFinish()
                         return@setOnKeyListener true
                     }
@@ -116,60 +113,6 @@ class FinishActivity : AppCompatActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.finishItems.collect { items -> adapter.submitList(items) }
         }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.member.collect { member -> binding.memberName.text = member?.name }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.timerStr.collect { timeStr ->
-                binding.timer.text = timeStr
-                binding.timerCard.visibility = if (timeStr.isEmpty()) View.GONE else View.VISIBLE
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.startTimeStr.collect { startTimeStr ->
-                binding.startTime.text = startTimeStr
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.onNextEnabled.collect {
-                binding.nextLine.isEnabled = it
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.onPauseEnabled.collect {
-                binding.pauseLine.isEnabled = it
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.pauseOrResume.collect {
-                if (it) {
-                    binding.pauseLine.visibility = View.VISIBLE
-                    binding.resumeLine.visibility = View.GONE
-                } else {
-                    binding.pauseLine.visibility = View.GONE
-                    binding.resumeLine.visibility = View.VISIBLE
-                }
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.toEndEnabled.collect {
-                binding.toEndLine.isEnabled = it
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.isTimerRunnable.collect {
-                binding.buttonsBlock.visibility = if (it) View.VISIBLE else View.GONE
-            }
-        }
-
     }
 
     override fun onDestroy() {

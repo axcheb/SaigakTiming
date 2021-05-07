@@ -32,7 +32,7 @@ class NewMemberDialogFragment : DialogFragment() {
     ): View {
         _binding = NewMemberFragmentBinding.inflate(inflater, container, false)
         binding.vm = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         setListeners()
         observeData()
         return binding.root

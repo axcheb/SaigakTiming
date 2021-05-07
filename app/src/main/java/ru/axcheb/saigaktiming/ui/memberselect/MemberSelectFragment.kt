@@ -44,7 +44,7 @@ class MemberSelectFragment : Fragment() {
         _binding = MemberSelectFragmentBinding.inflate(inflater, container, false)
 
         binding.vm = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         binding.allMembersItemRecycler.adapter = adapter
         setListeners()

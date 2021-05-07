@@ -6,9 +6,7 @@
     android:keepScreenOn="true">
 
     <data>
-        <import type="ru.axcheb.saigaktiming.data.model.domain.Member" />
-        <import type="ru.axcheb.saigaktiming.data.model.domain.Start" />
-
+        <import type="android.view.View" />
         <variable
             name="viewModel"
             type="ru.axcheb.saigaktiming.ui.finish.FinishViewModel" />
@@ -27,6 +25,7 @@
             android:layout_marginEnd="@dimen/default_view_margin"
             android:gravity="center_horizontal"
             android:textAppearance="?attr/textAppearanceHeadline3"
+            android:text='@{viewModel.member != null ? viewModel.member.name : ""}'
             tools:text="Иван Иванов" />
 
         <androidx.cardview.widget.CardView
@@ -39,7 +38,8 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             app:cardElevation="8dp"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="8dp"
+            android:visibility="@{viewModel.timerStr.isEmpty() ? View.GONE : View.VISIBLE}">
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/timer"
                 android:layout_gravity="center"
@@ -48,6 +48,7 @@
                 android:textSize="50sp"
                 android:layout_marginStart="@dimen/default_view_margin"
                 android:layout_marginEnd="@dimen/default_view_margin"
+                android:text="@{viewModel.timerStr}"
                 tools:text="01:23" />
         </androidx.cardview.widget.CardView>
 
@@ -72,6 +73,7 @@
                 android:layout_marginEnd="@dimen/default_view_margin"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textStyle="bold|italic"
+                android:text="@{viewModel.startTimeStr}"
                 tools:text="12:05:21.593" />
         </LinearLayout>
 
@@ -179,7 +181,8 @@
             android:id="@+id/buttons_block"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="@{viewModel.isTimerRunnable ? View.VISIBLE : View.GONE }">
 
             <View
                 android:layout_width="match_parent"
@@ -198,7 +201,8 @@
                 android:layout_marginEnd="@dimen/default_view_margin"
                 android:gravity="center"
                 android:text="@string/next"
-                android:textAppearance="?attr/textAppearanceHeadline3" />
+                android:textAppearance="?attr/textAppearanceHeadline3"
+                android:enabled="@{viewModel.isNextEnabled}" />
 
             <View
                 android:layout_width="match_parent"
@@ -215,10 +219,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_view_margin"
                 android:layout_marginEnd="@dimen/default_view_margin"
-                android:enabled="false"
+                android:enabled="@{viewModel.isPauseEnabled}"
                 android:gravity="center"
                 android:text="@string/pause"
-                android:textAppearance="?attr/textAppearanceHeadline3" />
+                android:textAppearance="?attr/textAppearanceHeadline3"
+                android:visibility="@{viewModel.pauseOrResume ? View.VISIBLE : View.GONE }"/>
 
             <TextView
                 android:id="@+id/resume_line"
@@ -229,7 +234,7 @@
                 android:gravity="center"
                 android:text="@string/resume"
                 android:textAppearance="?attr/textAppearanceHeadline3"
-                android:visibility="gone" />
+                android:visibility="@{viewModel.pauseOrResume ? View.GONE : View.VISIBLE }"/>
 
             <View
                 android:layout_width="match_parent"
@@ -248,7 +253,8 @@
                 android:layout_marginEnd="@dimen/default_view_margin"
                 android:gravity="center"
                 android:text="@string/to_the_end_of_list"
-                android:textAppearance="?attr/textAppearanceHeadline3" />
+                android:textAppearance="?attr/textAppearanceHeadline3"
+                android:enabled="@{viewModel.isToEndEnabled}"/>
 
             <View
                 android:layout_width="match_parent"
@@ -262,10 +268,6 @@
         </LinearLayout>
 
         <!--        TODO добавить ещё layout-land для горизонтального расположения-->
-
-        <!--        1 пропустить участника (стартует следующий по списку)-->
-        <!--        2 пропустить минуту-->
-        <!--        3 в конец списка-->
 
     </LinearLayout>
 

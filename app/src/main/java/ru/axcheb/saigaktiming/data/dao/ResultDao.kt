@@ -4,8 +4,10 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flowOn
 import ru.axcheb.saigaktiming.data.model.domain.Finish
 import ru.axcheb.saigaktiming.data.model.domain.Start
 import ru.axcheb.saigaktiming.data.model.ui.ResultItem
@@ -74,7 +76,7 @@ interface ResultDao {
 
     @Transaction
     suspend fun makeFinishAsOnlyActiveOne(finishId: Long) {
-        val finish = getFinish(finishId).firstOrNull() ?: return
+        val finish = getFinish(finishId).flowOn(Dispatchers.Default).firstOrNull() ?: return
         inactivateFinish(finish.startId)
         activateFinish(finishId)
     }

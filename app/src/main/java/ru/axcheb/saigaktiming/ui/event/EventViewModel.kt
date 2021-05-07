@@ -1,6 +1,5 @@
 package ru.axcheb.saigaktiming.ui.event
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -33,7 +32,6 @@ class EventViewModel(
     private val membersWithoutStartTimes =
         eventShare.map { it?.id }.filterNotNull().distinctUntilChanged()
             .flatMapLatest {
-                Log.d(TAG, "Loading members")
                 memberRepository.getEventMemberItems(it)
             }
 
