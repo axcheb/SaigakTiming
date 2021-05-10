@@ -28,6 +28,32 @@
             android:text='@{viewModel.member != null ? viewModel.member.name : ""}'
             tools:text="Иван Иванов" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_view_margin"
+                android:text="@string/next"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textStyle="italic"
+                android:visibility="@{viewModel.nextMember == null ? View.INVISIBLE : View.VISIBLE}" />
+
+            <TextView
+                android:id="@+id/next_member"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="@dimen/default_view_margin"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textStyle="bold|italic"
+                android:text='@{viewModel.nextMember != null ? viewModel.nextMember.name : ""}'
+                tools:text="Александр Петров" />
+        </LinearLayout>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/timer_card"
             android:layout_width="match_parent"
@@ -39,7 +65,7 @@
             android:layout_marginTop="8dp"
             app:cardElevation="8dp"
             app:cardCornerRadius="8dp"
-            android:visibility="@{viewModel.timerStr.isEmpty() ? View.GONE : View.VISIBLE}">
+            android:visibility="@{viewModel.isTimerCardVisible ? View.VISIBLE : View.GONE }">
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/timer"
                 android:layout_gravity="center"
@@ -76,14 +102,6 @@
                 android:text="@{viewModel.startTimeStr}"
                 tools:text="12:05:21.593" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_view_margin"
-            android:text="@string/finish_time"
-            android:textAppearance="?attr/textAppearanceBody1"
-            android:textStyle="italic" />
 
         <View
             android:layout_width="match_parent"

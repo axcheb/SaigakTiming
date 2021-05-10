@@ -11,7 +11,7 @@ import ru.axcheb.saigaktiming.data.model.domain.Member
 @Dao
 interface EventDao {
 
-    @Query(value = "select * from event where in_archive = 0")
+    @Query(value = "select * from event where is_in_archive = 0")
     fun getCurrentEvent(): Flow<Event?>
 
     @Query(value = "select * from event where id = :id")

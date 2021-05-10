@@ -1,7 +1,6 @@
 package ru.axcheb.saigaktiming.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
 import ru.axcheb.saigaktiming.data.dao.MemberDao
 import ru.axcheb.saigaktiming.data.model.domain.Member
 import ru.axcheb.saigaktiming.data.model.ui.MemberSelectItem
@@ -24,14 +23,10 @@ class MemberRepository(private val memberDao: MemberDao) {
         memberDao.insertAndBindToEvent(member, eventId)
     }
 
-    suspend fun handleEventMemberBind(eventId: Long, memberId: Long) {
-        val eventMember = memberDao.getEventMember(eventId, memberId).firstOrNull()
-        if (eventMember == null) {
-            memberDao.bindToEvent(eventId, memberId)
-        } else {
-            memberDao.subtractSequenceNumberAndUnbind(eventId, eventMember.sequenceNumber, memberId)
-        }
-    }
+    suspend fun bindToEvent(eventId: Long, memberId: Long) = memberDao.bindToEvent(eventId, memberId)
+
+    suspend fun subtractSequenceNumberAndUnbind(eventId: Long, sequenceNumber: Int, memberId: Long) =
+        memberDao.subtractSequenceNumberAndUnbind(eventId, sequenceNumber, memberId)
 
     fun getEventMemberItems(eventId: Long) = memberDao.getEventMemberItems(eventId)
 

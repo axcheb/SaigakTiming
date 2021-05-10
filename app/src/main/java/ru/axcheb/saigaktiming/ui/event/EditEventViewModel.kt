@@ -1,7 +1,6 @@
 package ru.axcheb.saigaktiming.ui.event
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
@@ -55,7 +54,7 @@ class EditEventViewModel(
                     date = eventDate.value!!,
                     trackCount = trackCount.value!!,
                     trackMaxTime = trackMaxTime.value!!,
-                    inArchive = false
+                    isInArchive = false
                 )
                 _state.value = State.SAVING
                 if (event.id == null) {

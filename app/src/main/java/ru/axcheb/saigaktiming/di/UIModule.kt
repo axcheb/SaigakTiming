@@ -23,6 +23,7 @@ val uiModule = module {
     viewModel { (eventId: Long) ->
         MemberSelectViewModel(
             memberRepository = get(),
+            eventRepository = get(),
             eventId = eventId
         )
     }
@@ -47,6 +48,7 @@ val uiModule = module {
             startId = startId,
             memberRepository = get(),
             resultRepository = get(),
+            eventRepository = get(),
             application = get()
         )
     }

@@ -2,16 +2,19 @@ package ru.axcheb.saigaktiming.ui.finish
 
 import android.app.Application
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import ru.axcheb.saigaktiming.R
+import ru.axcheb.saigaktiming.data.model.domain.Event
 import ru.axcheb.saigaktiming.data.model.domain.Finish
 import ru.axcheb.saigaktiming.data.model.domain.Member
 import ru.axcheb.saigaktiming.data.model.domain.Start
 import ru.axcheb.saigaktiming.data.model.ui.ResultItem
+import ru.axcheb.saigaktiming.data.repository.EventRepository
 import ru.axcheb.saigaktiming.data.repository.MemberRepository
 import ru.axcheb.saigaktiming.data.repository.ResultRepository
 import java.text.SimpleDateFormat
@@ -23,6 +26,7 @@ class FinishViewModel(
     private val startId: Long,
     private val memberRepository: MemberRepository,
     private val resultRepository: ResultRepository,
+    private val eventRepository: EventRepository,
     private val application: Application
 ) : ViewModel() {
 
@@ -35,20 +39,27 @@ class FinishViewModel(
 
     private val _status = MutableStateFlow(Status.PAUSED)
 
+    val isTimerCardVisible =
+        _status.map { it != Status.VIEW_ONLY }.stateIn(viewModelScope, SharingStarted.Lazily, true)
+
     private val _millisFromStartCountingFlow = MutableStateFlow(0L)
 
     val timerStr
-        get() = _millisFromStartCountingFlow.map { formatToTimeStr(it) }
+        get() = combine(_millisFromStartCountingFlow, _status) { millisFromStartCounting, status ->
+            formatToTimeStr(millisFromStartCounting, status)
+        }
             .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
-    private fun formatToTimeStr(millisFromStartCounting: Long): String {
-        return when (_status.value) {
+    private var beforeStartTime = BEFORE_START_TIME
+
+    private fun formatToTimeStr(millisFromStartCounting: Long, status: Status): String {
+        return when (status) {
             Status.WAITING_START -> {
-                ((millisFromStartCounting / ONE_SECOND * ONE_SECOND - BEFORE_START_TIME) / ONE_SECOND).toString()
+                ((millisFromStartCounting / ONE_SECOND * ONE_SECOND - beforeStartTime) / ONE_SECOND).toString()
             }
             Status.STARTED_WAITING_FINISH -> {
                 val waitingFinishSeconds =
-                    (millisFromStartCounting - BEFORE_START_TIME) / ONE_SECOND
+                    (millisFromStartCounting - beforeStartTime) / ONE_SECOND
                 if (waitingFinishSeconds == 0L) {
                     application.resources.getString(R.string.start_uppercase)
                 } else {
@@ -67,21 +78,26 @@ class FinishViewModel(
         }
     }
 
+    private lateinit var event: Event
+
+    private lateinit var originalMembers: List<Member>
+
     /**
      * Список участников, которые выйдут на старт.
      */
     private var members: MutableList<Member> = arrayListOf()
 
     /**
-     * Индекс текущего выбранного участника.
-     */
-    private var memberIndex = 0
-
-    /**
      * Текущий выбранный участник.
      */
     private val _member: MutableStateFlow<Member?> = MutableStateFlow(null)
     val member: StateFlow<Member?> = _member
+
+    /**
+     * Следующий участник.
+     */
+    private val _nextMember: MutableStateFlow<Member?> = MutableStateFlow(null)
+    val nextMember: StateFlow<Member?> = _nextMember
 
     private var timerJob: Job? = null
     private var membersForEachJob: Job? = null
@@ -100,7 +116,11 @@ class FinishViewModel(
             .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     val isNextEnabled: StateFlow<Boolean> =
-        _status.map { it == Status.WAITING_START || it == Status.STARTED_WAITING_FINISH }
+        _status.map {
+            (it == Status.WAITING_START || it == Status.STARTED_WAITING_FINISH)
+                    // Кнопка Next доступна для всех участников на СУ, кроме последнего. Его пропускать нельзя.
+                    && (event.currentMemberIndex + 1 < members.count())
+        }
             .stateIn(viewModelScope, SharingStarted.Lazily, true)
 
     val isPauseEnabled: StateFlow<Boolean> =
@@ -122,19 +142,29 @@ class FinishViewModel(
     val isTimerRunnable: StateFlow<Boolean> = _status.map { it != Status.VIEW_ONLY }
         .stateIn(viewModelScope, SharingStarted.Lazily, true)
 
+    /** Работа происходит только с одним конкретным участником без учёта currentMemberIndex и т.п. */
+    private val isWorkWithOneMember = memberId != NULL_ID
+
     init {
         viewModelScope.launch {
+            event = eventRepository.getEvent(eventId).first()
             if (startId != NULL_ID) {  // Если startId задан, вьюха открывается только на просмотр.
                 _status.value = Status.VIEW_ONLY
                 _startIdFlow.value = startId
             }
 
-            if (memberId != NULL_ID) {
+            if (isWorkWithOneMember) {
                 val m = memberRepository.getMember(memberId).firstOrNull()
-                m?.apply { members = arrayListOf(this) }
+                m?.apply {
+                    originalMembers = listOf(this)
+                    members = arrayListOf(this)
+                }
             } else {
                 val memberList = memberRepository.getMembers(eventId).firstOrNull()
-                memberList?.apply { members = this.toMutableList() }
+                memberList?.apply {
+                    originalMembers = this
+                    members = this.toMutableList()
+                }
             }
 
             if (_status.value == Status.VIEW_ONLY) {
@@ -142,7 +172,6 @@ class FinishViewModel(
                     _member.value = members[0]
                 }
             } else {
-                memberIndex = 0
                 // Запускаю обработку всех member, что удалось загрузить в memberList
                 launchMembersForEachJob()
             }
@@ -178,15 +207,66 @@ class FinishViewModel(
         _finishFlow.tryEmit(date)
     }
 
+    /**
+     * Возвращает двух участников гонки: текущего и следеющего за ним.
+     * Если такого участника нет, возвращает null внутри Pair.
+     */
+    private fun getCurrentMembers(): Pair<Member?, Member?> {
+        if (isWorkWithOneMember && members.count() == 1) {
+            val m = members[0]
+            members = arrayListOf()
+            return Pair(m, null)
+        }
+
+        val currentTrack = event.currentTrack
+        val currentMemberNumber = event.currentMemberIndex
+        if (currentMemberNumber >= members.count()) {
+            return Pair(null, null)
+        }
+        val next = getNextMemberIndex(currentTrack, currentMemberNumber)
+        return if (next == null) Pair(members[currentMemberNumber], null)
+        else Pair(members[currentMemberNumber], members[next.second])
+    }
+
+    private fun getNextMemberIndex(currentTrack: Int, currentMemberNumber: Int): Pair<Int, Int>? {
+        var memberNumber = currentMemberNumber + 1
+        var trackNumber = currentTrack
+        if (memberNumber >= members.count()) {
+            memberNumber = 0
+            trackNumber++
+        }
+        if (trackNumber >= event.trackCount) {
+            return null
+        }
+        return Pair(trackNumber, memberNumber)
+    }
+
+    /**
+     * Обновляет Event и значение в БД, устанавливая текущим следующего участника и СУ.
+     */
+    private fun updateEventMemberToNext() {
+        if (isWorkWithOneMember) return
+        val next = getNextMemberIndex(event.currentTrack, event.currentMemberIndex)
+        val nextTrack = next?.first ?: event.currentTrack
+        val nextMember = next?.second ?: members.count()
+        event.currentTrack = nextTrack
+        event.currentMemberIndex = nextMember
+        members = originalMembers.toMutableList()
+        viewModelScope.launch {
+            eventRepository.update(event)
+        }
+    }
+
     private fun launchMembersForEachJob(): Job {
         val job = viewModelScope.launch {
-            while (memberIndex < members.size) {
-                _member.value = members[memberIndex]
+            var members = getCurrentMembers()
+            while (members.first != null) {
+                _member.value = members.first
+                _nextMember.value = members.second
                 _startIdFlow.value = 0
                 val job = launchTimerJob()
                 job.join()
-                delay(BETWEEN_MEMBERS_TIME)
-                memberIndex++
+                members = getCurrentMembers()
             }
             _status.value = Status.VIEW_ONLY
         }
@@ -200,15 +280,34 @@ class FinishViewModel(
             throw java.lang.IllegalStateException("Cant launch timer Job. Timer Job in active state.")
         }
 
+        val isEventLaunched = event.isLaunched
+        if (!isEventLaunched && !isWorkWithOneMember) {
+            event.isLaunched = true
+            viewModelScope.launch {
+                eventRepository.update(event)
+            }
+        }
+
+        val eventStartMillis = event.date.time - BEFORE_START_TIME
         val startCountingMillis = System.currentTimeMillis()
-        val endMillis = BEFORE_START_TIME + WAITING_FINISH_TIME
+
+        beforeStartTime = if (!isEventLaunched && eventStartMillis > startCountingMillis)
+            eventStartMillis - startCountingMillis
+        else
+            BEFORE_START_TIME
+
+        Log.d(TAG, "beforeStartTime $beforeStartTime")
+
+        // Время, отведённое на прохождение дистанции:
+        val waitingFinishTime = event.getTrackTimeMillis() - BEFORE_START_TIME
+        val endMillis = beforeStartTime + waitingFinishTime
         val job = viewModelScope.launch {
             var current = System.currentTimeMillis()
             var fromStartCounting = current - startCountingMillis
             try {
                 onTimerStarted()
                 while (fromStartCounting < endMillis) {
-                    if (fromStartCounting < BEFORE_START_TIME) {
+                    if (fromStartCounting < beforeStartTime) {
                         // Ждём старт
                         onBeforeStartTick(fromStartCounting)
                         delay(calculateDelay(startCountingMillis, ONE_SECOND))
@@ -249,6 +348,7 @@ class FinishViewModel(
     private fun onWaitingFinishTick(millisFromStartCounting: Long) {
         if (_status.value == Status.WAITING_START) {
             _status.value = Status.STARTED_WAITING_FINISH
+            updateEventMemberToNext()
         } else if (_status.value != Status.STARTED_WAITING_FINISH) {
             throw IllegalStateException("Illegal state ${_status.value}")
         }
@@ -256,8 +356,7 @@ class FinishViewModel(
     }
 
     private fun onTimerCanceled(millisFromStartCounting: Long) {
-        _status.value =
-            Status.PAUSED // TODO возможно ввести другой статус или просто блокировать кнопку Следующий, когда остался один участник.
+        _status.value = Status.PAUSED
         _millisFromStartCountingFlow.value = millisFromStartCounting
     }
 
@@ -284,11 +383,8 @@ class FinishViewModel(
         if (!pauseOrResume.value) return
 
         viewModelScope.launch {
-            if (_status.value == Status.WAITING_START) {
+            if (_status.value == Status.WAITING_START || _status.value == Status.STARTED_WAITING_FINISH || _status.value == Status.FINISHED) {
                 cancelJobs()
-            } else if (_status.value == Status.STARTED_WAITING_FINISH || _status.value == Status.FINISHED) {
-                cancelJobs()
-                memberIndex++
             }
         }
     }
@@ -307,8 +403,10 @@ class FinishViewModel(
     }
 
     /**
-     * Пропуск старта текущего участника. Двигаем его на одну позицию вниз. И запускаем таймер.
-     * Кнопку следующий можно нажаеть, только если статус = WAITING_START.
+     * Пропуск старта текущего участника.
+     * Если он ещё не стартовал, двигаем его на одну позицию вниз. И запускаем таймер.
+     * Если уже стартовал, то просто стартуем следующего участника.
+     * Кнопку следующий можно нажаеть, только если статус = WAITING_START или STARTED_WAITING_FINISH.
      */
     fun onNext() {
         if (!isNextEnabled.value) return
@@ -316,16 +414,15 @@ class FinishViewModel(
         if (_status.value == Status.WAITING_START) {
             viewModelScope.launch {
                 cancelJobs()
-                val nextMemberIndex = memberIndex + 1
+                val nextMemberIndex = event.currentMemberIndex + 1
                 if (nextMemberIndex < members.size) {
-                    Collections.swap(members, memberIndex, nextMemberIndex)
+                    Collections.swap(members, event.currentMemberIndex, nextMemberIndex)
                 }
                 launchMembersForEachJob()
             }
         } else if (_status.value == Status.STARTED_WAITING_FINISH) {
             viewModelScope.launch {
                 cancelJobs()
-                memberIndex++
                 launchMembersForEachJob()
             }
         }
@@ -341,7 +438,7 @@ class FinishViewModel(
         viewModelScope.launch {
             cancelJobs()
             val lastMemberIndex = members.size - 1
-            Collections.swap(members, memberIndex, lastMemberIndex)
+            Collections.swap(members, event.currentMemberIndex, lastMemberIndex)
             launchMembersForEachJob()
         }
     }
@@ -370,13 +467,8 @@ class FinishViewModel(
         const val NULL_ID = 0L
 
         /** Время ожидания перед перед стартом участника. */
-        private const val BEFORE_START_TIME = 10_000L
+        private const val BEFORE_START_TIME = 5_000L
 
-        /** Время отведённое на прохождение дистанции. */
-        private const val WAITING_FINISH_TIME = 10_000L
-
-        /** Время между окончанием финишного времени и началом времени ожидания следующего участника. */
-        private const val BETWEEN_MEMBERS_TIME = 3_000L
         private const val ONE_SECOND = 1000L
 
         private val dateFormat = SimpleDateFormat("HH:mm:ss.SSS", Locale.US)

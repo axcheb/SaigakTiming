@@ -47,7 +47,6 @@ class EventFragment : Fragment() {
 
     private fun setListeners() {
         binding.addMemberLine.setOnClickListener {
-            val vm = viewModel
             val eventId = viewModel.eventState.value?.id
             if (eventId != null) {
                 val direction =
