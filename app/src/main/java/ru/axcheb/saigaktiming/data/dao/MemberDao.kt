@@ -1,9 +1,6 @@
 package ru.axcheb.saigaktiming.data.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRef
 import ru.axcheb.saigaktiming.data.model.dto.Member
@@ -49,6 +46,9 @@ interface MemberDao {
 
     @Query("select * from event_member where event_id = :eventId and member_id = :memberId")
     fun getEventMember(eventId: Long, memberId: Long): Flow<EventMemberCrossRef>
+
+    @Update
+    suspend fun updateEventMemberCrossRef(eventMemberCrossRef: EventMemberCrossRef)
 
     @Query("""
         update event_member 

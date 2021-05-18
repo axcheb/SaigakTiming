@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -59,8 +61,8 @@ class StartFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewModel.resultItems.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        lifecycleScope.launchWhenStarted {
+            viewModel.resultItems.collect { adapter.submitList(it) }
         }
     }
 

@@ -43,4 +43,5 @@
     <string name="colon">:</string>
     <string name="time">Время</string>
     <string name="penalty">Штраф</string>
+    <string name="penalty_seconds">Штраф (секунды)</string>
 </resources>

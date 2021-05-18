@@ -5,6 +5,7 @@
     tools:context=".ui.start.StartFragment">
 
     <data>
+        <import type="ru.axcheb.saigaktiming.data.DataBindingConverters" />
         <variable
             name="viewModel"
             type="ru.axcheb.saigaktiming.ui.start.StartViewModel" />
@@ -25,6 +26,24 @@
             android:textAppearance="?attr/textAppearanceHeadline3"
             tools:text="Иван Иванов" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/penalty_seconds_input"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_view_margin"
+            android:layout_marginEnd="@dimen/default_view_margin"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/penalty_seconds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/penalty_seconds"
+                android:inputType="numberDecimal"
+                android:text="@={DataBindingConverters.intToStr(viewModel.penaltySeconds)}"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,19 +54,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/total_time"
                 android:layout_marginEnd="6dp"
-                android:textStyle="italic"
-                android:textAppearance="?attr/textAppearanceBody1"/>
+                android:text="@string/total_time"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/total_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold|italic"
                 android:text="@{viewModel.totalTimeStr}"
                 android:textAppearance="?attr/textAppearanceBody1"
-                tools:text="02:05.321"/>
+                android:textStyle="bold|italic"
+                tools:text="02:05.321" />
         </LinearLayout>
 
         <View

@@ -23,5 +23,5 @@ data class EventMemberCrossRef(
     @ColumnInfo(name = "event_id") val eventId: Long?,
     @ColumnInfo(name = "member_id") val memberId: Long?,
     @ColumnInfo(name = "sequence_number") var sequenceNumber: Int,
-    @ColumnInfo(name = "penalty_seconds", defaultValue = "0") val penaltySeconds: Int = 0,
+    @ColumnInfo(name = "penalty_seconds", defaultValue = "0") var penaltySeconds: Int = 0,
 )
