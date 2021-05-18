@@ -41,4 +41,6 @@
     <string name="total_time">Общее время:</string>
     <string name="track_max_time_minutes">Время на прохожение СУ (минуты)</string>
     <string name="colon">:</string>
+    <string name="time">Время</string>
+    <string name="penalty">Штраф</string>
 </resources>

@@ -1,4 +1,4 @@
-package ru.axcheb.saigaktiming.data.model.domain
+package ru.axcheb.saigaktiming.data.model.dto
 
 import androidx.room.*
 import java.util.*

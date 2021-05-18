@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.R
-import ru.axcheb.saigaktiming.data.model.domain.Event
+import ru.axcheb.saigaktiming.data.model.dto.Event
 import ru.axcheb.saigaktiming.data.repository.EventRepository
 import java.text.SimpleDateFormat
 import java.util.*

@@ -1,4 +1,4 @@
-package ru.axcheb.saigaktiming.data.model.domain
+package ru.axcheb.saigaktiming.data.model.dto
 
 import androidx.room.*
 import java.util.*
@@ -7,7 +7,7 @@ import java.util.*
     tableName = "start",
     foreignKeys = arrayOf(
         ForeignKey(
-            entity = EventMember::class,
+            entity = EventMemberCrossRef::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("event_member_id")
         ),

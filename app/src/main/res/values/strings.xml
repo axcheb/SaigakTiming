@@ -41,5 +41,7 @@
     <string name="total_time">Total time:</string>
     <string name="track_max_time_minutes">Track max time (minutes)</string>
     <string name="colon">:</string>
+    <string name="time">Time</string>
+    <string name="penalty">Penalty</string>
 
 </resources>

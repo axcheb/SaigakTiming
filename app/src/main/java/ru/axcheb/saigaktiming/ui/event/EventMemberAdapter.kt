@@ -43,8 +43,7 @@ class EventMemberAdapter() :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding: EventMemberItemBinding =
-            DataBindingUtil.inflate(inflater, R.layout.event_member_item, parent, false)
+        val binding = EventMemberItemBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 }

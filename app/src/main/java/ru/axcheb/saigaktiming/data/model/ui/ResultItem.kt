@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 data class ResultItem(
+    /** startId или finishId */ // TODO порефакторить
     val id: Long,
     val sensor: Long,
     val startTime: Date,

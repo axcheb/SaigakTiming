@@ -8,8 +8,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
-import ru.axcheb.saigaktiming.data.model.domain.Finish
-import ru.axcheb.saigaktiming.data.model.domain.Start
+import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRefAndMember
+import ru.axcheb.saigaktiming.data.model.dto.Finish
+import ru.axcheb.saigaktiming.data.model.dto.Start
+import ru.axcheb.saigaktiming.data.model.dto.StartAndFinish
 import ru.axcheb.saigaktiming.data.model.ui.ResultItem
 
 @Dao
@@ -27,7 +29,8 @@ interface ResultDao {
     @Insert
     suspend fun insert(finish: Start): Long
 
-    @Query("""
+    @Query(
+        """
         select 
             start.id as id,
             finish.sensor_id as sensor
@@ -42,10 +45,12 @@ interface ResultDao {
             and member_id = :memberId
             and finish.is_active = 1
         order by start.time desc
-    """)
+    """
+    )
     fun getStartResults(eventId: Long, memberId: Long): Flow<List<ResultItem>>
 
-    @Query("""
+    @Query(
+        """
         select 
             finish.id as id
             ,finish.sensor_id as sensor
@@ -56,7 +61,8 @@ interface ResultDao {
             join start on finish.start_id = start.id
         where finish.start_id = :startId 
         order by finishTime desc
-    """)
+    """
+    )
     fun getFinishResults(startId: Long): Flow<List<ResultItem>>
 
     /**
@@ -86,5 +92,39 @@ interface ResultDao {
         inactivateFinish(finish.startId)
         return insert(finish)
     }
+
+    @Transaction
+    @Query("select * from event_member where event_id = :eventId")
+    suspend fun getEventMemberCrossRefAndMember(eventId: Long): List<EventMemberCrossRefAndMember>
+
+    @Query(
+        """
+            select 
+                start.id as start_id,
+                start.event_member_id as start_event_member_id,
+                start.time as start_time,
+                start.is_active as start_is_active,
+                finish.id as finish_id,
+                finish.start_id as finish_start_id,
+                finish.time as finish_time,
+                finish.sensor_id as finish_sensor_id,
+                finish.is_active as finish_is_active  
+            from start
+                join finish on finish.start_id = start.id
+            where start.is_active = 1 
+                and finish.is_active = 1
+                and start.event_member_id in (:eventMemberIds)
+        """
+    )
+    suspend fun getActiveStartAndFinishForEventMembers(eventMemberIds: List<Long>): List<StartAndFinish>
+
+    @Transaction
+    suspend fun getProtocolData(eventId: Long): Pair<List<EventMemberCrossRefAndMember>, List<StartAndFinish>> {
+        val eventMembers = getEventMemberCrossRefAndMember(eventId)
+        val eventMemberIds = eventMembers.map { it.eventMemberCrossRef.id!! }
+        val startAndFinishList = getActiveStartAndFinishForEventMembers(eventMemberIds)
+        return Pair(eventMembers, startAndFinishList)
+    }
+
 
 }

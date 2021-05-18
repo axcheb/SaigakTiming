@@ -1,10 +1,14 @@
 package ru.axcheb.saigaktiming.data.repository
 
 import ru.axcheb.saigaktiming.data.dao.ResultDao
-import ru.axcheb.saigaktiming.data.model.domain.Finish
-import ru.axcheb.saigaktiming.data.model.domain.Start
+import ru.axcheb.saigaktiming.data.mapper.ListOfProtocolItemMapper
+import ru.axcheb.saigaktiming.data.model.dto.Finish
+import ru.axcheb.saigaktiming.data.model.dto.Start
+import ru.axcheb.saigaktiming.data.model.ui.ProtocolItem
 
 class ResultRepository(private val resultDao: ResultDao) {
+
+    private val listOfProtocolItemMapper = ListOfProtocolItemMapper()
 
     fun getStart(id: Long) = resultDao.getStart(id)
 
@@ -28,5 +32,9 @@ class ResultRepository(private val resultDao: ResultDao) {
     suspend fun inactivateStart(startId: Long) = resultDao.inactivateStart(startId)
 
     suspend fun activateStart(startId: Long) = resultDao.activateStart(startId)
+
+    suspend fun getProtocolItems(eventId: Long): List<ProtocolItem> {
+        return listOfProtocolItemMapper.map(resultDao.getProtocolData(eventId))
+    }
 
 }

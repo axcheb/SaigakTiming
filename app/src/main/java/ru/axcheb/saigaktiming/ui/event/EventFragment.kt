@@ -67,6 +67,14 @@ class EventFragment : Fragment() {
         binding.eventCard.setOnClickListener {
             navigateToEditEvent()
         }
+
+        binding.competitionProtocolLine.setOnClickListener {
+            val eventId = viewModel.eventState.value?.id
+            if (eventId != null) {
+                view?.findNavController()
+                    ?.navigate(EventFragmentDirections.actionNavigationEventToProtocolFragment(eventId))
+            }
+        }
     }
 
     private fun observeData() {

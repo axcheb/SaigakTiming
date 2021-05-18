@@ -9,10 +9,10 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import ru.axcheb.saigaktiming.R
-import ru.axcheb.saigaktiming.data.model.domain.Event
-import ru.axcheb.saigaktiming.data.model.domain.Finish
-import ru.axcheb.saigaktiming.data.model.domain.Member
-import ru.axcheb.saigaktiming.data.model.domain.Start
+import ru.axcheb.saigaktiming.data.model.dto.Event
+import ru.axcheb.saigaktiming.data.model.dto.Finish
+import ru.axcheb.saigaktiming.data.model.dto.Member
+import ru.axcheb.saigaktiming.data.model.dto.Start
 import ru.axcheb.saigaktiming.data.model.ui.ResultItem
 import ru.axcheb.saigaktiming.data.repository.EventRepository
 import ru.axcheb.saigaktiming.data.repository.MemberRepository

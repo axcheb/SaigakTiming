@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.data.repository.MemberRepository
 import ru.axcheb.saigaktiming.data.repository.ResultRepository
-import ru.axcheb.saigaktiming.data.model.domain.Start
+import ru.axcheb.saigaktiming.data.model.dto.Start
 
 class StartViewModel(
     private val eventId: Long,

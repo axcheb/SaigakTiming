@@ -2,11 +2,9 @@ package ru.axcheb.saigaktiming.ui.finish
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.data.model.ui.ResultItem
 import ru.axcheb.saigaktiming.databinding.FinishItemBinding
 
@@ -33,9 +31,7 @@ class FinishAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding: FinishItemBinding =
-            DataBindingUtil.inflate(inflater, R.layout.finish_item, parent, false)
-
+        val binding = FinishItemBinding.inflate(inflater, parent, false)
         binding.check.setOnClickListener {
             binding.item?.let { finishActiveListener.invoke(it) }
         }

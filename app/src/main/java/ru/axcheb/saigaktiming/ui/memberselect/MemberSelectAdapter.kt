@@ -2,11 +2,9 @@ package ru.axcheb.saigaktiming.ui.memberselect
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.data.model.ui.MemberSelectItem
 import ru.axcheb.saigaktiming.databinding.MemberSelectItemBinding
 
@@ -28,8 +26,7 @@ class MemberSelectAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding: MemberSelectItemBinding =
-            DataBindingUtil.inflate(inflater, R.layout.member_select_item, parent, false)
+        val binding = MemberSelectItemBinding.inflate(inflater, parent, false)
         binding.setClickListener {
             binding.item?.let { bindMemberListener.invoke(it) }
         }

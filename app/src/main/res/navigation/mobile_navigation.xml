@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_navigation_event_to_editEventFragment"
             app:destination="@id/editEventFragment" />
+        <action
+            android:id="@+id/action_navigation_event_to_protocolFragment"
+            app:destination="@id/protocolFragment" />
     </fragment>
 
     <fragment
@@ -61,5 +64,12 @@
         android:name="ru.axcheb.saigaktiming.ui.event.EditEventFragment"
         android:label="edit_event_fragment"
         tools:layout="@layout/edit_event_fragment" />
+    <fragment
+        android:id="@+id/protocolFragment"
+        android:name="ru.axcheb.saigaktiming.ui.protocol.ProtocolFragment"
+        android:label="protocol_fragment"
+        tools:layout="@layout/protocol_fragment" >
+        <argument android:name="eventId" app:argType="long"/>
+    </fragment>
 
 </navigation>

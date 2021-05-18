@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.R
-import ru.axcheb.saigaktiming.data.model.domain.Member
+import ru.axcheb.saigaktiming.data.model.dto.Member
 import ru.axcheb.saigaktiming.data.repository.MemberRepository
 
 class NewMemberViewModel(

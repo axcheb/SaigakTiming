@@ -1,4 +1,4 @@
-package ru.axcheb.saigaktiming.data.model.domain
+package ru.axcheb.saigaktiming.data.model.dto
 
 import androidx.room.*
 
@@ -18,9 +18,10 @@ import androidx.room.*
     ),
     indices = [Index("id"), Index("event_id"), Index("member_id")]
 )
-data class EventMember(
+data class EventMemberCrossRef(
     @PrimaryKey(autoGenerate = true) val id: Long?,
     @ColumnInfo(name = "event_id") val eventId: Long?,
     @ColumnInfo(name = "member_id") val memberId: Long?,
-    @ColumnInfo(name = "sequence_number") var sequenceNumber: Int
+    @ColumnInfo(name = "sequence_number") var sequenceNumber: Int,
+    @ColumnInfo(name = "penalty_seconds", defaultValue = "0") val penaltySeconds: Int = 0,
 )

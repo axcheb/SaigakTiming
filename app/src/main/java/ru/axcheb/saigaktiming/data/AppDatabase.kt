@@ -6,13 +6,13 @@ import androidx.room.TypeConverters
 import ru.axcheb.saigaktiming.data.dao.EventDao
 import ru.axcheb.saigaktiming.data.dao.MemberDao
 import ru.axcheb.saigaktiming.data.dao.ResultDao
-import ru.axcheb.saigaktiming.data.model.domain.*
+import ru.axcheb.saigaktiming.data.model.dto.*
 
 @Database(
     entities = [
         Member::class,
         Event::class,
-        EventMember::class,
+        EventMemberCrossRef::class,
         Start::class,
         Finish::class
      ],

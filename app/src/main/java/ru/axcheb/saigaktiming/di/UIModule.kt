@@ -12,6 +12,8 @@ import ru.axcheb.saigaktiming.ui.start.StartViewModel
 import ru.axcheb.saigaktiming.ui.memberselect.*
 import ru.axcheb.saigaktiming.ui.finish.FinishAdapter
 import ru.axcheb.saigaktiming.ui.finish.FinishViewModel
+import ru.axcheb.saigaktiming.ui.protocol.ProtocolAdapter
+import ru.axcheb.saigaktiming.ui.protocol.ProtocolViewModel
 
 val uiModule = module {
     viewModel {
@@ -55,6 +57,12 @@ val uiModule = module {
     viewModel {
         EditEventViewModel(eventRepository = get())
     }
+    viewModel { (eventId: Long) ->
+        ProtocolViewModel(
+            eventId = eventId,
+            resultRepository = get()
+        )
+    }
 
     factory { (bindMemberListener: (MemberSelectItem) -> Unit) ->
         MemberSelectAdapter(bindMemberListener)
@@ -67,6 +75,9 @@ val uiModule = module {
     }
     factory { (finishActiveListener: (ResultItem) -> Unit) ->
         FinishAdapter(finishActiveListener)
+    }
+    factory {
+        ProtocolAdapter()
     }
 
 }

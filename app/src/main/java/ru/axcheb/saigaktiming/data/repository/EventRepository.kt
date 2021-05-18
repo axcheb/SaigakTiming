@@ -1,8 +1,7 @@
 package ru.axcheb.saigaktiming.data.repository
 
 import ru.axcheb.saigaktiming.data.dao.EventDao
-import ru.axcheb.saigaktiming.data.model.domain.Event
-import java.util.*
+import ru.axcheb.saigaktiming.data.model.dto.Event
 
 class EventRepository(private val eventDao: EventDao) {
 

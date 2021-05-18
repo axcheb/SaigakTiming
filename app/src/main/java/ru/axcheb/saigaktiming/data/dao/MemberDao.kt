@@ -5,8 +5,8 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
-import ru.axcheb.saigaktiming.data.model.domain.EventMember
-import ru.axcheb.saigaktiming.data.model.domain.Member
+import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRef
+import ru.axcheb.saigaktiming.data.model.dto.Member
 import ru.axcheb.saigaktiming.data.model.ui.EventMemberItem
 import ru.axcheb.saigaktiming.data.model.ui.MemberSelectItem
 
@@ -48,7 +48,7 @@ interface MemberDao {
     suspend fun unBindToEvent(eventId: Long, memberId: Long)
 
     @Query("select * from event_member where event_id = :eventId and member_id = :memberId")
-    fun getEventMember(eventId: Long, memberId: Long): Flow<EventMember>
+    fun getEventMember(eventId: Long, memberId: Long): Flow<EventMemberCrossRef>
 
     @Query("""
         update event_member 
