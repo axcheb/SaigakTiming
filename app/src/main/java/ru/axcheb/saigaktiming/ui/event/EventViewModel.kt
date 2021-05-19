@@ -4,10 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
+import ru.axcheb.saigaktiming.data.ddmmyyyyhhmmStr
 import ru.axcheb.saigaktiming.data.repository.EventRepository
 import ru.axcheb.saigaktiming.data.repository.MemberRepository
-import java.text.SimpleDateFormat
-import java.util.*
 
 class EventViewModel(
     private val memberRepository: MemberRepository,
@@ -21,8 +20,7 @@ class EventViewModel(
     val eventState = eventShare.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val eventDateTimeStr = eventShare.map {
-        val date = it?.date
-        if (date == null) null else dateTimeFormat.format(date)
+        it?.date?.ddmmyyyyhhmmStr()
     }.asLiveData()
 
     val trackCountStr = eventShare.map {
@@ -41,9 +39,5 @@ class EventViewModel(
         }
         members
     }.asLiveData()
-
-    companion object {
-        private val dateTimeFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.US)
-    }
 
 }

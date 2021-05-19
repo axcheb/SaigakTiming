@@ -3,8 +3,8 @@ package ru.axcheb.saigaktiming.data.model.ui
 import androidx.room.ColumnInfo
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import ru.axcheb.saigaktiming.data.hhmmStr
 import ru.axcheb.saigaktiming.data.model.dto.Event
-import java.text.SimpleDateFormat
 import java.util.*
 
 data class EventMemberItem @JvmOverloads constructor(
@@ -31,11 +31,7 @@ data class EventMemberItem @JvmOverloads constructor(
     }
 
     fun startTimesStr(): String = startTimes.joinToString {
-        timeFormat.format(it)
-    }
-
-    companion object {
-        private val timeFormat = SimpleDateFormat("HH:mm", Locale.US)
+        it.hhmmStr()
     }
 
 }

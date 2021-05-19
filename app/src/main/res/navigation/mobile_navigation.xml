@@ -33,10 +33,14 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="ru.axcheb.saigaktiming.ui.dashboard.DashboardFragment"
+        android:id="@+id/navigation_archive"
+        android:name="ru.axcheb.saigaktiming.ui.archive.ArchiveFragment"
         android:label="@string/title_archive"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/archive_fragment" >
+        <action
+            android:id="@+id/action_navigation_archive_to_protocolFragment"
+            app:destination="@id/protocolFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_sensors"

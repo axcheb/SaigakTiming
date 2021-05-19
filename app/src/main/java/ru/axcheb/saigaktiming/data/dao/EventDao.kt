@@ -10,11 +10,14 @@ import ru.axcheb.saigaktiming.data.model.dto.Event
 @Dao
 interface EventDao {
 
-    @Query(value = "select * from event where is_in_archive = 0")
+    @Query("select * from event where is_in_archive = 0")
     fun getCurrentEvent(): Flow<Event?>
 
-    @Query(value = "select * from event where id = :id")
+    @Query("select * from event where id = :id")
     fun getEvent(id: Long): Flow<Event>
+
+    @Query("select * from event where is_in_archive = 1 order by date desc")
+    fun getArchivedEvents(): Flow<List<Event>>
 
     @Insert
     suspend fun insert(event: Event): Long

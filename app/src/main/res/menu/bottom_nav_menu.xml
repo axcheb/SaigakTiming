@@ -7,7 +7,7 @@
         android:title="@string/title_members" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_archive"
         android:icon="@drawable/ic_history_24"
         android:title="@string/title_archive" />
 

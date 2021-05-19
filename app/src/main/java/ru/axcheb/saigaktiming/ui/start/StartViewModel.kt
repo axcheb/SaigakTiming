@@ -4,6 +4,7 @@ import android.text.format.DateUtils
 import androidx.lifecycle.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import ru.axcheb.saigaktiming.data.formatElapsedTimeMs
 import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRef
 import ru.axcheb.saigaktiming.data.repository.MemberRepository
 import ru.axcheb.saigaktiming.data.repository.ResultRepository
@@ -28,7 +29,7 @@ class StartViewModel(
 
     val totalTimeStr = resultItems.map { items ->
         val sum = items.filter { it.isActive }.fold(0L) { sum, item -> sum + item.diff }
-        "${DateUtils.formatElapsedTime(sum / 1000)}.${sum % 1000}"
+        sum.formatElapsedTimeMs()
     }.stateIn(viewModelScope, SharingStarted.Lazily, "")
 
     init {

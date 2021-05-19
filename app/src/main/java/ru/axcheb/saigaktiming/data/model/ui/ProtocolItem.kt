@@ -1,8 +1,6 @@
 package ru.axcheb.saigaktiming.data.model.ui
 
-import android.text.format.DateUtils
-import java.text.SimpleDateFormat
-import java.util.*
+import ru.axcheb.saigaktiming.data.formatElapsedTimeMs
 
 /** Модель протокола соревнования. */
 data class ProtocolItem(
@@ -23,11 +21,10 @@ data class ProtocolItem(
 
     /** Format string like "01:21.131(1), 00:58.867(2), 01:21.131(1)" */
     fun getStartTimesStr() = trackResults.joinToString {
-        "${DateUtils.formatElapsedTime(it.resultMillis / 1000)}.${it.resultMillis % 1000}(${it.sensorId})"
+        "${resultMillis.formatElapsedTimeMs()}.${it.resultMillis % 1000}(${it.sensorId})"
     }
 
-    fun getResultTimeStr() =
-        "${DateUtils.formatElapsedTime(resultMillis / 1000)}.${resultMillis % 1000}"
+    fun getResultTimeStr() = resultMillis.formatElapsedTimeMs()
 
     fun isPenaltyVisible() = penaltySeconds > 0
 

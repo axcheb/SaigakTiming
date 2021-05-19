@@ -1,7 +1,6 @@
 package ru.axcheb.saigaktiming.ui.finish
 
 import android.app.Application
-import android.text.format.DateUtils
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +8,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import ru.axcheb.saigaktiming.R
+import ru.axcheb.saigaktiming.data.formatElapsedTimeSeconds
+import ru.axcheb.saigaktiming.data.hhmmsssssStr
 import ru.axcheb.saigaktiming.data.model.dto.Event
 import ru.axcheb.saigaktiming.data.model.dto.Finish
 import ru.axcheb.saigaktiming.data.model.dto.Member
@@ -17,7 +18,6 @@ import ru.axcheb.saigaktiming.data.model.ui.ResultItem
 import ru.axcheb.saigaktiming.data.repository.EventRepository
 import ru.axcheb.saigaktiming.data.repository.MemberRepository
 import ru.axcheb.saigaktiming.data.repository.ResultRepository
-import java.text.SimpleDateFormat
 import java.util.*
 
 class FinishViewModel(
@@ -63,7 +63,7 @@ class FinishViewModel(
                 if (waitingFinishSeconds == 0L) {
                     application.resources.getString(R.string.start_uppercase)
                 } else {
-                    DateUtils.formatElapsedTime(waitingFinishSeconds)
+                    waitingFinishSeconds.formatElapsedTimeSeconds()
                 }
             }
             Status.FINISHED -> {
@@ -108,7 +108,7 @@ class FinishViewModel(
             .shareIn(viewModelScope, SharingStarted.Lazily, 1)
 
     val startTimeStr =
-        start.map { start -> if (start == null) "" else dateFormat.format(start.time) }
+        start.map { start -> start?.time?.hhmmsssssStr() ?: "" }
             .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
     val finishItems: StateFlow<List<ResultItem>> =
@@ -470,8 +470,6 @@ class FinishViewModel(
         private const val BEFORE_START_TIME = 5_000L
 
         private const val ONE_SECOND = 1000L
-
-        private val dateFormat = SimpleDateFormat("HH:mm:ss.SSS", Locale.US)
     }
 
 }

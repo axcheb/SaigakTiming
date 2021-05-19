@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.data.repository.EventRepository
 import ru.axcheb.saigaktiming.data.repository.MemberRepository
@@ -14,10 +15,12 @@ class MemberSelectViewModel(
     private val memberRepository: MemberRepository,
     eventRepository: EventRepository,
     val eventId: Long
-): ViewModel() {
+) : ViewModel() {
 
-    private val event = eventRepository.getEvent(eventId).stateIn(viewModelScope, SharingStarted.Eagerly, null)
-    val members = memberRepository.getMemberSelected(eventId).asLiveData()
+    private val event = eventRepository.getEvent(eventId).take(1)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+    val members = memberRepository.getMemberSelected(eventId)
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     fun handleBind(memberId: Long) {
         viewModelScope.launch {
@@ -27,7 +30,11 @@ class MemberSelectViewModel(
             } else {
                 val eventVal = event.value
                 if (eventVal != null && !eventVal.isLaunched) {
-                    memberRepository.subtractSequenceNumberAndUnbind(eventId, eventMember.sequenceNumber, memberId)
+                    memberRepository.subtractSequenceNumberAndUnbind(
+                        eventId,
+                        eventMember.sequenceNumber,
+                        memberId
+                    )
                 }
             }
         }

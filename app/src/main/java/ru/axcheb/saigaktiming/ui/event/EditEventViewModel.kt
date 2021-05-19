@@ -5,9 +5,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.R
+import ru.axcheb.saigaktiming.data.ddmmyyyyStr
+import ru.axcheb.saigaktiming.data.hhmmssStr
 import ru.axcheb.saigaktiming.data.model.dto.Event
 import ru.axcheb.saigaktiming.data.repository.EventRepository
-import java.text.SimpleDateFormat
 import java.util.*
 
 class EditEventViewModel(
@@ -17,8 +18,8 @@ class EditEventViewModel(
     private val _eventId = MutableLiveData<Long?>()
     val eventId: LiveData<Long?> = _eventId
     val eventDate = MutableLiveData<Date>()
-    val dateStr = eventDate.map { if (it == null) null else dateFormat.format(it) }
-    val timeStr = eventDate.map { if (it == null) null else timeFormat.format(it) }
+    val dateStr = eventDate.map { it?.ddmmyyyyStr() }
+    val timeStr = eventDate.map { it?.hhmmssStr() }
     val trackCount = MutableLiveData<Int>(1)
     val trackMaxTime = MutableLiveData<Int>(2)
 
@@ -136,11 +137,6 @@ class EditEventViewModel(
         SAVED,
         SAVING,
         EDITING
-    }
-
-    companion object {
-        private val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.US)
-        private val timeFormat = SimpleDateFormat("HH:mm", Locale.US)
     }
 
 }

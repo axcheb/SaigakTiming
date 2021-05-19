@@ -13,6 +13,10 @@ class MemberSelectAdapter(
 ) :
     ListAdapter<MemberSelectItem, MemberSelectAdapter.ViewHolder>(MemberDiffCallback()) {
 
+    init {
+        setHasStableIds(true)
+    }
+
     class ViewHolder(val binding: MemberSelectItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(member: MemberSelectItem) {
             binding.item = member
