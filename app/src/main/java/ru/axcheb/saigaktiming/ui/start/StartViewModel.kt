@@ -1,6 +1,5 @@
 package ru.axcheb.saigaktiming.ui.start
 
-import android.text.format.DateUtils
 import androidx.lifecycle.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

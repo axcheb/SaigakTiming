@@ -18,14 +18,14 @@ data class EventMemberItem @JvmOverloads constructor(
 
     /** Рассчитывает времена старта участника. */
     fun calculateStartDates(event: Event, membersCount: Int) {
-        val minutesBetweenStart = membersCount * event.trackMaxTime
+        val minutesBetweenTrack = membersCount * event.trackMaxTime
         val calendar = GregorianCalendar.getInstance()
         calendar.time = event.date
-        // Время первого старта
-        calendar.add(Calendar.MINUTE, (sequenceNumber - 1) * minutesBetweenStart)
+        // Время первого старта этого участника
+        calendar.add(Calendar.MINUTE, (sequenceNumber - 1) * event.trackMaxTime)
         startTimes = List(event.trackCount) {
             val date = calendar.time
-            calendar.add(Calendar.MINUTE, minutesBetweenStart)
+            calendar.add(Calendar.MINUTE, minutesBetweenTrack)
             date
         }
     }

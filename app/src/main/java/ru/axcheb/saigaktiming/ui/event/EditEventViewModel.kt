@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.data.ddmmyyyyStr
-import ru.axcheb.saigaktiming.data.hhmmssStr
+import ru.axcheb.saigaktiming.data.hhmmStr
 import ru.axcheb.saigaktiming.data.model.dto.Event
 import ru.axcheb.saigaktiming.data.repository.EventRepository
 import java.util.*
@@ -19,9 +19,9 @@ class EditEventViewModel(
     val eventId: LiveData<Long?> = _eventId
     val eventDate = MutableLiveData<Date>()
     val dateStr = eventDate.map { it?.ddmmyyyyStr() }
-    val timeStr = eventDate.map { it?.hhmmssStr() }
-    val trackCount = MutableLiveData<Int>(1)
-    val trackMaxTime = MutableLiveData<Int>(2)
+    val timeStr = eventDate.map { it?.hhmmStr() }
+    val trackCount = MutableLiveData(1)
+    val trackMaxTime = MutableLiveData(2)
 
     val trackCountError = trackCount.map { validateTrackCount(it) }
     val trackMaxTimeError = trackMaxTime.map { validateTrackMaxTime(it) }
@@ -107,6 +107,8 @@ class EditEventViewModel(
             calendar.time = date
             newCalendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY))
             newCalendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE))
+            newCalendar.set(Calendar.SECOND, 0)
+            newCalendar.set(Calendar.MILLISECOND, 0)
             eventDate.value = newCalendar.time
         }
     }
