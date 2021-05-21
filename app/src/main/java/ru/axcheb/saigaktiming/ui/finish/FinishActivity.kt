@@ -8,8 +8,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.collect
+import com.artemchep.bindin.bindIn
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -110,9 +109,7 @@ class FinishActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.finishItems.collect { items -> adapter.submitList(items) }
-        }
+        this.bindIn(viewModel.finishItems) { items -> adapter.submitList(items) }
     }
 
     override fun onDestroy() {

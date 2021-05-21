@@ -21,7 +21,7 @@ data class ProtocolItem(
 
     /** Format string like "01:21.131(1), 00:58.867(2), 01:21.131(1)" */
     fun getStartTimesStr() = trackResults.joinToString {
-        "${it.resultMillis.formatElapsedTimeMs()}.(${it.sensorId})"
+        "${it.resultMillis.formatElapsedTimeMs()} (${it.sensorId})"
     }
 
     fun getResultTimeStr() = resultMillis.formatElapsedTimeMs()

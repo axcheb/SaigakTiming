@@ -44,4 +44,5 @@
     <string name="time">Время</string>
     <string name="penalty">Штраф</string>
     <string name="penalty_seconds">Штраф (секунды)</string>
+    <string name="auto_pause_between_tracks">Автопауза между СУ</string>
 </resources>

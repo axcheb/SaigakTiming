@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import kotlinx.coroutines.flow.collect
+import com.artemchep.bindin.bindIn
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -68,9 +67,7 @@ class MemberSelectFragment : Fragment() {
     }
 
     private fun observeData() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.members.collect { adapter.submitList(it) }
-        }
+        viewLifecycleOwner.bindIn(viewModel.members) { adapter.submitList(it) }
     }
 
     override fun onDestroyView() {

@@ -2,13 +2,12 @@ package ru.axcheb.saigaktiming.ui.event
 
 import android.os.Bundle
 import android.text.format.DateFormat.is24HourFormat
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -17,12 +16,9 @@ import com.google.android.material.timepicker.TimeFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.databinding.EditEventFragmentBinding
-import ru.axcheb.saigaktiming.ui.start.StartFragmentArgs
 import java.util.*
 
 class EditEventFragment : Fragment() {
-
-    private val args: StartFragmentArgs by navArgs()
 
     private val viewModel: EditEventViewModel by viewModel()
 
@@ -60,9 +56,17 @@ class EditEventFragment : Fragment() {
         binding.eventTime.setOnClickListener {
             openTimePicker()
         }
-        binding.editEventBtn.setOnClickListener {
-            viewModel.save()
-            // wait for saved state and then close
+        binding.toolbar.setNavigationOnClickListener {
+            if (viewModel.eventId.value != null) {
+                view?.findNavController()?.navigateUp()
+            }
+        }
+        binding.toolbar.setOnMenuItemClickListener {
+            if (isAdded) {
+                viewModel.save()
+            }
+            true
+            // wait for saved state (viewModel.state) and then close
         }
     }
 

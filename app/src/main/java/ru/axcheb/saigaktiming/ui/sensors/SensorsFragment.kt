@@ -12,7 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.collect
+import com.artemchep.bindin.bindIn
 import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.databinding.SensorsFragmentBinding
 import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService
@@ -60,26 +60,22 @@ class SensorsFragment : Fragment() {
     private var x = 0
 
     private fun observeData() {
-        lifecycleScope.launchWhenStarted {
-            BluetoothSerialBoardService.messageFlow.collect {
-                if (x == 0) {
-                    x = parseInt(it)
-                }
-
-                if (binding.textSensors.text.length > 1000) {
-                    binding.textSensors.text = ""
-                }
-                binding.textSensors.text = it + " - " + x + "\n" + binding.textSensors.text
-                x++
-//                showToast(it)
+        viewLifecycleOwner.bindIn(BluetoothSerialBoardService.messageFlow) {
+            if (x == 0) {
+                x = parseInt(it)
             }
+
+            if (binding.textSensors.text.length > 1000) {
+                binding.textSensors.text = ""
+            }
+            binding.textSensors.text = it + " - " + x + "\n" + binding.textSensors.text
+            x++
+//                showToast(it)
         }
 
-        lifecycleScope.launchWhenStarted {
-            BluetoothSerialBoardService.requestEnableBluetooth.collect {
-                if (it) {
-                    enableBluetoothLauncher.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
-                }
+        viewLifecycleOwner.bindIn(BluetoothSerialBoardService.requestEnableBluetooth) {
+            if (it) {
+                enableBluetoothLauncher.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
             }
         }
     }

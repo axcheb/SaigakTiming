@@ -30,6 +30,9 @@ data class Event(
      * Если currentMemberIndex = members.size и currentTrack =  все участники откатали и соревновние закончено.
      */
     @ColumnInfo(name = "current_member_index") var currentMemberIndex: Int = 0,
+    /** Автопауза между СУ. */
+    @ColumnInfo(name = "is_auto_pause_between_tracks", defaultValue = "0")
+    var isAutoPauseBetweenTracks: Boolean = false
 ) {
 
     fun getTrackTimeMillis(): Long = trackMaxTime * 1_000 * 60L

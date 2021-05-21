@@ -6,115 +6,147 @@
     tools:context=".ui.event.EditEventFragment">
 
     <data>
+
         <import type="ru.axcheb.saigaktiming.data.DataBindingConverters" />
+
         <variable
             name="viewModel"
             type="ru.axcheb.saigaktiming.ui.event.EditEventViewModel" />
     </data>
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_view_margin"
-            app:contentPadding="1dp">
+            android:fitsSystemWindows="true">
 
-            <LinearLayout
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:clipToPadding="false"
-                android:padding="@dimen/default_view_margin">
+                android:layout_height="?attr/actionBarSize"
+                app:menu="@menu/save_menu"
+                app:navigationIcon="@drawable/ic_close_24" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/eventDate_input"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/recycler_header_margin">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_view_margin"
+                app:contentPadding="1dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_calendar_24"
-                    app:errorEnabled="true">
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="@dimen/default_view_margin">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/eventDate"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/eventDate_input"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:hint="@string/start_date"
-                        android:inputType="date"
-                        android:text="@{viewModel.dateStr}" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        app:endIconDrawable="@drawable/ic_calendar_24"
+                        app:endIconMode="custom"
+                        app:errorEnabled="true">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/eventTime_input"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_time_24"
-                    app:errorEnabled="true">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/eventDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:hint="@string/start_date"
+                            android:inputType="date"
+                            android:text="@{viewModel.dateStr}" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/eventTime"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/eventTime_input"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:hint="@string/start_time"
-                        android:inputType="time"
-                        android:text="@{viewModel.timeStr}" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        app:endIconDrawable="@drawable/ic_time_24"
+                        app:endIconMode="custom"
+                        app:errorEnabled="true">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/trackCount_input"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:errorEnabled="true">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/eventTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:hint="@string/start_time"
+                            android:inputType="time"
+                            android:text="@{viewModel.timeStr}" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/trackCount"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/trackCount_input"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/track_count"
-                        android:inputType="numberDecimal"
-                        android:text="@={DataBindingConverters.intToStr(viewModel.trackCount)}"
-                        app:errorMsg="@{viewModel.trackCountError}"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                        app:errorEnabled="true">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/trackMaxTime_input"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_timelapse_24"
-                    app:errorEnabled="true">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/trackCount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/track_count"
+                            android:inputType="numberDecimal"
+                            android:text="@={DataBindingConverters.intToStr(viewModel.trackCount)}"
+                            app:errorMsg="@{viewModel.trackCountError}" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/trackMaxTime"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/trackMaxTime_input"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/track_max_time_minutes"
-                        android:inputType="numberDecimal"
-                        android:text="@={DataBindingConverters.intToStr(viewModel.trackMaxTime)}"
-                        app:errorMsg="@{viewModel.trackMaxTimeError}"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                        app:endIconDrawable="@drawable/ic_timelapse_24"
+                        app:endIconMode="custom"
+                        app:errorEnabled="true">
 
-                <Button
-                    android:id="@+id/edit_event_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginStart="@dimen/default_view_margin"
-                    android:text="@string/save"
-                    android:enabled="@{viewModel.canSave}"/>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/trackMaxTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/track_max_time_minutes"
+                            android:inputType="numberDecimal"
+                            android:text="@={DataBindingConverters.intToStr(viewModel.trackMaxTime)}"
+                            app:errorMsg="@{viewModel.trackMaxTimeError}" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            </LinearLayout>
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:checked="@={viewModel.isAutoPauseBetweenTracks}"
+                        android:text="@string/auto_pause_between_tracks"
+                        app:useMaterialThemeColors="true" />
 
-        </com.google.android.material.card.MaterialCardView>
-    </ScrollView>
+                    <!--                <Button-->
+                    <!--                    android:id="@+id/edit_event_btn"-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_gravity="end"-->
+                    <!--                    android:layout_marginStart="@dimen/default_view_margin"-->
+                    <!--                    android:text="@string/save"-->
+                    <!--                    android:enabled="@{viewModel.canSave}"/>-->
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+        </ScrollView>
+
+    </FrameLayout>
 </layout>

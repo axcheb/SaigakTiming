@@ -19,8 +19,7 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
+            android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
@@ -28,7 +27,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_arrow_back_24"
                 app:menu="@menu/member_select_menu"
-                app:title="@string/add_member" />
+                app:title="@string/member_list" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

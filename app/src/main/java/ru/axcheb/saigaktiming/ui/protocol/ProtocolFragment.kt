@@ -1,16 +1,15 @@
 package ru.axcheb.saigaktiming.ui.protocol
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import kotlinx.coroutines.flow.collect
+import com.artemchep.bindin.bindIn
 import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parametersOf
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.axcheb.saigaktiming.databinding.ProtocolFragmentBinding
 
 class ProtocolFragment : Fragment() {
@@ -40,9 +39,7 @@ class ProtocolFragment : Fragment() {
     }
 
     private fun observeData() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.protocolItems.collect { adapter.submitList(it) }
-        }
+        viewLifecycleOwner.bindIn(viewModel.protocolItems) { adapter.submitList(it) }
     }
 
     override fun onDestroyView() {

@@ -44,5 +44,6 @@
     <string name="time">Time</string>
     <string name="penalty">Penalty</string>
     <string name="penalty_seconds">Penalty seconds</string>
+    <string name="auto_pause_between_tracks">Auto pause between tracks</string>
 
 </resources>

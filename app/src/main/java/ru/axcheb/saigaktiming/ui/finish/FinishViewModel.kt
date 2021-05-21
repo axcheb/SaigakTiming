@@ -144,6 +144,11 @@ class FinishViewModel(
 
     /** Работа происходит только с одним конкретным участником без учёта currentMemberIndex и т.п. */
     private val isWorkWithOneMember = memberId != NULL_ID
+    /** Был ли уже запущен этот единственные участник. */
+    private var isOneMemberLaunched = false
+
+    /** Поменялся ли СУ в процессе в процессе работы для участника [Event.currentMemberIndex]. */
+    private var isTrackChanged = false
 
     init {
         viewModelScope.launch {
@@ -212,10 +217,12 @@ class FinishViewModel(
      * Если такого участника нет, возвращает null внутри Pair.
      */
     private fun getCurrentMembers(): Pair<Member?, Member?> {
-        if (isWorkWithOneMember && members.count() == 1) {
-            val m = members[0]
-            members = arrayListOf()
-            return Pair(m, null)
+        if (isWorkWithOneMember) {
+            return if (isOneMemberLaunched) {
+                Pair(null, null)
+            } else {
+                Pair(members[0], null)
+            }
         }
 
         val currentTrack = event.currentTrack
@@ -241,6 +248,13 @@ class FinishViewModel(
         return Pair(trackNumber, memberNumber)
     }
 
+    /** Проверяет должен ли следующий участник ехать по следующему СУ. */
+    private fun isNextMemberGoesToNextTrack(): Boolean {
+        val next = getNextMemberIndex(event.currentTrack, event.currentMemberIndex) ?: return false
+        // Проверка, что СУ текущего и следующего участника не совпадают.
+        return event.currentTrack != next.first
+    }
+
     /**
      * Обновляет Event и значение в БД, устанавливая текущим следующего участника и СУ.
      */
@@ -251,7 +265,6 @@ class FinishViewModel(
         val nextMember = next?.second ?: members.count()
         event.currentTrack = nextTrack
         event.currentMemberIndex = nextMember
-        members = originalMembers.toMutableList()
         viewModelScope.launch {
             eventRepository.update(event)
         }
@@ -348,6 +361,7 @@ class FinishViewModel(
     private fun onWaitingFinishTick(millisFromStartCounting: Long) {
         if (_status.value == Status.WAITING_START) {
             _status.value = Status.STARTED_WAITING_FINISH
+            isTrackChanged = isNextMemberGoesToNextTrack()
             updateEventMemberToNext()
         } else if (_status.value != Status.STARTED_WAITING_FINISH) {
             throw IllegalStateException("Illegal state ${_status.value}")
@@ -363,6 +377,16 @@ class FinishViewModel(
     private fun onTimerFinished(millisFromStartCounting: Long) {
         if (_status.value == Status.STARTED_WAITING_FINISH) {
             _status.value = Status.FINISHED
+            if (isTrackChanged) {
+                // При смене СУ список участников возвращается к своему исходному состоянию.
+                members = originalMembers.toMutableList()
+                if (event.isAutoPauseBetweenTracks) {
+                    viewModelScope.launch {
+                        cancelJobs()
+                        _status.value = Status.PAUSED
+                    }
+                }
+            }
         } else {
             throw IllegalStateException("Illegal state ${_status.value}")
         }

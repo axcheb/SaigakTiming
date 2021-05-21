@@ -1,8 +1,10 @@
 package ru.axcheb.saigaktiming.ui.event
 
 import androidx.lifecycle.*
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.data.ddmmyyyyStr
@@ -22,6 +24,7 @@ class EditEventViewModel(
     val timeStr = eventDate.map { it?.hhmmStr() }
     val trackCount = MutableLiveData(1)
     val trackMaxTime = MutableLiveData(2)
+    val isAutoPauseBetweenTracks = MutableLiveData(false)
 
     val trackCountError = trackCount.map { validateTrackCount(it) }
     val trackMaxTimeError = trackMaxTime.map { validateTrackMaxTime(it) }
@@ -29,13 +32,13 @@ class EditEventViewModel(
     private val _state = MutableLiveData(State.EDITING)
     val state: LiveData<State> = _state
 
-    val canSave = combine(
+    private val canSave = combine(
         trackCountError.asFlow(),
         trackMaxTimeError.asFlow(),
         state.asFlow()
     ) { trackCountErrorVal, trackMaxTimeErrorVal, stateVal ->
         trackCountErrorVal == null && trackMaxTimeErrorVal == null && stateVal == State.EDITING
-    }.asLiveData()
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, true)
 
     init {
         viewModelScope.launch {
@@ -44,18 +47,20 @@ class EditEventViewModel(
             eventDate.value = event.date
             trackCount.value = event.trackCount
             trackMaxTime.value = event.trackMaxTime
+            isAutoPauseBetweenTracks.value = event.isAutoPauseBetweenTracks
         }
     }
 
     fun save() {
-        if (canSave.value == true) {
+        if (canSave.value) {
             viewModelScope.launch {
                 val event = Event(
                     id = eventId.value,
                     date = eventDate.value!!,
                     trackCount = trackCount.value!!,
                     trackMaxTime = trackMaxTime.value!!,
-                    isInArchive = false
+                    isInArchive = false,
+                    isAutoPauseBetweenTracks = isAutoPauseBetweenTracks.value!!
                 )
                 _state.value = State.SAVING
                 if (event.id == null) {

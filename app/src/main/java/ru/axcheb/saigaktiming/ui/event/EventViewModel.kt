@@ -16,24 +16,25 @@ class EventViewModel(
     private val TAG = this::class.qualifiedName
 
     val eventShare =
-        eventRepository.getCurrentEvent().shareIn(viewModelScope, SharingStarted.Lazily, 1)
+        eventRepository.getCurrentEvent().distinctUntilChanged()
+            .shareIn(viewModelScope, SharingStarted.Lazily, 0)
     val eventState = eventShare.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
-    val eventDateTimeStr = eventShare.map {
+    val eventDateTimeStr = eventState.map {
         it?.date?.ddmmyyyyhhmmStr()
     }.asLiveData()
 
-    val trackCountStr = eventShare.map {
+    val trackCountStr = eventState.map {
         it?.trackCount?.toString()
     }.asLiveData()
 
     private val membersWithoutStartTimes =
-        eventShare.map { it?.id }.filterNotNull().distinctUntilChanged()
+        eventState.map { it?.id }.filterNotNull().distinctUntilChanged()
             .flatMapLatest {
                 memberRepository.getEventMemberItems(it)
             }
 
-    val members = combine(eventShare, membersWithoutStartTimes) { event, members ->
+    val members = combine(eventState, membersWithoutStartTimes) { event, members ->
         if (event != null) {
             members.onEach { it.calculateStartDates(event, members.size) }
         }
