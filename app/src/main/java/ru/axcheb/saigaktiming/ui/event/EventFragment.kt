@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.artemchep.bindin.bindIn
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.databinding.EventFragmentBinding
 import ru.axcheb.saigaktiming.ui.finish.FinishActivity
 
@@ -43,7 +45,7 @@ class EventFragment : Fragment() {
     }
 
     private fun setListeners() {
-        binding.addMemberLine.setOnClickListener {
+        binding.addMember.setOnClickListener {
             val eventId = viewModel.eventState.value?.id
             if (eventId != null) {
                 val direction =
@@ -54,7 +56,7 @@ class EventFragment : Fragment() {
             }
         }
 
-        binding.startAllLine.setOnClickListener {
+        binding.startAll.setOnClickListener {
             val eventId = viewModel.eventState.value?.id
             if (eventId != null) {
                 FinishActivity.start(eventId, 0, 0, binding.root.context)
@@ -65,7 +67,18 @@ class EventFragment : Fragment() {
             navigateToEditEvent()
         }
 
-        binding.competitionProtocolLine.setOnClickListener {
+        binding.toArchive.setOnClickListener {
+            val c = context
+            if (c != null) {
+                AlertDialog.Builder(c)
+                    .setTitle(R.string.are_you_sure)
+                    .setNegativeButton(R.string.cancel) { _, _ -> /* do nothing */ }
+                    .setPositiveButton(R.string.to_archive) { _, _ ->  viewModel.toArchive() }
+                    .show()
+            }
+        }
+
+        binding.competitionProtocol.setOnClickListener {
             val eventId = viewModel.eventState.value?.id
             if (eventId != null) {
                 view?.findNavController()

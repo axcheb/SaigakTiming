@@ -38,52 +38,154 @@
                     android:layout_height="wrap_content"
                     android:text="@string/start_time"
                     android:textSize="16sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:text="@string/colon"
                     android:textSize="16sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:text="@{viewModel.eventDateTimeStr}"
+                    android:textSize="16sp"
                     android:textStyle="bold"
-                    tools:text="24.05.21 12:00"
-                    android:textSize="16sp" />
+                    tools:text="24.05.21 12:00" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/track"
                     android:textSize="16sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:text="@string/colon"
                     android:textSize="16sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:text="@{viewModel.trackCountStr}"
-                    tools:text="2"
+                    android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textSize="16sp" />
+                    tools:text="2" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <View
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"
-            android:background="?attr/dividerHorizontal" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/add_member"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/green_100"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/default_view_margin"
+                        android:layout_marginEnd="@dimen/default_view_margin"
+                        android:gravity="center_horizontal"
+                        android:text="@string/add_member"
+                        android:textSize="10sp"
+                        app:drawableTopCompat="@drawable/ic_person_add_24" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/competition_protocol"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/green_100"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/default_view_margin"
+                        android:layout_marginEnd="@dimen/default_view_margin"
+                        android:gravity="center_horizontal"
+                        android:text="@string/competition_protocol"
+                        android:textSize="10sp"
+                        app:drawableTopCompat="@drawable/ic_list_numbered_24" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/to_archive"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/green_100"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/default_view_margin"
+                        android:layout_marginEnd="@dimen/default_view_margin"
+                        android:gravity="center_horizontal"
+                        android:text="@string/to_archive"
+                        android:textSize="10sp"
+                        app:drawableTopCompat="@drawable/ic_history_24" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/start_all"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/green_100"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/default_view_margin"
+                        android:layout_marginEnd="@dimen/default_view_margin"
+                        android:gravity="center_horizontal"
+                        android:text="@string/start"
+                        android:textSize="10sp"
+                        app:drawableTopCompat="@drawable/ic_start_all_24" />
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/event_member_recycler"
@@ -92,139 +194,6 @@
             android:layout_weight="1"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/event_member_item" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="5dp"
-            android:background="?attr/dividerHorizontal" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/add_member_line"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/add_member_img"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="@dimen/default_view_margin"
-                android:layout_marginEnd="@dimen/default_view_margin"
-                android:contentDescription="@string/add_member"
-                android:src="@drawable/ic_person_add_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/add_member"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_view_margin"
-                android:layout_marginEnd="@dimen/default_view_margin"
-                android:text="@string/add_member"
-                android:textAppearance="?attr/textAppearanceHeadline5"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/add_member_img"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"
-            android:background="?attr/dividerHorizontal" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/competition_protocol_line"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/competition_protocol_img"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="@dimen/default_view_margin"
-                android:layout_marginEnd="@dimen/default_view_margin"
-                android:contentDescription="@string/competition_protocol"
-                android:src="@drawable/ic_list_numbered_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/competition_protocol"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_view_margin"
-                android:layout_marginEnd="@dimen/default_view_margin"
-                android:text="@string/competition_protocol"
-                android:textAppearance="?attr/textAppearanceHeadline5"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/competition_protocol_img"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"
-            android:background="?attr/dividerHorizontal" />
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/start_all_line"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/start_all_img"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="@dimen/default_view_margin"
-                android:layout_marginEnd="@dimen/default_view_margin"
-                android:contentDescription="@string/start"
-                android:src="@drawable/ic_start_all_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/start_all"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_view_margin"
-                android:layout_marginEnd="@dimen/default_view_margin"
-                android:text="@string/start"
-                android:textAppearance="?attr/textAppearanceHeadline3"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/start_all_img"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"
-            android:background="?attr/dividerHorizontal" />
 
     </LinearLayout>
 </layout>

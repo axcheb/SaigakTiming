@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.data.ddmmyyyyhhmmStr
 import ru.axcheb.saigaktiming.data.repository.EventRepository
 import ru.axcheb.saigaktiming.data.repository.MemberRepository
@@ -40,5 +41,15 @@ class EventViewModel(
         }
         members
     }.asLiveData()
+
+    fun toArchive() {
+        val event = eventState.value
+        if (event != null) {
+            viewModelScope.launch {
+                event.isInArchive = true
+                eventRepository.update(event)
+            }
+        }
+    }
 
 }

@@ -30,7 +30,7 @@ class ArchiveFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View {
         val binding = ArchiveFragmentBinding.inflate(inflater, container, false)
-
+        binding.archiveRecycler.adapter = adapter
         observeData()
         return binding.root
     }

@@ -25,11 +25,12 @@ interface MemberDao {
     @Query("""
         select  
             member.id as member_id,
-            sequence_number, 
+            (
+                select sequence_number 
+                from event_member where event_id = :eventId and event_member.member_id = member.id
+            ) as sequence_number,  
             name
-        from member
-            left join event_member on event_member.member_id = member.id
-        where event_id = :eventId or event_id is null
+        from  member
         order by member.name
         """)
     fun getMemberSelectItems(eventId: Long): Flow<List<MemberSelectItem>>

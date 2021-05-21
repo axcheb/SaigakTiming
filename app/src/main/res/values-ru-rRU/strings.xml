@@ -45,4 +45,8 @@
     <string name="penalty">Штраф</string>
     <string name="penalty_seconds">Штраф (секунды)</string>
     <string name="auto_pause_between_tracks">Автопауза между СУ</string>
+    <string name="to_archive">В архив…</string>
+    <string name="cancel">Отмена</string>
+    <string name="are_you_sure">Вы уверены?</string>
+
 </resources>
