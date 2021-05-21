@@ -187,6 +187,13 @@
 
         </androidx.cardview.widget.CardView>
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="@{viewModel.progress}"
+            tools:progress="30"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/event_member_recycler"
             android:layout_width="match_parent"

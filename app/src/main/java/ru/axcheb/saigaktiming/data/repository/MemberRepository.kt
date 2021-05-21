@@ -1,12 +1,20 @@
 package ru.axcheb.saigaktiming.data.repository
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import ru.axcheb.saigaktiming.data.dao.MemberDao
+import ru.axcheb.saigaktiming.data.mapper.EventMemberItemMapper
+import ru.axcheb.saigaktiming.data.mapper.ListMapper
+import ru.axcheb.saigaktiming.data.model.dto.Event
 import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRef
 import ru.axcheb.saigaktiming.data.model.dto.Member
+import ru.axcheb.saigaktiming.data.model.ui.EventMemberItem
 import ru.axcheb.saigaktiming.data.model.ui.MemberSelectItem
 
 class MemberRepository(private val memberDao: MemberDao) {
+
+    private val listOfEventMemberItemMapper = ListMapper(EventMemberItemMapper())
 
     fun getMemberSelected(eventId: Long): Flow<List<MemberSelectItem>> {
         return memberDao.getMemberSelectItems(eventId)
@@ -34,10 +42,14 @@ class MemberRepository(private val memberDao: MemberDao) {
         eventId: Long,
         sequenceNumber: Int,
         memberId: Long
-    ) =
-        memberDao.subtractSequenceNumberAndUnbind(eventId, sequenceNumber, memberId)
+    ) = memberDao.subtractSequenceNumberAndUnbind(eventId, sequenceNumber, memberId)
 
-    fun getEventMemberItems(eventId: Long) = memberDao.getEventMemberItems(eventId)
+    fun getEventMemberItems(event: Event): Flow<List<EventMemberItem>> {
+        val eventId = event.id ?: return flowOf(emptyList())
+        return memberDao.getEventMemberCrossRefAndMemberSorted(eventId).map {
+            it.map { em -> Triple(em, event, it.size) }
+        }.map { listOfEventMemberItemMapper.map(it) }
+    }
 
     fun getMembers(eventId: Long) = memberDao.getMembers(eventId)
 

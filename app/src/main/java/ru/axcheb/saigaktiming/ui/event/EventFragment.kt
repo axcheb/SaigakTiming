@@ -98,7 +98,7 @@ class EventFragment : Fragment() {
             }
         }
 
-        viewModel.members.observe(viewLifecycleOwner) {
+        viewLifecycleOwner.bindIn(viewModel.members) {
             adapter.submitList(it)
         }
     }

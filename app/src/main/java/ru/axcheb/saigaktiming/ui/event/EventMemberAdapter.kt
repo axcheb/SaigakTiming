@@ -3,7 +3,7 @@ package ru.axcheb.saigaktiming.ui.event
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -24,6 +24,14 @@ class EventMemberAdapter() :
 
         fun bind(member: EventMemberItem) {
             binding.item = member
+            if (member.isNext) {
+                binding.sequenceNumber.setTextColor(
+                    ContextCompat.getColor(
+                        binding.sequenceNumber.context,
+                        R.color.deep_orange_500
+                    )
+                )
+            }
             binding.executePendingBindings()
         }
 

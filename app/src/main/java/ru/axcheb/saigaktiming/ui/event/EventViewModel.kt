@@ -1,11 +1,12 @@
 package ru.axcheb.saigaktiming.ui.event
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.data.ddmmyyyyhhmmStr
+import ru.axcheb.saigaktiming.data.model.dto.Event
+import ru.axcheb.saigaktiming.data.model.ui.EventMemberItem
 import ru.axcheb.saigaktiming.data.repository.EventRepository
 import ru.axcheb.saigaktiming.data.repository.MemberRepository
 
@@ -23,24 +24,34 @@ class EventViewModel(
 
     val eventDateTimeStr = eventState.map {
         it?.date?.ddmmyyyyhhmmStr()
-    }.asLiveData()
+    }.stateIn(viewModelScope, SharingStarted.Lazily, "")
 
-    val trackCountStr = eventState.map {
-        it?.trackCount?.toString()
-    }.asLiveData()
+    val trackCountStr = eventState.filterNotNull().map {
+        "${it.currentTrack}/${it.trackCount}"
+    }.stateIn(viewModelScope, SharingStarted.Lazily, "")
 
-    private val membersWithoutStartTimes =
-        eventState.map { it?.id }.filterNotNull().distinctUntilChanged()
-            .flatMapLatest {
-                memberRepository.getEventMemberItems(it)
-            }
+    val members = eventState.filterNotNull().distinctUntilChanged().flatMapLatest {
+        memberRepository.getEventMemberItems(it)
+    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    val members = combine(eventState, membersWithoutStartTimes) { event, members ->
-        if (event != null) {
-            members.onEach { it.calculateStartDates(event, members.size) }
+    val progress =
+        combine(eventState, members) { e, m -> calculateProgress(e, m) }.stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            0
+        )
+
+    private fun calculateProgress(event: Event?, members: List<EventMemberItem>): Int {
+        if (event == null) return 0
+        val inTrackProgress = if (members.isEmpty()) {
+            0
+        } else {
+            100 * event.currentMemberIndex / members.size
         }
-        members
-    }.asLiveData()
+        // inTrackProgress == 100 только если все участники закончили соревнование
+        // if добавлен, чтоб не было проблем с округлением.
+        return if (inTrackProgress == 100) 100 else 100 * event.currentTrack / event.trackCount + inTrackProgress / event.trackCount
+    }
 
     fun toArchive() {
         val event = eventState.value

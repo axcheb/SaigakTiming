@@ -27,7 +27,7 @@ data class Event(
     @ColumnInfo(name = "current_track") var currentTrack: Int = 0,
     /**
      * Порядковый номер участника, которого надо запустить на СУ. Начинается с 0.
-     * Если currentMemberIndex = members.size и currentTrack =  все участники откатали и соревновние закончено.
+     * Если currentMemberIndex = members.size, то все участники откатали и соревновние закончено.
      */
     @ColumnInfo(name = "current_member_index") var currentMemberIndex: Int = 0,
     /** Автопауза между СУ. */

@@ -3,8 +3,8 @@ package ru.axcheb.saigaktiming.data.dao
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRef
+import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRefAndMember
 import ru.axcheb.saigaktiming.data.model.dto.Member
-import ru.axcheb.saigaktiming.data.model.ui.EventMemberItem
 import ru.axcheb.saigaktiming.data.model.ui.MemberSelectItem
 
 @Dao
@@ -61,19 +61,9 @@ interface MemberDao {
     """)
     suspend fun subtractSequenceNumber(eventId: Long, sequenceNumber: Int)
 
-    @Query("""
-        select 
-            event_member.id as id, 
-            event_id, 
-            member_id, 
-            sequence_number, 
-            name 
-        from event_member 
-            join member on event_member.member_id = member.id 
-        where event_id = :eventId
-        order by sequence_number
-        """)
-    fun getEventMemberItems(eventId: Long): Flow<List<EventMemberItem>>
+    @Query("select * from event_member where event_id = :eventId order by sequence_number")
+    fun getEventMemberCrossRefAndMemberSorted(eventId: Long): Flow<List<EventMemberCrossRefAndMember>>
+
 
     @Query("""
         select 
