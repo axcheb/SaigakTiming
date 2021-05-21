@@ -27,7 +27,7 @@ class EventViewModel(
     }.stateIn(viewModelScope, SharingStarted.Lazily, "")
 
     val trackCountStr = eventState.filterNotNull().map {
-        "${it.currentTrack}/${it.trackCount}"
+        "${it.currentTrack + 1}/${it.trackCount}"
     }.stateIn(viewModelScope, SharingStarted.Lazily, "")
 
     val members = eventState.filterNotNull().distinctUntilChanged().flatMapLatest {

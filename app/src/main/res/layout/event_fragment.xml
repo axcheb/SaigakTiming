@@ -75,7 +75,7 @@
                     android:text="@{viewModel.trackCountStr}"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    tools:text="2" />
+                    tools:text="1/2" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -109,11 +109,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/default_view_margin"
-                        android:layout_marginEnd="@dimen/default_view_margin"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
                         android:gravity="center_horizontal"
                         android:text="@string/add_member"
-                        android:textSize="10sp"
+                        android:textSize="12sp"
                         app:drawableTopCompat="@drawable/ic_person_add_24" />
                 </androidx.cardview.widget.CardView>
 
@@ -131,11 +131,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/default_view_margin"
-                        android:layout_marginEnd="@dimen/default_view_margin"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
                         android:gravity="center_horizontal"
                         android:text="@string/competition_protocol"
-                        android:textSize="10sp"
+                        android:textSize="12sp"
                         app:drawableTopCompat="@drawable/ic_list_numbered_24" />
                 </androidx.cardview.widget.CardView>
 
@@ -153,11 +153,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/default_view_margin"
-                        android:layout_marginEnd="@dimen/default_view_margin"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
                         android:gravity="center_horizontal"
                         android:text="@string/to_archive"
-                        android:textSize="10sp"
+                        android:textSize="12sp"
                         app:drawableTopCompat="@drawable/ic_history_24" />
                 </androidx.cardview.widget.CardView>
 
@@ -175,11 +175,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/default_view_margin"
-                        android:layout_marginEnd="@dimen/default_view_margin"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
                         android:gravity="center_horizontal"
                         android:text="@string/start"
-                        android:textSize="10sp"
+                        android:textSize="12sp"
                         app:drawableTopCompat="@drawable/ic_start_all_24" />
                 </androidx.cardview.widget.CardView>
 

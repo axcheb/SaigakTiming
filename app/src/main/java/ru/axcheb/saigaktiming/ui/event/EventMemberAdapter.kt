@@ -17,7 +17,7 @@ class EventMemberAdapter() :
 
     class ViewHolder(val binding: EventMemberItemBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.editImg.setOnClickListener {
+            binding.memberLine.setOnClickListener {
                 binding.item?.let { item -> navigateToMemberResult(item, it) }
             }
         }
