@@ -1,7 +1,9 @@
 package ru.axcheb.saigaktiming.ui.protocol
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -20,10 +22,25 @@ class ProtocolAdapter :
     }
 
     class ViewHolder(val binding: ProtocolItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.listItem.setOnClickListener {
+                binding.item?.let { item -> navigateToMemberResult(item, it) }
+            }
+        }
+
         fun bind(item: ProtocolItem, position: Int) {
             binding.item = item
             binding.position = position + 1
             binding.executePendingBindings()
+        }
+
+        private fun navigateToMemberResult(item: ProtocolItem, view: View) {
+            val direction =  ProtocolFragmentDirections.actionProtocolFragmentToNavigationStart(
+                item.eventId,
+                item.memberId
+            )
+            view.findNavController().navigate(direction)
         }
     }
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.artemchep.bindin.bindIn
 import org.koin.android.ext.android.inject
@@ -34,8 +35,15 @@ class ProtocolFragment : Fragment() {
     ): View {
         _binding = ProtocolFragmentBinding.inflate(inflater, container, false)
         binding.protocolRecycler.adapter = adapter
+        setListeners()
         observeData()
         return binding.root
+    }
+
+    private fun setListeners() {
+        binding.toolbar.setNavigationOnClickListener { view ->
+            view.findNavController().navigateUp()
+        }
     }
 
     private fun observeData() {

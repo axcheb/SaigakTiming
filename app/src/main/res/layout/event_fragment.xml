@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="ru.axcheb.saigaktiming.ui.event.EventViewModel" />
+
         <variable
             name="viewModel"
             type="ru.axcheb.saigaktiming.ui.event.EventViewModel" />
@@ -93,95 +95,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="4dp">
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp">
 
-                <androidx.cardview.widget.CardView
+                <Button
                     android:id="@+id/add_member"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="4dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/green_100"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp">
+                    style="@style/bar_button_style"
+                    android:text="@string/add_member"
+                    app:icon="@drawable/ic_person_add_24" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/add_member"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/ic_person_add_24" />
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
+                <Button
                     android:id="@+id/competition_protocol"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="4dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/green_100"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp">
+                    style="@style/bar_button_style"
+                    android:text="@string/protocol"
+                    app:icon="@drawable/ic_list_numbered_24" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/competition_protocol"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/ic_list_numbered_24" />
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
+                <Button
                     android:id="@+id/to_archive"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="4dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/green_100"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp">
+                    style="@style/bar_button_style"
+                    android:text="@string/to_archive"
+                    app:icon="@drawable/ic_history_24" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/to_archive"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/ic_history_24" />
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
+                <Button
                     android:id="@+id/start_all"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="4dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/green_100"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/start"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/ic_start_all_24" />
-                </androidx.cardview.widget.CardView>
+                    style="@style/bar_button_style"
+                    android:text="@string/start"
+                    app:icon="@drawable/ic_start_all_24" />
 
             </LinearLayout>
 
@@ -192,7 +131,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:progress="@{viewModel.progress}"
-            tools:progress="30"/>
+            tools:progress="30" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/event_member_recycler"

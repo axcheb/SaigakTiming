@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.artemchep.bindin.bindIn
 import org.koin.android.ext.android.inject
@@ -54,7 +55,11 @@ class StartFragment : Fragment() {
     }
 
     private fun setListeners() {
-        binding.startLine.setOnClickListener {
+        binding.toolbar.setNavigationOnClickListener { view ->
+            view.findNavController().navigateUp()
+        }
+
+        binding.startBtn.setOnClickListener {
             FinishActivity.start(args.eventId, args.memberId, 0, binding.root.context)
         }
     }

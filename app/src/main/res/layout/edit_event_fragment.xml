@@ -96,7 +96,8 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:errorEnabled="true">
+                        app:errorEnabled="true"
+                        app:errorMsg="@{viewModel.trackCountError}">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/trackCount"
@@ -104,8 +105,7 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/track_count"
                             android:inputType="numberDecimal"
-                            android:text="@={DataBindingConverters.intToStr(viewModel.trackCount)}"
-                            app:errorMsg="@{viewModel.trackCountError}" />
+                            android:text="@={DataBindingConverters.intToStr(viewModel.trackCount)}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -115,7 +115,8 @@
                         android:layout_height="wrap_content"
                         app:endIconDrawable="@drawable/ic_timelapse_24"
                         app:endIconMode="custom"
-                        app:errorEnabled="true">
+                        app:errorEnabled="true"
+                        app:errorMsg="@{viewModel.trackMaxTimeError}">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/trackMaxTime"
@@ -123,8 +124,7 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/track_max_time_minutes"
                             android:inputType="numberDecimal"
-                            android:text="@={DataBindingConverters.intToStr(viewModel.trackMaxTime)}"
-                            app:errorMsg="@{viewModel.trackMaxTimeError}" />
+                            android:text="@={DataBindingConverters.intToStr(viewModel.trackMaxTime)}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -133,15 +133,6 @@
                         android:checked="@={viewModel.isAutoPauseBetweenTracks}"
                         android:text="@string/auto_pause_between_tracks"
                         app:useMaterialThemeColors="true" />
-
-                    <!--                <Button-->
-                    <!--                    android:id="@+id/edit_event_btn"-->
-                    <!--                    android:layout_width="wrap_content"-->
-                    <!--                    android:layout_height="wrap_content"-->
-                    <!--                    android:layout_gravity="end"-->
-                    <!--                    android:layout_marginStart="@dimen/default_view_margin"-->
-                    <!--                    android:text="@string/save"-->
-                    <!--                    android:enabled="@{viewModel.canSave}"/>-->
 
                 </LinearLayout>
 

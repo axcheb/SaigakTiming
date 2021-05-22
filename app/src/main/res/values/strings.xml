@@ -20,6 +20,7 @@
     <string name="check">Check</string>
     <string name="save">Save</string>
     <string name="competition_protocol">Competition protocol</string>
+    <string name="protocol">Protocol</string>
     <string name="member_list">Members</string>
     <string name="finish">Finish</string>
     <string name="result">Result</string>
@@ -47,5 +48,6 @@
     <string name="to_archive">To archive…</string>
     <string name="cancel">Cancel</string>
     <string name="are_you_sure">Are you sure?</string>
+    <string name="starts">Starts</string>
 
 </resources>

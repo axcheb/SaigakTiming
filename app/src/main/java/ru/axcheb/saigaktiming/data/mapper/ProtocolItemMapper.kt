@@ -13,9 +13,11 @@ class ListOfProtocolItemMapper :
         val (eventMembers, startAndFinishList) = input
         val startAndFinishMap = startAndFinishList.groupBy { it.start.eventMemberId }
         return eventMembers.map {
-            val memberStartAndFinishList = startAndFinishMap.getOrDefault(it.eventMemberCrossRef.id, emptyList())
+            val memberStartAndFinishList =
+                startAndFinishMap.getOrDefault(it.eventMemberCrossRef.id, emptyList())
             ProtocolItem(
                 it.eventMemberCrossRef.id!!,
+                it.eventMemberCrossRef.eventId!!,
                 it.eventMemberCrossRef.sequenceNumber,
                 it.eventMemberCrossRef.penaltySeconds,
                 it.member.id!!,
@@ -23,13 +25,15 @@ class ListOfProtocolItemMapper :
                 calcResultMillis(memberStartAndFinishList, it.eventMemberCrossRef.penaltySeconds),
                 listOfProtocolFinishItemMapper.map(memberStartAndFinishList)
             )
-        }.sortedBy { it.resultMillis }
+            // у кого больше заездов, тот выше, затем учитывается время
+        }.sortedWith(compareBy({ -it.trackResults.size }, { it.resultMillis }))
     }
 
     private fun calcResultMillis(
         startAndFinishList: List<StartAndFinish>,
         penaltySeconds: Int
     ): Long {
-        return penaltySeconds * 1_000L + startAndFinishList.map { it.finish.time.time - it.start.time.time }.sum()
+        return penaltySeconds * 1_000L + startAndFinishList.map { it.finish.time.time - it.start.time.time }
+            .sum()
     }
 }

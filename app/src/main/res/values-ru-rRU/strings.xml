@@ -36,7 +36,7 @@
 
     <string name="start_uppercase">СТАРТ</string>
     <string name="time_over">Время вышло</string>
-    <string name="resume">Возбновить</string>
+    <string name="resume">Возобновить</string>
     <string name="number_sign">#</string>
     <string name="total_time">Общее время:</string>
     <string name="track_max_time_minutes">Время на прохожение СУ (минуты)</string>
@@ -48,5 +48,7 @@
     <string name="to_archive">В архив…</string>
     <string name="cancel">Отмена</string>
     <string name="are_you_sure">Вы уверены?</string>
+    <string name="starts">Старты участника</string>
+    <string name="protocol">Протокол</string>
 
 </resources>

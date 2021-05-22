@@ -8,13 +8,18 @@ import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRef
 import ru.axcheb.saigaktiming.data.repository.MemberRepository
 import ru.axcheb.saigaktiming.data.repository.ResultRepository
 import ru.axcheb.saigaktiming.data.model.dto.Start
+import ru.axcheb.saigaktiming.data.repository.EventRepository
 
 class StartViewModel(
     private val eventId: Long,
     private val memberId: Long,
+    val eventRepository: EventRepository,
     private val memberRepository: MemberRepository,
     private val resultRepository: ResultRepository
 ) : ViewModel() {
+
+    val isStartEnabled = eventRepository.getEvent(eventId).take(1).map { !it.isInArchive }
+        .stateIn(viewModelScope, SharingStarted.Lazily, false)
 
     val member = memberRepository.getMember(memberId).take(1)
         .stateIn(viewModelScope, SharingStarted.Lazily, null)

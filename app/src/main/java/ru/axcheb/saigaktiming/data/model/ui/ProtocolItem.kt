@@ -6,6 +6,7 @@ import ru.axcheb.saigaktiming.data.formatElapsedTimeMs
 data class ProtocolItem(
     // From EventMember:
     val eventMemberId: Long,
+    val eventId: Long,
     val sequenceNumber: Int,
     val penaltySeconds: Int,
     // From Member:

@@ -42,6 +42,7 @@ val uiModule = module {
         StartViewModel(
             eventId = eventId,
             memberId = memberId,
+            eventRepository = get(),
             memberRepository = get(),
             resultRepository = get(),
         )

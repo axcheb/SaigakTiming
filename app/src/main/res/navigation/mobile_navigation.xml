@@ -74,6 +74,9 @@
         android:label="protocol_fragment"
         tools:layout="@layout/protocol_fragment" >
         <argument android:name="eventId" app:argType="long"/>
+        <action
+            android:id="@+id/action_protocolFragment_to_navigation_start"
+            app:destination="@id/navigation_start" />
     </fragment>
 
 </navigation>

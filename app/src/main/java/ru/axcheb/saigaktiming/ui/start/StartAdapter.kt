@@ -39,7 +39,8 @@ class StartAdapter(
     ): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = StartItemBinding.inflate(inflater, parent, false)
-        binding.edit.setOnClickListener {view ->
+
+        binding.setClickListener { view ->
             val startId = binding.item?.id
             startId?.let { startId_ -> navigateToMemberStart(startId_, view) }
         }

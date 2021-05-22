@@ -90,19 +90,19 @@ class FinishActivity : AppCompatActivity() {
             return@setOnKeyListener false
         }
 
-        binding.nextLine.setOnClickListener {
+        binding.nextBtn.setOnClickListener {
             viewModel.onNext()
         }
 
-        binding.pauseLine.setOnClickListener {
+        binding.pauseBtn.setOnClickListener {
             viewModel.onPause()
         }
 
-        binding.toEndLine.setOnClickListener {
+        binding.toEndBtn.setOnClickListener {
             viewModel.toEnd()
         }
 
-        binding.resumeLine.setOnClickListener {
+        binding.resumeBtn.setOnClickListener {
             viewModel.onResume()
         }
 
