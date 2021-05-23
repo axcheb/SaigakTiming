@@ -1,10 +1,10 @@
 package ru.axcheb.saigaktiming.data.repository
 
+import kotlinx.coroutines.flow.map
 import ru.axcheb.saigaktiming.data.dao.ResultDao
 import ru.axcheb.saigaktiming.data.mapper.ListOfProtocolItemMapper
 import ru.axcheb.saigaktiming.data.model.dto.Finish
 import ru.axcheb.saigaktiming.data.model.dto.Start
-import ru.axcheb.saigaktiming.data.model.ui.ProtocolItem
 
 class ResultRepository(private val resultDao: ResultDao) {
 
@@ -33,8 +33,8 @@ class ResultRepository(private val resultDao: ResultDao) {
 
     suspend fun activateStart(startId: Long) = resultDao.activateStart(startId)
 
-    suspend fun getProtocolItems(eventId: Long): List<ProtocolItem> {
-        return listOfProtocolItemMapper.map(resultDao.getProtocolData(eventId))
-    }
+    fun getProtocolItems(eventId: Long) =
+        resultDao.getProtocolData(eventId).map { listOfProtocolItemMapper.map(it) }
+
 
 }

@@ -5,9 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRefAndMember
 import ru.axcheb.saigaktiming.data.model.dto.Finish
 import ru.axcheb.saigaktiming.data.model.dto.Start
@@ -93,9 +91,8 @@ interface ResultDao {
         return insert(finish)
     }
 
-    @Transaction
     @Query("select * from event_member where event_id = :eventId")
-    suspend fun getEventMemberCrossRefAndMember(eventId: Long): List<EventMemberCrossRefAndMember>
+    fun getEventMemberCrossRefAndMember(eventId: Long): Flow<List<EventMemberCrossRefAndMember>>
 
     @Query(
         """
@@ -116,14 +113,16 @@ interface ResultDao {
                 and start.event_member_id in (:eventMemberIds)
         """
     )
-    suspend fun getActiveStartAndFinishForEventMembers(eventMemberIds: List<Long>): List<StartAndFinish>
+    fun getActiveStartAndFinishForEventMembers(eventMemberIds: List<Long>): Flow<List<StartAndFinish>>
 
-    @Transaction
-    suspend fun getProtocolData(eventId: Long): Pair<List<EventMemberCrossRefAndMember>, List<StartAndFinish>> {
+    fun getProtocolData(eventId: Long): Flow<Pair<List<EventMemberCrossRefAndMember>, List<StartAndFinish>>> {
         val eventMembers = getEventMemberCrossRefAndMember(eventId)
-        val eventMemberIds = eventMembers.map { it.eventMemberCrossRef.id!! }
-        val startAndFinishList = getActiveStartAndFinishForEventMembers(eventMemberIds)
-        return Pair(eventMembers, startAndFinishList)
+        return eventMembers.flatMapLatest { list ->
+            val eventMemberIds = list.map { it.eventMemberCrossRef.id!! }
+            getActiveStartAndFinishForEventMembers(eventMemberIds).map {
+                Pair(list, it)
+            }
+        }
     }
 
 
