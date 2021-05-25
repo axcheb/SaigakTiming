@@ -49,5 +49,9 @@
     <string name="cancel">Cancel</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="starts">Starts</string>
+    <string name="imitation_mode">Imitation mode</string>
+    <string name="sync_time">Sync time</string>
+    <string name="sensors_search">Search of sensors</string>
+    <string name="clear">Clear</string>
 
 </resources>

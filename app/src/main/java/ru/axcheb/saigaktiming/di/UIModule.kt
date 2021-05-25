@@ -17,6 +17,7 @@ import ru.axcheb.saigaktiming.ui.finish.FinishAdapter
 import ru.axcheb.saigaktiming.ui.finish.FinishViewModel
 import ru.axcheb.saigaktiming.ui.protocol.ProtocolAdapter
 import ru.axcheb.saigaktiming.ui.protocol.ProtocolViewModel
+import ru.axcheb.saigaktiming.ui.sensors.SensorsViewModel
 
 val uiModule = module {
     viewModel {
@@ -55,6 +56,7 @@ val uiModule = module {
             memberRepository = get(),
             resultRepository = get(),
             eventRepository = get(),
+            settingsRepository = get(),
             application = get()
         )
     }
@@ -69,6 +71,9 @@ val uiModule = module {
     }
     viewModel {
         ArchiveViewModel(eventRepository = get())
+    }
+    viewModel {
+        SensorsViewModel(settingsRepository = get())
     }
 
     factory { (bindMemberListener: (MemberSelectItem) -> Unit) ->

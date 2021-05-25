@@ -8,16 +8,15 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import ru.axcheb.saigaktiming.R
-import ru.axcheb.saigaktiming.data.formatElapsedTimeSeconds
-import ru.axcheb.saigaktiming.data.hhmmsssssStr
-import ru.axcheb.saigaktiming.data.model.dto.Event
-import ru.axcheb.saigaktiming.data.model.dto.Finish
-import ru.axcheb.saigaktiming.data.model.dto.Member
-import ru.axcheb.saigaktiming.data.model.dto.Start
+import ru.axcheb.saigaktiming.data.*
+import ru.axcheb.saigaktiming.data.mapper.SensorMessageMapper
+import ru.axcheb.saigaktiming.data.model.dto.*
 import ru.axcheb.saigaktiming.data.model.ui.ResultItem
 import ru.axcheb.saigaktiming.data.repository.EventRepository
 import ru.axcheb.saigaktiming.data.repository.MemberRepository
 import ru.axcheb.saigaktiming.data.repository.ResultRepository
+import ru.axcheb.saigaktiming.data.repository.SettingsRepository
+import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService
 import java.util.*
 
 class FinishViewModel(
@@ -27,6 +26,7 @@ class FinishViewModel(
     private val memberRepository: MemberRepository,
     private val resultRepository: ResultRepository,
     private val eventRepository: EventRepository,
+    settingsRepository: SettingsRepository,
     private val application: Application
 ) : ViewModel() {
 
@@ -35,9 +35,12 @@ class FinishViewModel(
     /**
      * Flow событий срабатывания фотодатчика финиша.
      */
-    private val _finishFlow = MutableSharedFlow<Date>(1, 0, BufferOverflow.DROP_OLDEST)
+    private val _finishFlow = MutableSharedFlow<SensorMessage>(1, 0, BufferOverflow.DROP_OLDEST)
 
     private val _status = MutableStateFlow(Status.PAUSED)
+
+    private val isImitationMode = settingsRepository.get().map { it.isImitationMode }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     val isTimerCardVisible =
         _status.map { it != Status.VIEW_ONLY }.stateIn(viewModelScope, SharingStarted.Lazily, true)
@@ -51,6 +54,8 @@ class FinishViewModel(
             .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
     private var beforeStartTime = BEFORE_START_TIME
+
+    private val sensorMessageMapper = SensorMessageMapper()
 
     private fun formatToTimeStr(millisFromStartCounting: Long, status: Status): String {
         return when (status) {
@@ -144,6 +149,7 @@ class FinishViewModel(
 
     /** Работа происходит только с одним конкретным участником без учёта currentMemberIndex и т.п. */
     private val isWorkWithOneMember = memberId != NULL_ID
+
     /** Был ли уже запущен этот единственные участник. */
     private var isOneMemberLaunched = false
 
@@ -186,10 +192,9 @@ class FinishViewModel(
             // Если статус STARTED_WAITING_FINISH, то при каждом срабатывании датчика финиша, сохраняется финишная отметка.
             val startId = _startIdFlow.value
             if (startId != NULL_ID && _status.value == Status.STARTED_WAITING_FINISH) {
-                val finish = Finish(null, startId, it, 1, true)
+                val finish = Finish(null, startId, it.date, it.sensorId, true)
                 resultRepository.insertFinishAsOnlyActiveOne(finish)
             }
-
         }.launchIn(viewModelScope)
 
         _status.onEach {
@@ -203,13 +208,26 @@ class FinishViewModel(
                     _startIdFlow.value = resultRepository.insert(start)
                 }
             }
-
         }.launchIn(viewModelScope)
+
+        launchMessageListenJob()
     }
 
-    fun newFinish() {
-        val date = Date()
-        _finishFlow.tryEmit(date)
+    fun newFinish(sensorId: Int) {
+        if (isImitationMode.value) {
+            _finishFlow.tryEmit(SensorMessage(FINISH, sensorId, Date()))
+        }
+    }
+
+    private fun launchMessageListenJob() {
+        viewModelScope.launch {
+            BluetoothSerialBoardService.messageFlow.collect {
+                val msg = sensorMessageMapper.map(it)
+                if (msg != null && msg.isFinish()) {
+                    _finishFlow.emit(msg)
+                }
+            }
+        }
     }
 
     /**

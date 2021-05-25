@@ -5,7 +5,9 @@
 
 // Структура пересылаемых данных:
 struct Payload {
-  // количество секунд 2000/01/01
+  // команда: t - отправить/установить текущее время; f - отправить время, зафиксированное датчиком
+  char command;
+  // количество секунд
   unsigned long timeSeconds;
   // количество миллисекунд
   int ms;
@@ -15,7 +17,7 @@ struct Payload {
    Возвращает время строкой. Для отладки.
 */
 String getDateTimeStr(Payload p) {
-  DateTime now = DateTime(p.timeSeconds);
+  DateTime now = rtc.makeDateTime(p.timeSeconds);
   char buffer[30];
   sprintf(buffer, "%u-%02d-%02dT%02d:%02d:%02d.%03d",
           now.year(),

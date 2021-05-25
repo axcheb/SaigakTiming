@@ -81,8 +81,12 @@ class FinishActivity : AppCompatActivity() {
         view.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN) {
                 when (keyCode) {
-                    KeyEvent.KEYCODE_VOLUME_DOWN, KeyEvent.KEYCODE_VOLUME_UP -> {
-                        viewModel.newFinish()
+                    KeyEvent.KEYCODE_VOLUME_UP -> {
+                        viewModel.newFinish(1)
+                        return@setOnKeyListener true
+                    }
+                    KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                        viewModel.newFinish(2)
                         return@setOnKeyListener true
                     }
                 }
@@ -115,6 +119,11 @@ class FinishActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unbindService(connection)
     }
 
     companion object {

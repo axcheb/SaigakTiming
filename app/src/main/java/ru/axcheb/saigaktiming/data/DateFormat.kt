@@ -10,7 +10,6 @@ private val hhmmFormat = SimpleDateFormat("HH:mm", Locale.US)
 private val hhmmssFormat = SimpleDateFormat("HH:mm:ss", Locale.US)
 private val ddmmyyyyFormat = SimpleDateFormat("dd.MM.yyyy", Locale.US)
 
-
 fun Date.ddmmyyyyhhmmStr(): String {
     return ddmmyyyyhhmmFormat.format(this)
 }

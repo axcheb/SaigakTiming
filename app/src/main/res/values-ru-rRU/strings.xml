@@ -50,5 +50,9 @@
     <string name="are_you_sure">Вы уверены?</string>
     <string name="starts">Старты участника</string>
     <string name="protocol">Протокол</string>
+    <string name="imitation_mode">Режим имитации</string>
+    <string name="sync_time">Синхронизировать время</string>
+    <string name="sensors_search">Поиск датчиков</string>
+    <string name="clear">Очистить</string>
 
 </resources>

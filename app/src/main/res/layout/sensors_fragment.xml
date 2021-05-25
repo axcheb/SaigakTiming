@@ -1,44 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.sensors.SensorsFragment"
-    android:keepScreenOn="true">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/text_sensors"
+    <data>
+
+        <variable
+            name="viewModel"
+            type="ru.axcheb.saigaktiming.ui.sensors.SensorsViewModel" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp" />
+        android:layout_height="match_parent"
+        android:keepScreenOn="true"
+        android:orientation="vertical"
+        tools:context=".ui.sensors.SensorsFragment">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/message_input"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_view_margin"
-        android:layout_marginEnd="@dimen/default_view_margin">
-
-        <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Введи сообщение"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:fitsSystemWindows="true">
 
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/title_sensors" />
 
-    <Button
-        android:id="@+id/send_message_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Send message" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-</LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_view_margin">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/default_view_margin">
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@={viewModel.isImitationMode}"
+                    android:text="@string/imitation_mode"
+                    tools:checked="true" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/sync_time_btn"
+                        style="@style/bar_button_style"
+                        android:text="@string/sync_time"
+                        app:icon="@drawable/ic_time_24" />
+
+                    <Button
+                        android:id="@+id/search_sensors_btn"
+                        style="@style/bar_button_style"
+                        android:text="@string/sensors_search"
+                        app:icon="@drawable/ic_bluetooth_searching_24" />
+
+                    <Button
+                        android:id="@+id/clear_btn"
+                        style="@style/bar_button_style"
+                        android:text="@string/clear"
+                        app:icon="@drawable/ic_cleaning_24" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/default_view_margin"
+            android:layout_marginEnd="@dimen/default_view_margin"
+            android:layout_marginBottom="@dimen/default_view_margin">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/sensors_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@{viewModel.sensorsText}"
+                    android:textSize="20sp" />
+            </ScrollView>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</layout>

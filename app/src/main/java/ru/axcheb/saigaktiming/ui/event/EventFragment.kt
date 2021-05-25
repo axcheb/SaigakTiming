@@ -1,5 +1,6 @@
 package ru.axcheb.saigaktiming.ui.event
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.databinding.EventFragmentBinding
+import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService
 import ru.axcheb.saigaktiming.ui.finish.FinishActivity
 
 class EventFragment : Fragment() {
@@ -41,7 +43,12 @@ class EventFragment : Fragment() {
 //        binding.eventMemberRecycler.addItemDecoration(divider)
         setListeners()
         observeData()
+        startBtServer()
         return binding.root
+    }
+
+    private fun startBtServer() {
+        activity?.startService(Intent(activity, BluetoothSerialBoardService::class.java))
     }
 
     private fun setListeners() {

@@ -11,6 +11,8 @@
 const uint16_t this_node = 01;
 const uint16_t master_node = 00;
 
+//#define PRINT_TO_SERIAL  // Печать в serial для отладки. Желательно отключать.
+
 #define EE_RESET 1         // Любое число 0-255, чтоб сбросить настройки и время.
 #define NRF24_CHANNEL 88  // Канал радиомодуля. 
 
@@ -63,6 +65,7 @@ void handleNetwork() {
     RF24NetworkHeader header;
     Payload incomingPayload;
     network.read(header, &incomingPayload, sizeof(incomingPayload));
+    handleIncomingPayload(incomingPayload);
   }
 
   // Отправка данных
@@ -71,18 +74,44 @@ void handleNetwork() {
     RF24NetworkHeader header(/*to node*/ master_node);
     bool ok = network.write(header, p, sizeof(*p));
 
-    Serial.println(getDateTimeStr(*p));
     if (ok) {
-      Serial.println("ok.");
+      #ifdef PRINT_TO_SERIAL
+      Serial.print("ok sending:");
+      Serial.println(getDateTimeStr(*p));
+      #endif
       payload = NULL;
     } else {
+      #ifdef PRINT_TO_SERIAL
       Serial.println("failed.");
+      #endif
     }
   }
 }
 
+
+void handleIncomingPayload(Payload incomingPayload) {
+    #ifdef PRINT_TO_SERIAL
+    Serial.print("Incoming time:");
+    Serial.println(getDateTimeStr(incomingPayload));
+    #endif
+
+    switch(incomingPayload.command) {
+        case 't': //time
+            adjustTime(incomingPayload);
+        case 's': //search
+            char command = 't';
+            int ms = getTimerMillis();
+            unsigned long timeSeconds = rtc.now().getEpoch();
+            Payload p = {command, timeSeconds, ms};
+            // Костыль. Без задержки между приёмом и отправкой сообщения возникают фиерические глюки.
+            delay(10);
+            payload = &p;
+            break;
+    }
+}
+
 void adjustTime(Payload incomingPayload) {
-  rtc.setDateTime(DateTime(incomingPayload.timeSeconds));
+    rtc.setDateTime(rtc.makeDateTime(incomingPayload.timeSeconds));
 }
 
 
@@ -115,11 +144,14 @@ void fotorezistor() {
     int ms = getTimerMillis();
     DateTime now = rtc.now();    
     if ((millis() - debounceTimer) > DEBOUNCE) {
-                  
+      unsigned long timeSeconds = now.getEpoch();
+      char command = 'f';
       // запоминаю, а отправка произойдёт потом.
-      Payload p = {now.get(), ms};
+      Payload p = {command, timeSeconds, ms};
       payload = &p;
+      #ifdef PRINT_TO_SERIAL
       Serial.println(getDateTimeStr(p));
+      #endif
     }
     // Таймер антидребезга
     debounceTimer = millis();

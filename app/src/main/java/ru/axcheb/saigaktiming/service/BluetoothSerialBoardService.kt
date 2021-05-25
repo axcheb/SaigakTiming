@@ -13,6 +13,8 @@ import android.util.Log
 import androidx.lifecycle.LifecycleService
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import ru.axcheb.saigaktiming.data.SEARCH
+import ru.axcheb.saigaktiming.data.TIME
 import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService.Companion.DEVICE_NAME
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -25,10 +27,12 @@ import java.util.*
  */
 class BluetoothSerialBoardService : LifecycleService() {
 
+    private val TAG = this::class.qualifiedName
+
     companion object {
         // messages from bt adapter
         private val _messageFlow = MutableSharedFlow<String>()
-        val messageFlow : Flow<String> = _messageFlow
+        val messageFlow: Flow<String> = _messageFlow
 
         // Нужно ли спросить включить блютус:
         private val _requestEnableBluetooth = MutableStateFlow(true)
@@ -44,7 +48,6 @@ class BluetoothSerialBoardService : LifecycleService() {
          */
         private const val SPP_UUID_SERIAL_BOARD = "00001101-0000-1000-8000-00805f9b34fb"
 
-        private const val TAG = "BluetoothSerialBoardService"
     }
 
     private val job = SupervisorJob()
@@ -68,7 +71,8 @@ class BluetoothSerialBoardService : LifecycleService() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 BluetoothAdapter.ACTION_STATE_CHANGED -> {
-                    val state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
+                    val state =
+                        intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
                     when (state) {
                         BluetoothAdapter.STATE_ON -> {
                             Log.d(TAG, "BluetoothAdapter.STATE_ON")
@@ -80,7 +84,8 @@ class BluetoothSerialBoardService : LifecycleService() {
                     }
                 }
                 BluetoothDevice.ACTION_BOND_STATE_CHANGED -> {
-                    val state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothAdapter.ERROR)
+                    val state =
+                        intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothAdapter.ERROR)
                     if (state == BluetoothDevice.BOND_BONDED) {
                         Log.d(TAG, "BluetoothDevice.BOND_BONDED")
                         start()
@@ -183,6 +188,15 @@ class BluetoothSerialBoardService : LifecycleService() {
             outputStream.write("$msg\n".toByteArray())
         }
         return res
+    }
+
+    suspend fun syncTime() {
+        val d = Date()
+        send("$TIME,${d.time / 1000}") // time
+    }
+
+    suspend fun searchSensors() {
+        send(SEARCH)
     }
 
     private fun close() {
