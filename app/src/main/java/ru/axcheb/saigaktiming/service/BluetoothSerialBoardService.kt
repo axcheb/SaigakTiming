@@ -21,7 +21,7 @@ import java.io.InputStreamReader
 import java.util.*
 
 /**
- * Синглтон для работы с последовательным модулем bluetooth (Bluetooth serial board).
+ * Сервис для работы с последовательным модулем bluetooth (Bluetooth serial board).
  * В данном случае код заточен на работу с модулем HC-06 @see [DEVICE_NAME],
  * т.к работа с другими модулями не предполагается.
  */

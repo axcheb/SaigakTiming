@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId "ru.axcheb.saigaktiming"
-        minSdkVersion 24
+        minSdkVersion 22
         targetSdkVersion 30
         versionCode 1
         versionName "0.0.1"

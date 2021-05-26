@@ -77,6 +77,8 @@ void handleNetwork() {
     if (ok) {
       #ifdef PRINT_TO_SERIAL
       Serial.print("ok sending:");
+      Serial.print(p->command);
+      Serial.print(",");
       Serial.println(getDateTimeStr(*p));
       #endif
       payload = NULL;
@@ -99,10 +101,9 @@ void handleIncomingPayload(Payload incomingPayload) {
         case 't': //time
             adjustTime(incomingPayload);
         case 's': //search
-            char command = 't';
             int ms = getTimerMillis();
             unsigned long timeSeconds = rtc.now().getEpoch();
-            Payload p = {command, timeSeconds, ms};
+            Payload p = {'t', timeSeconds, ms};
             // Костыль. Без задержки между приёмом и отправкой сообщения возникают фиерические глюки.
             delay(10);
             payload = &p;
@@ -145,10 +146,10 @@ void fotorezistor() {
     DateTime now = rtc.now();    
     if ((millis() - debounceTimer) > DEBOUNCE) {
       unsigned long timeSeconds = now.getEpoch();
-      char command = 'f';
       // запоминаю, а отправка произойдёт потом.
-      Payload p = {command, timeSeconds, ms};
+      Payload p = {'f', timeSeconds, ms};
       payload = &p;
+      delay(5); // Костыль. Без этой задержки, payload на master уходит кривой.
       #ifdef PRINT_TO_SERIAL
       Serial.println(getDateTimeStr(p));
       #endif

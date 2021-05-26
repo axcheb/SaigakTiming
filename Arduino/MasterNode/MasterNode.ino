@@ -50,10 +50,9 @@ void loop() {
 
     char command = str[0];
     if (command == 's') { //search
-        char command = 's';
         unsigned long timeSeconds = 0;
         int ms = 0;
-        Payload p = {command, timeSeconds, ms};
+        Payload p = {'s', timeSeconds, ms};
         RF24NetworkHeader header1(/*to node*/ node1);
         bool ok = network.write(header1, &p, sizeof(p));
         RF24NetworkHeader header2(/*to node*/ node2);
@@ -69,9 +68,8 @@ void loop() {
         if (nextSubStr) {
             nextSubStr ++;
             unsigned long timeSeconds = strtoull(nextSubStr);
-            char command = 't';
             int ms = 0;
-            Payload p = {command, timeSeconds, ms};
+            Payload p = {'t', timeSeconds, ms};
             RF24NetworkHeader header1(/*to node*/ node1);
             bool ok = network.write(header1, &p, sizeof(p));
             #ifdef PRINT_TO_SERIAL
@@ -94,7 +92,10 @@ void loop() {
     network.read(header, &incomingPayload, sizeof(incomingPayload));
 
     #ifdef PRINT_TO_SERIAL
+    Serial.print(header.id, DEC);
+    Serial.print(",");
     Serial.print(incomingPayload.command);
+    Serial.print(",");
     Serial.print(header.from_node, DEC);
     Serial.print(",");
     Serial.print(incomingPayload.timeSeconds, DEC);
@@ -102,7 +103,7 @@ void loop() {
     Serial.println(incomingPayload.ms, DEC);
     #endif
 
-//    Serial.print(header.id, DEC);
+
     BTSerial.print(incomingPayload.command);
     BTSerial.print(",");
     BTSerial.print(header.from_node, DEC);
