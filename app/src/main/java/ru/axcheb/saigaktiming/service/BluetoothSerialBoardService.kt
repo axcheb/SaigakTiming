@@ -55,7 +55,7 @@ class BluetoothSerialBoardService : LifecycleService() {
 
     private var status: ServiceStatus = ServiceStatus.STOPPED
 
-    private val adapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+    private val adapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
 
     private val bluetoothSocketFlow = MutableStateFlow<BluetoothSocket?>(null)
 
@@ -151,6 +151,9 @@ class BluetoothSerialBoardService : LifecycleService() {
      * Ничего не делает, если подключение уже существует.
      */
     private fun start() {
+        if (adapter == null) {
+            return
+        }
         scope.launch {
             withContext(Dispatchers.Main) {
                 _requestEnableBluetooth.value = !adapter.isEnabled
@@ -171,31 +174,34 @@ class BluetoothSerialBoardService : LifecycleService() {
         }
     }
 
-    suspend fun send(msg: String): Boolean {
+    fun send(msg: String): Boolean {
         if (msg.isEmpty()) {
             return true
         }
-        val outputStream = bluetoothSocketFlow.value?.outputStream ?: return false
+        val btSocket = bluetoothSocketFlow.value ?: return false
+        if (!btSocket.isConnected) {
+            return false
+        }
+        val outputStream = btSocket.outputStream ?: return false
         var res = true
         val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             res = false
             Log.d(TAG, "Message send failed...\n ${throwable.message}")
             onError()
         }
-
-        withContext(Dispatchers.IO + exceptionHandler) {
+        scope.launch(Dispatchers.IO + exceptionHandler) {
             @Suppress("BlockingMethodInNonBlockingContext")
             outputStream.write("$msg\n".toByteArray())
         }
         return res
     }
 
-    suspend fun syncTime() {
+    fun syncTime() {
         val d = Date()
-        send("$TIME,${d.time / 1000}") // time
+        send("$TIME,${d.time / 1000}")
     }
 
-    suspend fun searchSensors() {
+    fun searchSensors() {
         send(SEARCH)
     }
 
@@ -211,6 +217,9 @@ class BluetoothSerialBoardService : LifecycleService() {
     }
 
     private fun setupService() {
+        if (adapter == null) {
+            return
+        }
         val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             Log.d(TAG, "Connection to $DEVICE_NAME failed...\n ${throwable.message}")
             onError()

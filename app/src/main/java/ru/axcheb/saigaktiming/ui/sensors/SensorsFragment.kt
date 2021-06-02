@@ -37,15 +37,11 @@ class SensorsFragment : Fragment() {
     private fun setListeners() {
         val mainActivity = activity as MainActivity
         binding.syncTimeBtn.setOnClickListener {
-            lifecycleScope.launch {
-                mainActivity.btService.syncTime()
-            }
+            mainActivity.btService.syncTime()
         }
 
         binding.searchSensorsBtn.setOnClickListener {
-            lifecycleScope.launch {
-                mainActivity.btService.searchSensors()
-            }
+            mainActivity.btService.searchSensors()
         }
 
         binding.clearBtn.setOnClickListener {
