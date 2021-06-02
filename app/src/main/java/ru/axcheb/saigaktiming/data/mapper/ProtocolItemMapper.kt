@@ -13,8 +13,7 @@ class ListOfProtocolItemMapper :
         val (eventMembers, startAndFinishList) = input
         val startAndFinishMap = startAndFinishList.groupBy { it.start.eventMemberId }
         return eventMembers.map {
-            val memberStartAndFinishList =
-                startAndFinishMap.getOrDefault(it.eventMemberCrossRef.id, emptyList())
+            val memberStartAndFinishList = startAndFinishMap[it.eventMemberCrossRef.id] ?: emptyList()
             ProtocolItem(
                 it.eventMemberCrossRef.id!!,
                 it.eventMemberCrossRef.eventId!!,
