@@ -1,5 +1,6 @@
 package ru.axcheb.saigaktiming.data.model.ui
 
+import ru.axcheb.saigaktiming.data.formatSecondsAndMs
 import ru.axcheb.saigaktiming.data.hhmmssStr
 import java.util.*
 
@@ -15,10 +16,7 @@ data class ResultItem(
     val sensorStr get() = sensor.toString()
     val startTimeStr get() = startTime.hhmmssStr()
     val finishTimeStr get() = finishTime.hhmmssStr()
-    val resultStr: String get() {
-        return "${diff / 1000}.${diff % 1000}"
-    }
-
+    val resultStr: String get() = diff.formatSecondsAndMs()
     val diff: Long get() = finishTime.time - startTime.time
 
 }

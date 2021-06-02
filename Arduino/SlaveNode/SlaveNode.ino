@@ -149,7 +149,7 @@ void fotorezistor() {
       // запоминаю, а отправка произойдёт потом.
       Payload p = {'f', timeSeconds, ms};
       payload = &p;
-      delay(5); // Костыль. Без этой задержки, payload на master уходит кривой.
+      delay(5); // Костыль. Без этой задержки payload на master уходит кривой.
       #ifdef PRINT_TO_SERIAL
       Serial.println(getDateTimeStr(p));
       #endif

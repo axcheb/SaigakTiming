@@ -41,12 +41,13 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.includeAndroidResources = true
+    }
 }
 
 dependencies {
-
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // Android
     implementation 'androidx.core:core-ktx:1.5.0'
@@ -69,8 +70,8 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.3.0'
 
     // Asynchronous
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0-RC"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-RC"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
 
     // DI
     // Koin main features for Android (Scope,ViewModel ...)

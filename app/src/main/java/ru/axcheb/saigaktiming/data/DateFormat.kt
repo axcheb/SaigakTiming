@@ -34,6 +34,10 @@ fun Long.formatElapsedTimeSeconds(): String {
     return DateUtils.formatElapsedTime(this)
 }
 
+fun getMsStr(v: Long): String = (v % 1000).toString().padStart(3, '0')
+
 fun Long.formatElapsedTimeMs(): String {
-    return "${DateUtils.formatElapsedTime(this / 1000)}.${this % 1000}"
+    return "${DateUtils.formatElapsedTime(this / 1000)}.${getMsStr(this)}"
 }
+
+fun Long.formatSecondsAndMs(): String = "${this / 1000}.${getMsStr(this)}"
