@@ -103,6 +103,7 @@
                 <Button
                     android:id="@+id/next_btn"
                     style="@style/bar_button_style"
+                    android:enabled="@{viewModel.isNextEnabled}"
                     android:text="@string/next"
                     app:icon="@drawable/ic_keyboard_arrow_right_24" />
 

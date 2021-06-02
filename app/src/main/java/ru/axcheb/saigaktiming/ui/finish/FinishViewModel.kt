@@ -32,6 +32,8 @@ class FinishViewModel(
 
     private val TAG = this::class.qualifiedName
 
+    val beepFlow = MutableSharedFlow<Int>(0, 1, BufferOverflow.DROP_OLDEST)
+
     /**
      * Flow событий срабатывания фотодатчика финиша.
      */
@@ -122,7 +124,8 @@ class FinishViewModel(
 
     val isNextEnabled: StateFlow<Boolean> =
         _status.map {
-            (it == Status.WAITING_START || it == Status.STARTED_WAITING_FINISH)
+            !isWorkWithOneMember
+                    && (it == Status.WAITING_START || it == Status.STARTED_WAITING_FINISH)
                     // Кнопка Next доступна для всех участников на СУ, кроме последнего. Его пропускать нельзя.
                     && (event.currentMemberIndex + 1 < members.count())
         }
@@ -138,8 +141,12 @@ class FinishViewModel(
     val pauseOrResume: StateFlow<Boolean> =
         _status.map { it != Status.PAUSED }.stateIn(viewModelScope, SharingStarted.Lazily, true)
 
-    val isToEndEnabled: StateFlow<Boolean> = _status.map { it == Status.WAITING_START }
-        .stateIn(viewModelScope, SharingStarted.Lazily, true)
+    val isToEndEnabled: StateFlow<Boolean> =
+        _status.map {
+            !isWorkWithOneMember
+                    && it == Status.WAITING_START
+        }
+            .stateIn(viewModelScope, SharingStarted.Lazily, true)
 
     /**
      * Можно ли взаимодействовать с таймером: запускать, приостанавливать и т.д.
@@ -327,6 +334,13 @@ class FinishViewModel(
         else
             BEFORE_START_TIME
 
+        // Время до старта обазятельно должно равняться секунде. Если это не так, исправляем это:
+        if (beforeStartTime % ONE_SECOND != 0L) {
+            beforeStartTime = (beforeStartTime + ONE_SECOND) / ONE_SECOND * ONE_SECOND
+        }
+        // Итоговое время старта участника будет на миллисекунды отличаться от запланированного в большую сторону.
+        // И чем больше участников, тем больше это время будет расти.
+
         Log.d(TAG, "beforeStartTime $beforeStartTime")
 
         // Время, отведённое на прохождение дистанции:
@@ -373,11 +387,15 @@ class FinishViewModel(
         if (_status.value != Status.WAITING_START) {
             throw IllegalStateException("Illegal state ${_status.value}")
         }
+        if (millisFromStartCounting - beforeStartTime >= -BEFORE_START_TIME) {
+            beepFlow.tryEmit(R.raw.beep_before)
+        }
         _millisFromStartCountingFlow.value = millisFromStartCounting
     }
 
     private fun onWaitingFinishTick(millisFromStartCounting: Long) {
         if (_status.value == Status.WAITING_START) {
+            beepFlow.tryEmit(R.raw.beep_start)
             _status.value = Status.STARTED_WAITING_FINISH
             isTrackChanged = isNextMemberGoesToNextTrack()
             updateEventMemberToNext()

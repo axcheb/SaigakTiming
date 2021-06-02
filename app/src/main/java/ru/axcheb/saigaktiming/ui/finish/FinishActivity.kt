@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.IBinder
 import android.view.KeyEvent
@@ -12,6 +13,7 @@ import com.artemchep.bindin.bindIn
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.data.model.ui.ResultItem
 import ru.axcheb.saigaktiming.databinding.FinishActivityBinding
 import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService
@@ -27,6 +29,9 @@ class FinishActivity : AppCompatActivity() {
             intent.getLongExtra(START_ID_EXTRA, 0)
         )
     }
+
+    private var beepBeforePlayer: MediaPlayer? = null
+    private var beepStartPlayer: MediaPlayer? = null
 
     private fun finishActiveListener(item: ResultItem) {
         viewModel.handleFinishActive(item)
@@ -69,6 +74,9 @@ class FinishActivity : AppCompatActivity() {
 
         // не вызывает requestLayout, все вьюхи одного размера
         binding.finishRecycler.setHasFixedSize(true)
+
+        beepBeforePlayer = MediaPlayer.create(this, R.raw.beep_before)
+        beepStartPlayer = MediaPlayer.create(this, R.raw.beep_start)
 
         observeData()
         setListeners()
@@ -114,6 +122,12 @@ class FinishActivity : AppCompatActivity() {
 
     private fun observeData() {
         this.bindIn(viewModel.finishItems) { items -> adapter.submitList(items) }
+        this.bindIn(viewModel.beepFlow) {
+            when (it) {
+                R.raw.beep_start -> beepStartPlayer?.start()
+                R.raw.beep_before -> beepBeforePlayer?.start()
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -124,6 +138,10 @@ class FinishActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         unbindService(connection)
+        beepBeforePlayer?.release()
+        beepStartPlayer?.release()
+        beepBeforePlayer = null
+        beepStartPlayer = null
     }
 
     companion object {
