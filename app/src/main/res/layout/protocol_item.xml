@@ -8,9 +8,6 @@
         <variable
             name="item"
             type="ru.axcheb.saigaktiming.data.model.ui.ProtocolItem" />
-        <variable
-            name="position"
-            type="Integer" />
     </data>
 
     <LinearLayout
@@ -30,7 +27,7 @@
                 android:layout_marginStart="@dimen/default_view_margin"
                 android:layout_marginEnd="@dimen/default_view_margin"
                 android:gravity="end"
-                android:text="@{Integer.toString(position)}"
+                android:text="@{Integer.toString(item.position)}"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/time_text"

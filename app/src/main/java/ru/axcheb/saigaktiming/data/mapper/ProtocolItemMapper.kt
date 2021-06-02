@@ -27,6 +27,10 @@ class ListOfProtocolItemMapper :
             )
             // у кого больше заездов, тот выше, затем учитывается время
         }.sortedWith(compareBy({ -it.trackResults.size }, { it.resultMillis }))
+            .mapIndexed { index: Int, pi: ProtocolItem ->
+                pi.position = index + 1
+                pi
+            }
     }
 
     private fun calcResultMillis(

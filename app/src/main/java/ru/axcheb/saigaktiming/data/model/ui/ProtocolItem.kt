@@ -16,7 +16,10 @@ data class ProtocolItem(
     /** Результат в миллисекундах. */
     val resultMillis: Long,
     /** Результаты на каждом СУ:  */
-    val trackResults: List<ProtocolFinishItem>
+    val trackResults: List<ProtocolFinishItem>,
+
+    /** Порядковый номер в протоколе. */
+    var position: Int = 0
 
 ) {
 

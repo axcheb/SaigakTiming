@@ -31,7 +31,6 @@ class ProtocolAdapter :
 
         fun bind(item: ProtocolItem, position: Int) {
             binding.item = item
-            binding.position = position + 1
             binding.executePendingBindings()
         }
 
