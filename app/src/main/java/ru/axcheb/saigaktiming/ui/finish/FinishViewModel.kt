@@ -303,6 +303,9 @@ class FinishViewModel(
                 _nextMember.value = members.second
                 _startIdFlow.value = 0
                 val job = launchTimerJob()
+                if (isWorkWithOneMember) {
+                    isOneMemberLaunched = true
+                }
                 job.join()
                 members = getCurrentMembers()
             }
