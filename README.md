@@ -37,9 +37,9 @@ Android приложение для измерения времени прохо
 
 
 ## Скриншоты
-<img src="screenshots/screenshot1" width="270"> <img src="screenshots/screenshot2" width="270">
-<img src="screenshots/screenshot3" width="270"> <img src="screenshots/screenshot4" width="270">
-<img src="screenshots/screenshot5" width="270">
+<img src="screenshots/screenshot1.png" width="270"> <img src="screenshots/screenshot2.png" width="270">
+<img src="screenshots/screenshot3.png" width="270"> <img src="screenshots/screenshot4.png" width="270">
+<img src="screenshots/screenshot5.png" width="270">
 
 
 ## Arduino железо и схемы
