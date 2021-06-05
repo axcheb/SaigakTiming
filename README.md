@@ -36,11 +36,36 @@ Android приложение для измерения времени прохо
 * Синхронизация времени финишных датчиков с временем телефона.
 
 
+## Скриншоты
+<img src="screenshots/screenshot1" width="270"> <img src="screenshots/screenshot2" width="270">
+<img src="screenshots/screenshot3" width="270"> <img src="screenshots/screenshot4" width="270">
+<img src="screenshots/screenshot5" width="270">
+
+
 ## Arduino железо и схемы
 
 Файлы прошивок находятся в каталоге Arduino. MasterNode - главная станция. SlaveNode - финишная станция. При наличии нескольких финишных станций необходимо прошить в них разный node address в промежутке от 01 - 05 (смотри файл SlaveNode.ino). Также необходимо скачать библиотеки Sodaq_DS3231, RF24Network, RF24.  При работе в Arduino IDE необходимо скопировать файл Node.h в каталог 'libraries/SaigakTiming'. 
 
-TODO добавить схемы
+### Схема главной станции
+![Главня](Arduino/schemes/master.png)
+
+### Схема финишной станции
+![Финишная](Arduino/schemes/slave.png)
+
+**Внимание!**
+На схемах не нарисованы повышающий преобразователь на 5v для литеевого аккумулятора и кнопка включения. Также не стал рисовать схему лазера. Лазер через повышающий преобразователь соединяется акумулятором, плюс тоже есть кнопка включения.
+
+### Набор радио компонентов с али для одной главной станции и двух финишных
+
+* [Ардуина нано](https://aliexpress.ru/item/32341832857.html) 3 шт 
+* [Модуль реального времени](https://aliexpress.ru/item/1005001557552298.html) 2шт
+* [Импульсный повышающий модуль и зарядка для литеевой банки](https://aliexpress.ru/item/32923419688.html) 5 шт
+* [Bluetooth HC-06](https://aliexpress.ru/item/4000587203886.html)
+* [NRF24L01 с антеной](https://aliexpress.ru/item/32517849393.html) 3 шт
+* [Модуль питания для NRF24L01](https://aliexpress.ru/item/4000587243566.html) 3 шт
+* [Лазеры](https://aliexpress.ru/item/32843915409.html)
+* [Фоторезисторы](https://aliexpress.ru/item/32623615207.html)
+* [Кнопки](https://aliexpress.ru/item/4000169106856.html)
 
 
 ## Алгоритм соревнований применительно к участнику
