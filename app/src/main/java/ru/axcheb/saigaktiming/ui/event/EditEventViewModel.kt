@@ -1,6 +1,7 @@
 package ru.axcheb.saigaktiming.ui.event
 
 import androidx.lifecycle.*
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
@@ -64,15 +65,16 @@ class EditEventViewModel(
                     isAutoPauseBetweenTracks = isAutoPauseBetweenTracks.value!!
                 )
                 _state.value = State.SAVING
-                if (event.id == null) {
-                    eventRepository.insert(event)
-                } else {
-                    eventRepository.update(event)
+                coroutineScope { // остановка viewModelScope при уничтожении VM не повлияет на сохранение.
+                    if (event.id == null) {
+                        eventRepository.insert(event)
+                    } else {
+                        eventRepository.update(event)
+                    }
                 }
                 _state.value = State.SAVED
             }
         }
-
     }
 
     private fun validateTrackCount(trackCountVal: Int?): Int? {

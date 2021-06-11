@@ -45,7 +45,6 @@ class EditEventFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         setListeners()
-        observeData()
         return binding.root
     }
 
@@ -65,16 +64,8 @@ class EditEventFragment : Fragment() {
             if (isAdded) {
                 viewModel.save()
             }
+            view?.findNavController()?.navigateUp()
             true
-            // wait for saved state (viewModel.state) and then close
-        }
-    }
-
-    private fun observeData() {
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            if (state == EditEventViewModel.State.SAVED) {
-                view?.findNavController()?.navigateUp()
-            }
         }
     }
 

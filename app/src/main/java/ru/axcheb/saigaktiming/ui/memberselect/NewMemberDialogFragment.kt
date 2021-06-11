@@ -86,10 +86,8 @@ class NewMemberDialogFragment : DialogFragment() {
         private const val NEW_MEMBER_DIALOG_TAG = "NEW_MEMBER_DIALOG"
 
         fun showDialog(fragmentManager: FragmentManager, eventId: Long) {
-            val args = Bundle()
-            args.putLong(EVENT_ID_EXTRA, eventId)
             val newMemberDialog = NewMemberDialogFragment()
-            newMemberDialog.arguments = args
+            newMemberDialog.arguments = Bundle(1).apply { putLong(EVENT_ID_EXTRA, eventId) }
             newMemberDialog.show(fragmentManager, NEW_MEMBER_DIALOG_TAG)
         }
     }
