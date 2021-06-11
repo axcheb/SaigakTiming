@@ -24,14 +24,15 @@ class EventMemberAdapter() :
 
         fun bind(member: EventMemberItem) {
             binding.item = member
-            if (member.isNext) {
-                binding.sequenceNumber.setTextColor(
-                    ContextCompat.getColor(
-                        binding.sequenceNumber.context,
-                        R.color.deep_orange_500
-                    )
+
+            val color = if (member.isNext) R.color.deep_orange_500 else R.color.black
+            binding.sequenceNumber.setTextColor(
+                ContextCompat.getColor(
+                    binding.sequenceNumber.context,
+                    color
                 )
-            }
+            )
+
             binding.executePendingBindings()
         }
 
