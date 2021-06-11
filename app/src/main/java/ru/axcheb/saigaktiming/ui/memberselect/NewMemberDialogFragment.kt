@@ -23,7 +23,7 @@ class NewMemberDialogFragment : DialogFragment() {
 
     // This property is only valid between onCreateView and onDestroyView.
     private var _binding: NewMemberFragmentBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = checkNotNull(_binding)
 
     override fun onCreateView(
         inflater: LayoutInflater,

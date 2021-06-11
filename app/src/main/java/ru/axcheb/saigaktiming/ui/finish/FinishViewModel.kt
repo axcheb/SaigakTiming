@@ -87,7 +87,8 @@ class FinishViewModel(
 
     private lateinit var event: Event
 
-    private lateinit var originalMembers: List<Member>
+    private var _originalMembers: List<Member>? = null
+    private val originalMembers get() = checkNotNull(_originalMembers) {"Members isn't initialized"}
 
     /**
      * Список участников, которые выйдут на старт.
@@ -98,13 +99,13 @@ class FinishViewModel(
      * Текущий выбранный участник.
      */
     private val _member: MutableStateFlow<Member?> = MutableStateFlow(null)
-    val member: StateFlow<Member?> = _member
+    val member get() = _member.asStateFlow()
 
     /**
      * Следующий участник.
      */
     private val _nextMember: MutableStateFlow<Member?> = MutableStateFlow(null)
-    val nextMember: StateFlow<Member?> = _nextMember
+    val nextMember get() = _nextMember.asStateFlow()
 
     private var timerJob: Job? = null
     private var membersForEachJob: Job? = null
@@ -174,13 +175,13 @@ class FinishViewModel(
             if (isWorkWithOneMember) {
                 val m = memberRepository.getMember(memberId).firstOrNull()
                 m?.apply {
-                    originalMembers = listOf(this)
+                    _originalMembers = listOf(this)
                     members = arrayListOf(this)
                 }
             } else {
                 val memberList = memberRepository.getMembers(eventId).firstOrNull()
                 memberList?.apply {
-                    originalMembers = this
+                    _originalMembers = this
                     members = this.toMutableList()
                 }
             }

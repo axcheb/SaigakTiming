@@ -18,7 +18,8 @@ class EditEventViewModel(
 ) : ViewModel() {
 
     private val _eventId = MutableLiveData<Long?>()
-    val eventId: LiveData<Long?> = _eventId
+    val eventId get(): LiveData<Long?> = _eventId
+
     val eventDate = MutableLiveData<Date>()
     val dateStr = eventDate.map { it?.ddmmyyyyStr() }
     val timeStr = eventDate.map { it?.hhmmStr() }
@@ -30,7 +31,7 @@ class EditEventViewModel(
     val trackMaxTimeError = trackMaxTime.map { validateTrackMaxTime(it) }
 
     private val _state = MutableLiveData(State.EDITING)
-    val state: LiveData<State> = _state
+    val state get(): LiveData<State> = _state
 
     private val canSave = combine(
         trackCountError.asFlow(),

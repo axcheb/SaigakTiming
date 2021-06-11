@@ -40,15 +40,12 @@ class FinishActivity : AppCompatActivity() {
     private val adapter: FinishAdapter by inject { parametersOf(::finishActiveListener) }
 
     private var _binding: FinishActivityBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = checkNotNull(_binding)
 
-    lateinit var btService: BluetoothSerialBoardService
     private var btServiceBound: Boolean = false
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            val binder = service as BluetoothSerialBoardService.LocalBinder
-            btService = binder.getService()
             btServiceBound = true
         }
 

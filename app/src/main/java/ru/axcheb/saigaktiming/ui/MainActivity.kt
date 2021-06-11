@@ -11,8 +11,6 @@ import android.os.IBinder
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.artemchep.bindin.bindIn
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -21,7 +19,9 @@ import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var btService: BluetoothSerialBoardService
+    private var _btService: BluetoothSerialBoardService? = null
+    val btService get() = checkNotNull(_btService)
+
     private var btServiceBound: Boolean = false
 
     private val enableBluetoothLauncher =
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as BluetoothSerialBoardService.LocalBinder
-            btService = binder.getService()
+            _btService = binder.getService()
             btServiceBound = true
         }
 
@@ -45,7 +45,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startBtServer()
+        if (savedInstanceState == null) {
+            startBtServer()
+        }
 
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)

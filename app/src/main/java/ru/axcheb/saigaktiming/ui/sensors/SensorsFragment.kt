@@ -16,7 +16,7 @@ class SensorsFragment : Fragment() {
     private val viewModel: SensorsViewModel by viewModel()
 
     private var _binding: SensorsFragmentBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = checkNotNull(_binding)
 
     override fun onCreateView(
         inflater: LayoutInflater,

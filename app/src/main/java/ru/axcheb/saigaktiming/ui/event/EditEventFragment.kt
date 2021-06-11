@@ -24,7 +24,7 @@ class EditEventFragment : Fragment() {
 
     // This property is only valid between onCreateView and onDestroyView.
     private var _binding: EditEventFragmentBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = checkNotNull(_binding)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

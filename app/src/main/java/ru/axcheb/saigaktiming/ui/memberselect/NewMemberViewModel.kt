@@ -18,10 +18,10 @@ class NewMemberViewModel(
     private val TAG = this::class.qualifiedName
 
     private val _errorMsg = MutableLiveData<Int?>()
-    val errorMsg: LiveData<Int?> = _errorMsg
+    val errorMsg get(): LiveData<Int?> = _errorMsg
 
     private val _state = MutableLiveData(State.EDITING)
-    val state: LiveData<State> = _state
+    val state get(): LiveData<State> = _state
 
     val name = MutableLiveData<String?>()
 

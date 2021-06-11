@@ -26,7 +26,7 @@ class ProtocolFragment : Fragment() {
     private val adapter: ProtocolAdapter by inject()
 
     private var _binding: ProtocolFragmentBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = checkNotNull(_binding)
 
     override fun onCreateView(
         inflater: LayoutInflater,

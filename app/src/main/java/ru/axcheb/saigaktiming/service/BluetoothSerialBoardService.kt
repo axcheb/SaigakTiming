@@ -32,11 +32,11 @@ class BluetoothSerialBoardService : LifecycleService() {
     companion object {
         // messages from bt adapter
         private val _messageFlow = MutableSharedFlow<String>()
-        val messageFlow: Flow<String> = _messageFlow
+        val messageFlow get() = _messageFlow.asSharedFlow()
 
         // Нужно ли спросить включить блютус:
         private val _requestEnableBluetooth = MutableStateFlow(true)
-        val requestEnableBluetooth: StateFlow<Boolean> = _requestEnableBluetooth
+        val requestEnableBluetooth get() = _requestEnableBluetooth.asStateFlow()
 
         private const val RECONNECTION_TRY_TIME = 30_000L
 
@@ -59,7 +59,7 @@ class BluetoothSerialBoardService : LifecycleService() {
 
     private val bluetoothSocketFlow = MutableStateFlow<BluetoothSocket?>(null)
 
-    private val inMessageFlow = bluetoothSocketFlow.map { it?.inputStream }.filter { it != null }
+    private val inMessageFlow = bluetoothSocketFlow.map { it?.inputStream }.filterNotNull()
         .flatMapLatest { inStream ->
             BufferedReader(InputStreamReader(inStream)).lineSequence().asFlow()
         }.catch { e ->
