@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.data.mapper.SensorMessageMapper
-import ru.axcheb.saigaktiming.data.model.dto.Settings
+import ru.axcheb.saigaktiming.data.model.db.Settings
 import ru.axcheb.saigaktiming.data.repository.SettingsRepository
 import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService
 

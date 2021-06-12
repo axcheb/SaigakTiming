@@ -1,4 +1,4 @@
-package ru.axcheb.saigaktiming.data.model.dto
+package ru.axcheb.saigaktiming.data.model.db
 
 import ru.axcheb.saigaktiming.data.FINISH
 import java.util.*

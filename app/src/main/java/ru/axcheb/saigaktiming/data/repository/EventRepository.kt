@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.map
 import ru.axcheb.saigaktiming.data.dao.EventDao
 import ru.axcheb.saigaktiming.data.mapper.ArchiveItemMapper
 import ru.axcheb.saigaktiming.data.mapper.ListMapper
-import ru.axcheb.saigaktiming.data.model.dto.Event
+import ru.axcheb.saigaktiming.data.model.db.Event
 
 class EventRepository(private val eventDao: EventDao) {
 

@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.map
 import ru.axcheb.saigaktiming.data.dao.MemberDao
 import ru.axcheb.saigaktiming.data.mapper.EventMemberItemMapper
 import ru.axcheb.saigaktiming.data.mapper.ListMapper
-import ru.axcheb.saigaktiming.data.model.dto.Event
-import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRef
-import ru.axcheb.saigaktiming.data.model.dto.Member
+import ru.axcheb.saigaktiming.data.model.db.Event
+import ru.axcheb.saigaktiming.data.model.db.EventMemberCrossRef
+import ru.axcheb.saigaktiming.data.model.db.Member
 import ru.axcheb.saigaktiming.data.model.ui.EventMemberItem
 import ru.axcheb.saigaktiming.data.model.ui.MemberSelectItem
 

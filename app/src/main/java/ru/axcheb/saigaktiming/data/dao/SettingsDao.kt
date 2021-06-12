@@ -2,7 +2,7 @@ package ru.axcheb.saigaktiming.data.dao
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import ru.axcheb.saigaktiming.data.model.dto.Settings
+import ru.axcheb.saigaktiming.data.model.db.Settings
 
 @Dao
 interface SettingsDao {

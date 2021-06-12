@@ -11,7 +11,7 @@ import com.artemchep.bindin.bindIn
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import ru.axcheb.saigaktiming.data.model.ui.ResultItem
+import ru.axcheb.saigaktiming.data.model.ui.StartItem
 import ru.axcheb.saigaktiming.databinding.StartFragmentBinding
 import ru.axcheb.saigaktiming.ui.finish.FinishActivity
 
@@ -28,7 +28,7 @@ class StartFragment : Fragment() {
         )
     }
 
-    private fun startActiveListener(item: ResultItem) {
+    private fun startActiveListener(item: StartItem) {
         viewModel.handleStartActive(item.id)
     }
 
@@ -65,7 +65,7 @@ class StartFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewLifecycleOwner.bindIn(viewModel.resultItems) { adapter.submitList(it) }
+        viewLifecycleOwner.bindIn(viewModel.startItems) { adapter.submitList(it) }
     }
 
     override fun onDestroyView() {

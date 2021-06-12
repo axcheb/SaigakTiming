@@ -7,7 +7,7 @@ import ru.axcheb.saigaktiming.data.dao.EventDao
 import ru.axcheb.saigaktiming.data.dao.MemberDao
 import ru.axcheb.saigaktiming.data.dao.ResultDao
 import ru.axcheb.saigaktiming.data.dao.SettingsDao
-import ru.axcheb.saigaktiming.data.model.dto.*
+import ru.axcheb.saigaktiming.data.model.db.*
 
 @Database(
     entities = [

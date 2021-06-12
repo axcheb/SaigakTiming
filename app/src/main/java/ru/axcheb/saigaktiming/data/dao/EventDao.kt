@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
-import ru.axcheb.saigaktiming.data.model.dto.Event
+import ru.axcheb.saigaktiming.data.model.db.Event
 
 @Dao
 interface EventDao {

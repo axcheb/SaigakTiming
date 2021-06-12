@@ -4,10 +4,10 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.data.formatElapsedTimeMs
-import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRef
+import ru.axcheb.saigaktiming.data.model.db.EventMemberCrossRef
 import ru.axcheb.saigaktiming.data.repository.MemberRepository
 import ru.axcheb.saigaktiming.data.repository.ResultRepository
-import ru.axcheb.saigaktiming.data.model.dto.Start
+import ru.axcheb.saigaktiming.data.model.db.Start
 import ru.axcheb.saigaktiming.data.repository.EventRepository
 
 class StartViewModel(
@@ -26,12 +26,12 @@ class StartViewModel(
 
     private var eventMember: EventMemberCrossRef? = null
 
-    val resultItems = resultRepository.getStartResults(eventId, memberId)
+    val startItems = resultRepository.getStartResults(eventId, memberId)
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     val penaltySeconds: MutableStateFlow<Int?> = MutableStateFlow(null)
 
-    val totalTimeStr = resultItems.map { items ->
+    val totalTimeStr = startItems.map { items ->
         val sum = items.filter { it.isActive }.fold(0L) { sum, item -> sum + item.diff }
         sum.formatElapsedTimeMs()
     }.stateIn(viewModelScope, SharingStarted.Lazily, "")

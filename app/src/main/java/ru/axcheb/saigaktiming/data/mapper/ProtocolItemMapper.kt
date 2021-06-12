@@ -1,7 +1,7 @@
 package ru.axcheb.saigaktiming.data.mapper
 
-import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRefAndMember
-import ru.axcheb.saigaktiming.data.model.dto.StartAndFinish
+import ru.axcheb.saigaktiming.data.model.db.EventMemberCrossRefAndMember
+import ru.axcheb.saigaktiming.data.model.db.StartAndFinish
 import ru.axcheb.saigaktiming.data.model.ui.ProtocolItem
 
 class ListOfProtocolItemMapper :

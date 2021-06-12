@@ -14,7 +14,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.axcheb.saigaktiming.R
-import ru.axcheb.saigaktiming.data.model.ui.ResultItem
+import ru.axcheb.saigaktiming.data.model.ui.FinishItem
 import ru.axcheb.saigaktiming.databinding.FinishActivityBinding
 import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService
 
@@ -33,7 +33,7 @@ class FinishActivity : AppCompatActivity() {
     private var beepBeforePlayer: MediaPlayer? = null
     private var beepStartPlayer: MediaPlayer? = null
 
-    private fun finishActiveListener(item: ResultItem) {
+    private fun finishActiveListener(item: FinishItem) {
         viewModel.handleFinishActive(item)
     }
 

@@ -2,9 +2,7 @@ package ru.axcheb.saigaktiming.ui
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import ru.axcheb.saigaktiming.data.model.ui.ArchiveItem
-import ru.axcheb.saigaktiming.data.model.ui.MemberSelectItem
-import ru.axcheb.saigaktiming.data.model.ui.ResultItem
+import ru.axcheb.saigaktiming.data.model.ui.*
 import ru.axcheb.saigaktiming.ui.archive.ArchiveAdapter
 import ru.axcheb.saigaktiming.ui.archive.ArchiveViewModel
 import ru.axcheb.saigaktiming.ui.event.EditEventViewModel
@@ -82,10 +80,10 @@ val uiModule = module {
     factory {
         EventMemberAdapter()
     }
-    factory { (eventId: Long, memberId: Long, startActiveListener: (ResultItem) -> Unit) ->
+    factory { (eventId: Long, memberId: Long, startActiveListener: (StartItem) -> Unit) ->
         StartAdapter(eventId, memberId, startActiveListener)
     }
-    factory { (finishActiveListener: (ResultItem) -> Unit) ->
+    factory { (finishActiveListener: (FinishItem) -> Unit) ->
         FinishAdapter(finishActiveListener)
     }
     factory {

@@ -2,9 +2,9 @@ package ru.axcheb.saigaktiming.data.dao
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRef
-import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRefAndMember
-import ru.axcheb.saigaktiming.data.model.dto.Member
+import ru.axcheb.saigaktiming.data.model.db.EventMemberCrossRef
+import ru.axcheb.saigaktiming.data.model.db.EventMemberCrossRefAndMember
+import ru.axcheb.saigaktiming.data.model.db.Member
 import ru.axcheb.saigaktiming.data.model.ui.MemberSelectItem
 
 @Dao

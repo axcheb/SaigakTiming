@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.axcheb.saigaktiming.data.model.ui.ResultItem
+import ru.axcheb.saigaktiming.data.model.ui.FinishItem
 import ru.axcheb.saigaktiming.databinding.FinishItemBinding
 
 class FinishAdapter(
-    private val finishActiveListener: (ResultItem) -> Unit
+    private val finishActiveListener: (FinishItem) -> Unit
 ) :
-    ListAdapter<ResultItem, FinishAdapter.ViewHolder>(MemberFinishDiffCallback()) {
+    ListAdapter<FinishItem, FinishAdapter.ViewHolder>(FinishItemDiffCallback()) {
 
     init {
         // id все постоянные + переопределён метод getItemID
@@ -19,7 +19,7 @@ class FinishAdapter(
     }
 
     class ViewHolder(val binding: FinishItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(resultItem: ResultItem) {
+        fun bind(resultItem: FinishItem) {
             binding.item = resultItem
             binding.executePendingBindings()
         }
@@ -44,12 +44,12 @@ class FinishAdapter(
     }
 }
 
-private class MemberFinishDiffCallback : DiffUtil.ItemCallback<ResultItem>() {
-    override fun areItemsTheSame(oldItem: ResultItem, newItem: ResultItem): Boolean {
+private class FinishItemDiffCallback : DiffUtil.ItemCallback<FinishItem>() {
+    override fun areItemsTheSame(oldItem: FinishItem, newItem: FinishItem): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: ResultItem, newItem: ResultItem): Boolean {
+    override fun areContentsTheSame(oldItem: FinishItem, newItem: FinishItem): Boolean {
         return oldItem == newItem
     }
 

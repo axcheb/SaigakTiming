@@ -6,11 +6,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRefAndMember
-import ru.axcheb.saigaktiming.data.model.dto.Finish
-import ru.axcheb.saigaktiming.data.model.dto.Start
-import ru.axcheb.saigaktiming.data.model.dto.StartAndFinish
-import ru.axcheb.saigaktiming.data.model.ui.ResultItem
+import ru.axcheb.saigaktiming.data.model.db.*
 
 @Dao
 interface ResultDao {
@@ -45,7 +41,7 @@ interface ResultDao {
         order by start.time desc
     """
     )
-    fun getStartResults(eventId: Long, memberId: Long): Flow<List<ResultItem>>
+    fun getStartResults(eventId: Long, memberId: Long): Flow<List<StartItemDb>>
 
     @Query(
         """
@@ -61,7 +57,7 @@ interface ResultDao {
         order by finishTime desc
     """
     )
-    fun getFinishResults(startId: Long): Flow<List<ResultItem>>
+    fun getFinishResults(startId: Long): Flow<List<FinishItemDb>>
 
     /**
      * Ставит isActive = 0 всем финишным точкам старта startId.

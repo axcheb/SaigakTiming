@@ -1,7 +1,7 @@
 package ru.axcheb.saigaktiming.data.mapper
 
 import android.util.Log
-import ru.axcheb.saigaktiming.data.model.dto.SensorMessage
+import ru.axcheb.saigaktiming.data.model.db.SensorMessage
 import java.util.*
 
 class SensorMessageMapper : Mapper<String, SensorMessage?> {

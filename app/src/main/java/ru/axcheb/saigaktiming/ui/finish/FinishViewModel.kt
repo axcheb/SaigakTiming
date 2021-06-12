@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.*
 import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.data.*
 import ru.axcheb.saigaktiming.data.mapper.SensorMessageMapper
-import ru.axcheb.saigaktiming.data.model.dto.*
-import ru.axcheb.saigaktiming.data.model.ui.ResultItem
+import ru.axcheb.saigaktiming.data.model.db.*
+import ru.axcheb.saigaktiming.data.model.ui.FinishItem
 import ru.axcheb.saigaktiming.data.repository.EventRepository
 import ru.axcheb.saigaktiming.data.repository.MemberRepository
 import ru.axcheb.saigaktiming.data.repository.ResultRepository
@@ -119,7 +119,7 @@ class FinishViewModel(
         start.map { start -> start?.time?.hhmmsssssStr() ?: "" }
             .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
-    val finishItems: StateFlow<List<ResultItem>> =
+    val finishItems: StateFlow<List<FinishItem>> =
         _startIdFlow.flatMapLatest { startId -> resultRepository.getFinishResults(startId) }
             .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
@@ -512,7 +512,7 @@ class FinishViewModel(
         timerJob?.cancelAndJoin()
     }
 
-    fun handleFinishActive(finishItem: ResultItem) {
+    fun handleFinishActive(finishItem: FinishItem) {
         viewModelScope.launch {
             if (finishItem.isActive) return@launch
             resultRepository.makeFinishAsOnlyActiveOne(finishItem.id)

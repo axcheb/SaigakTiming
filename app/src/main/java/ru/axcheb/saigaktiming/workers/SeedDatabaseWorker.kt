@@ -11,7 +11,7 @@ import kotlinx.coroutines.coroutineScope
 import org.koin.java.KoinJavaComponent.inject
 import ru.axcheb.saigaktiming.data.AppDatabase
 import ru.axcheb.saigaktiming.data.SETTINGS_DATA_FILE_NAME
-import ru.axcheb.saigaktiming.data.model.dto.Settings
+import ru.axcheb.saigaktiming.data.model.db.Settings
 
 class SeedDatabaseWorker(
     context: Context,

@@ -9,7 +9,7 @@
             type="android.view.View.OnClickListener" />
         <variable
             name="item"
-            type="ru.axcheb.saigaktiming.data.model.ui.ResultItem" />
+            type="ru.axcheb.saigaktiming.data.model.ui.StartItem" />
     </data>
 
     <LinearLayout

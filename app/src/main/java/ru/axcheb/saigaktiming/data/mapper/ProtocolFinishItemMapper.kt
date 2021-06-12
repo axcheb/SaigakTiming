@@ -1,6 +1,6 @@
 package ru.axcheb.saigaktiming.data.mapper
 
-import ru.axcheb.saigaktiming.data.model.dto.StartAndFinish
+import ru.axcheb.saigaktiming.data.model.db.StartAndFinish
 import ru.axcheb.saigaktiming.data.model.ui.ProtocolFinishItem
 
 class ProtocolFinishItemMapper : Mapper<StartAndFinish, ProtocolFinishItem> {

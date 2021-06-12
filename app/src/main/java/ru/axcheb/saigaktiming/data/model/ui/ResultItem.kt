@@ -4,14 +4,13 @@ import ru.axcheb.saigaktiming.data.formatSecondsAndMs
 import ru.axcheb.saigaktiming.data.hhmmssStr
 import java.util.*
 
-data class ResultItem(
-    /** startId или finishId */ // TODO порефакторить
-    val id: Long,
-    val sensor: Long,
-    val startTime: Date,
-    val finishTime: Date,
-    val isActive: Boolean
-) {
+abstract class ResultItem {
+
+    abstract val id: Long
+    abstract val sensor: Int
+    abstract val startTime: Date
+    abstract val finishTime: Date
+    abstract val isActive: Boolean
 
     val sensorStr get() = sensor.toString()
     val startTimeStr get() = startTime.hhmmssStr()

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.data.ddmmyyyyhhmmStr
-import ru.axcheb.saigaktiming.data.model.dto.Event
+import ru.axcheb.saigaktiming.data.model.db.Event
 import ru.axcheb.saigaktiming.data.model.ui.EventMemberItem
 import ru.axcheb.saigaktiming.data.repository.EventRepository
 import ru.axcheb.saigaktiming.data.repository.MemberRepository

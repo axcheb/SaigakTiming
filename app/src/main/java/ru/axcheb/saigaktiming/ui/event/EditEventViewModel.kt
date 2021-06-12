@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.data.ddmmyyyyStr
 import ru.axcheb.saigaktiming.data.hhmmStr
-import ru.axcheb.saigaktiming.data.model.dto.Event
+import ru.axcheb.saigaktiming.data.model.db.Event
 import ru.axcheb.saigaktiming.data.repository.EventRepository
 import java.util.*
 

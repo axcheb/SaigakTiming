@@ -5,7 +5,7 @@
         <import type="android.view.View"/>
         <variable
             name="item"
-            type="ru.axcheb.saigaktiming.data.model.ui.ResultItem" />
+            type="ru.axcheb.saigaktiming.data.model.ui.FinishItem" />
     </data>
 
     <LinearLayout

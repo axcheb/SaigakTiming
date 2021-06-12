@@ -1,7 +1,7 @@
 package ru.axcheb.saigaktiming.data.repository
 
 import ru.axcheb.saigaktiming.data.dao.SettingsDao
-import ru.axcheb.saigaktiming.data.model.dto.Settings
+import ru.axcheb.saigaktiming.data.model.db.Settings
 
 class SettingsRepository(private val settingsDao: SettingsDao) {
 

@@ -1,8 +1,8 @@
 package ru.axcheb.saigaktiming.data.mapper
 
-import ru.axcheb.saigaktiming.data.model.dto.Event
-import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRef
-import ru.axcheb.saigaktiming.data.model.dto.EventMemberCrossRefAndMember
+import ru.axcheb.saigaktiming.data.model.db.Event
+import ru.axcheb.saigaktiming.data.model.db.EventMemberCrossRef
+import ru.axcheb.saigaktiming.data.model.db.EventMemberCrossRefAndMember
 import ru.axcheb.saigaktiming.data.model.ui.EventMemberItem
 import java.util.*
 
