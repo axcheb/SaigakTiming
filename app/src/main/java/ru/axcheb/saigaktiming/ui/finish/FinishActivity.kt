@@ -17,10 +17,9 @@ import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.data.model.ui.FinishItem
 import ru.axcheb.saigaktiming.databinding.FinishActivityBinding
 import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService
+import ru.axcheb.saigaktiming.ui.addDivider
 
 class FinishActivity : AppCompatActivity() {
-
-    private val TAG = this::class.qualifiedName
 
     private val viewModel: FinishViewModel by viewModel {
         parametersOf(
@@ -68,6 +67,7 @@ class FinishActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.finishRecycler.adapter = adapter
+        binding.finishRecycler.addDivider(R.drawable.default_divider)
 
         // не вызывает requestLayout, все вьюхи одного размера
         binding.finishRecycler.setHasFixedSize(true)

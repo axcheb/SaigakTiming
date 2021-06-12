@@ -11,13 +11,13 @@ import com.artemchep.bindin.bindIn
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.data.model.ui.StartItem
 import ru.axcheb.saigaktiming.databinding.StartFragmentBinding
+import ru.axcheb.saigaktiming.ui.addDivider
 import ru.axcheb.saigaktiming.ui.finish.FinishActivity
 
 class StartFragment : Fragment() {
-
-    private val TAG = this::class.qualifiedName
 
     private val args: StartFragmentArgs by navArgs()
 
@@ -47,6 +47,7 @@ class StartFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         binding.startRecycler.adapter = adapter
+        binding.startRecycler.addDivider(R.drawable.default_divider)
 
         binding.startRecycler.setHasFixedSize(true)
         setListeners()

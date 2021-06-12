@@ -10,8 +10,10 @@ import com.artemchep.bindin.bindIn
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.data.model.ui.ArchiveItem
 import ru.axcheb.saigaktiming.databinding.ArchiveFragmentBinding
+import ru.axcheb.saigaktiming.ui.addDivider
 
 class ArchiveFragment : Fragment() {
 
@@ -31,6 +33,7 @@ class ArchiveFragment : Fragment() {
     ): View {
         val binding = ArchiveFragmentBinding.inflate(inflater, container, false)
         binding.archiveRecycler.adapter = adapter
+        binding.archiveRecycler.addDivider(R.drawable.default_divider)
         observeData()
         return binding.root
     }

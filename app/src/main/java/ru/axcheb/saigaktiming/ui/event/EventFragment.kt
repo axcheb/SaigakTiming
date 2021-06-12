@@ -12,6 +12,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.databinding.EventFragmentBinding
+import ru.axcheb.saigaktiming.ui.addDivider
 import ru.axcheb.saigaktiming.ui.finish.FinishActivity
 
 class EventFragment : Fragment() {
@@ -35,10 +36,7 @@ class EventFragment : Fragment() {
         binding.eventMemberRecycler.adapter = adapter
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        // TODO если захочется переделать на divider
-//        val divider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-//        divider.setDrawable(ContextCompat.getDrawable(activity, R.drawable.e_m_line_divider)
-//        binding.eventMemberRecycler.addItemDecoration(divider)
+        binding.eventMemberRecycler.addDivider(R.drawable.member_divider)
         setListeners()
         observeData()
         return binding.root

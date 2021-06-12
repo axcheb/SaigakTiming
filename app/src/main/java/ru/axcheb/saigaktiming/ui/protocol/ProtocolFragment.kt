@@ -11,7 +11,9 @@ import com.artemchep.bindin.bindIn
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.databinding.ProtocolFragmentBinding
+import ru.axcheb.saigaktiming.ui.addDivider
 
 class ProtocolFragment : Fragment() {
 
@@ -35,6 +37,7 @@ class ProtocolFragment : Fragment() {
     ): View {
         _binding = ProtocolFragmentBinding.inflate(inflater, container, false)
         binding.protocolRecycler.adapter = adapter
+        binding.protocolRecycler.addDivider(R.drawable.member_divider)
         setListeners()
         observeData()
         return binding.root

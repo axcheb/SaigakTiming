@@ -85,7 +85,8 @@ class FinishViewModel(
         }
     }
 
-    private lateinit var event: Event
+    private var _event: Event? = null
+    private val event get() = checkNotNull(_event) {"Event isn't initialized"}
 
     private var _originalMembers: List<Member>? = null
     private val originalMembers get() = checkNotNull(_originalMembers) {"Members isn't initialized"}
@@ -166,7 +167,7 @@ class FinishViewModel(
 
     init {
         viewModelScope.launch {
-            event = eventRepository.getEvent(eventId).first()
+            _event = eventRepository.getEvent(eventId).first()
             if (startId != NULL_ID) {  // Если startId задан, вьюха открывается только на просмотр.
                 _status.value = Status.VIEW_ONLY
                 _startIdFlow.value = startId

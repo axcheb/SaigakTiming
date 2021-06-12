@@ -11,12 +11,12 @@ import com.artemchep.bindin.bindIn
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import ru.axcheb.saigaktiming.R
 import ru.axcheb.saigaktiming.data.model.ui.MemberSelectItem
 import ru.axcheb.saigaktiming.databinding.MemberSelectFragmentBinding
+import ru.axcheb.saigaktiming.ui.addDivider
 
 class MemberSelectFragment : Fragment() {
-
-    private val TAG = this::class.qualifiedName
 
     private val args: MemberSelectFragmentArgs by navArgs()
 
@@ -48,6 +48,7 @@ class MemberSelectFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         binding.allMembersItemRecycler.adapter = adapter
+        binding.allMembersItemRecycler.addDivider(R.drawable.member_divider)
         setListeners()
         observeData()
         return binding.root

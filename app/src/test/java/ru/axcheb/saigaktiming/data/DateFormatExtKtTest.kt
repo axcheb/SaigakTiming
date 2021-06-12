@@ -4,7 +4,7 @@ import org.junit.Test
 
 import org.junit.Assert.*
 
-class DateFormatKtTest {
+class DateFormatExtKtTest {
 
     @Test
     fun formatSecondsAndMs() {
