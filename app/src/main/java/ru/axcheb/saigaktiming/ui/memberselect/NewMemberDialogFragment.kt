@@ -13,8 +13,6 @@ import ru.axcheb.saigaktiming.databinding.NewMemberFragmentBinding
 
 class NewMemberDialogFragment : DialogFragment() {
 
-    private val TAG = this::class.qualifiedName
-
     private val viewModel: NewMemberViewModel by viewModel {
         parametersOf(
             requireArguments().getLong(EVENT_ID_EXTRA)

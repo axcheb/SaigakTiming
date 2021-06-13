@@ -15,8 +15,6 @@ class NewMemberViewModel(
     private val eventId: Long
 ) : ViewModel() {
 
-    private val TAG = this::class.qualifiedName
-
     private val _errorMsg = MutableLiveData<Int?>()
     val errorMsg get(): LiveData<Int?> = _errorMsg
 

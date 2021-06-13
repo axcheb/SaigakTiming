@@ -17,6 +17,7 @@ import ru.axcheb.saigaktiming.data.repository.MemberRepository
 import ru.axcheb.saigaktiming.data.repository.ResultRepository
 import ru.axcheb.saigaktiming.data.repository.SettingsRepository
 import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService
+import timber.log.Timber
 import java.util.*
 
 class FinishViewModel(
@@ -29,8 +30,6 @@ class FinishViewModel(
     settingsRepository: SettingsRepository,
     private val application: Application
 ) : ViewModel() {
-
-    private val TAG = this::class.qualifiedName
 
     val beepFlow = MutableSharedFlow<Int>(0, 1, BufferOverflow.DROP_OLDEST)
 
@@ -344,9 +343,9 @@ class FinishViewModel(
             beforeStartTime = (beforeStartTime + ONE_SECOND) / ONE_SECOND * ONE_SECOND
         }
         // Итоговое время старта участника будет на миллисекунды отличаться от запланированного в большую сторону.
-        // И чем больше участников, тем больше это время будет расти.
+        // И чем больше участников, тем больше это время будет расти и это нормально.
 
-        Log.d(TAG, "beforeStartTime $beforeStartTime")
+        Timber.d("beforeStartTime $beforeStartTime")
 
         // Время, отведённое на прохождение дистанции:
         val waitingFinishTime = event.getTrackTimeMillis() - BEFORE_START_TIME

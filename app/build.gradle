@@ -86,6 +86,7 @@ dependencies {
 
     // Other
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     // Testing
     testImplementation 'junit:junit:4.+'

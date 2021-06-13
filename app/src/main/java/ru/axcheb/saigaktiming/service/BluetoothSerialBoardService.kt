@@ -9,13 +9,13 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Binder
 import android.os.IBinder
-import android.util.Log
 import androidx.lifecycle.LifecycleService
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import ru.axcheb.saigaktiming.data.SEARCH
 import ru.axcheb.saigaktiming.data.TIME
 import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService.Companion.DEVICE_NAME
+import timber.log.Timber
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.*
@@ -26,8 +26,6 @@ import java.util.*
  * т.к работа с другими модулями не предполагается.
  */
 class BluetoothSerialBoardService : LifecycleService() {
-
-    private val TAG = this::class.qualifiedName
 
     companion object {
         // messages from bt adapter
@@ -63,7 +61,7 @@ class BluetoothSerialBoardService : LifecycleService() {
         .flatMapLatest { inStream ->
             BufferedReader(InputStreamReader(inStream)).lineSequence().asFlow()
         }.catch { e ->
-            Log.d(TAG, "Cant read message. ${e.message}")
+            Timber.d("Cant read message. ${e.message}")
             onError()
         }.flowOn(Dispatchers.IO)
 
@@ -71,11 +69,9 @@ class BluetoothSerialBoardService : LifecycleService() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 BluetoothAdapter.ACTION_STATE_CHANGED -> {
-                    val state =
-                        intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
-                    when (state) {
+                    when (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)) {
                         BluetoothAdapter.STATE_ON -> {
-                            Log.d(TAG, "BluetoothAdapter.STATE_ON")
+                            Timber.d("BluetoothAdapter.STATE_ON")
                             start()
                         }
                         BluetoothAdapter.STATE_TURNING_OFF -> {
@@ -87,7 +83,7 @@ class BluetoothSerialBoardService : LifecycleService() {
                     val state =
                         intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothAdapter.ERROR)
                     if (state == BluetoothDevice.BOND_BONDED) {
-                        Log.d(TAG, "BluetoothDevice.BOND_BONDED")
+                        Timber.d("BluetoothDevice.BOND_BONDED")
                         start()
                     }
                 }
@@ -103,7 +99,6 @@ class BluetoothSerialBoardService : LifecycleService() {
 
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
-        Log.d(TAG, "onBind")
         start()
         return binder
     }
@@ -120,18 +115,15 @@ class BluetoothSerialBoardService : LifecycleService() {
                 _messageFlow.emit(str)
             }
         }
-        Log.d(TAG, "onCreate")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG, "onStartCommand")
         start()
         return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "onDestroy")
         close()
         scope.coroutineContext.cancelChildren()
         unregisterReceiver(broadcastReceiver)
@@ -139,9 +131,8 @@ class BluetoothSerialBoardService : LifecycleService() {
 
     private val tryToReconnectJob = scope.launch {
         while (true) {
-            Log.d(TAG, "tryToReconnectJob...")
             delay(RECONNECTION_TRY_TIME)
-            Log.d(TAG, "tryToReconnectJob start ...")
+            Timber.d("tryToReconnectJob start ...")
             start()
         }
     }
@@ -164,7 +155,7 @@ class BluetoothSerialBoardService : LifecycleService() {
                         else -> "started"
                     }
 
-                    Log.d(TAG, "Status = $s")
+                    Timber.d("Status = $s")
                     if (status == ServiceStatus.STOPPED && adapter.isEnabled && bluetoothSocketFlow.value == null) {
                         status = ServiceStatus.STARTING
                         setupService()
@@ -186,7 +177,7 @@ class BluetoothSerialBoardService : LifecycleService() {
         var res = true
         val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             res = false
-            Log.d(TAG, "Message send failed...\n ${throwable.message}")
+            Timber.e("Message send failed...\n ${throwable.message}")
             onError()
         }
         scope.launch(Dispatchers.IO + exceptionHandler) {
@@ -221,7 +212,7 @@ class BluetoothSerialBoardService : LifecycleService() {
             return
         }
         val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-            Log.d(TAG, "Connection to $DEVICE_NAME failed...\n ${throwable.message}")
+            Timber.d("Connection to $DEVICE_NAME failed...\n ${throwable.message}")
             onError()
         }
 
@@ -233,12 +224,12 @@ class BluetoothSerialBoardService : LifecycleService() {
                 synchronized(status) {
                     status = ServiceStatus.STARTED
                 }
-                Log.d(TAG, "Device connected to $DEVICE_NAME")
+                Timber.d("Device connected to $DEVICE_NAME")
             } else {
                 synchronized(status) {
                     status = ServiceStatus.STOPPED
                 }
-                Log.d(TAG, "Connection failed.")
+                Timber.d("Connection failed.")
             }
         }
     }

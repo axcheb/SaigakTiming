@@ -17,8 +17,6 @@ import ru.axcheb.saigaktiming.ui.finish.FinishActivity
 
 class EventFragment : Fragment() {
 
-    private val TAG = this::class.qualifiedName
-
     private val viewModel: EventViewModel by viewModel()
 
     private val adapter: EventMemberAdapter by inject()

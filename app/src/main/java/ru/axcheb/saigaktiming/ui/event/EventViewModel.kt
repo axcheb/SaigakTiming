@@ -15,8 +15,6 @@ class EventViewModel(
     private val eventRepository: EventRepository
 ) : ViewModel() {
 
-    private val TAG = this::class.qualifiedName
-
     val eventShare =
         eventRepository.getCurrentEvent().distinctUntilChanged()
             .shareIn(viewModelScope, SharingStarted.Lazily, 0)
