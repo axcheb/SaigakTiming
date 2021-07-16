@@ -39,21 +39,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/start_time"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/default_text_size" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:text="@string/colon"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/default_text_size" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:text="@{viewModel.eventDateTimeStr}"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/default_text_size"
                     android:textStyle="bold"
                     tools:text="24.05.21 12:00" />
 
@@ -61,21 +61,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/track"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/default_text_size" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:text="@string/colon"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/default_text_size" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:text="@{viewModel.trackCountStr}"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/default_text_size"
                     android:textStyle="bold"
                     tools:text="1/2" />
 

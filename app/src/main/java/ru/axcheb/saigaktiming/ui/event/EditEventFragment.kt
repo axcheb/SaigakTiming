@@ -40,12 +40,16 @@ class EditEventFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = EditEventFragmentBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-
-        setListeners()
+        _binding = EditEventFragmentBinding.inflate(inflater, container, false).apply {
+            viewModel = viewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setListeners()
     }
 
     private fun setListeners() {

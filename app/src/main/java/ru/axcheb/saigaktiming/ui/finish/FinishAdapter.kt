@@ -39,9 +39,8 @@ class FinishAdapter(
         return ViewHolder(binding)
     }
 
-    override fun getItemId(position: Int): Long {
-        return currentList[position].id
-    }
+    override fun getItemId(position: Int) = getItem(position).id
+
 }
 
 private class FinishItemDiffCallback : DiffUtil.ItemCallback<FinishItem>() {

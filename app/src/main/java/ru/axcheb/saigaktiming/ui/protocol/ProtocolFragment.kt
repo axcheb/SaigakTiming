@@ -35,12 +35,17 @@ class ProtocolFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = ProtocolFragmentBinding.inflate(inflater, container, false)
-        binding.protocolRecycler.adapter = adapter
-        binding.protocolRecycler.addDivider(R.drawable.member_divider)
+        _binding = ProtocolFragmentBinding.inflate(inflater, container, false).apply {
+            protocolRecycler.adapter = adapter
+            protocolRecycler.addDivider(R.drawable.member_divider)
+        }
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setListeners()
         observeData()
-        return binding.root
     }
 
     private fun setListeners() {

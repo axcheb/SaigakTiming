@@ -29,7 +29,7 @@ class StartViewModel(
     val startItems = resultRepository.getStartResults(eventId, memberId)
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    val penaltySeconds: MutableStateFlow<Int?> = MutableStateFlow(null)
+    val penaltySeconds = MutableStateFlow<Int?>(null)
 
     val totalTimeStr = startItems.map { items ->
         val sum = items.filter { it.isActive }.fold(0L) { sum, item -> sum + item.diff }

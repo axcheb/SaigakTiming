@@ -17,9 +17,7 @@ class MemberSelectAdapter(
         setHasStableIds(true)
     }
 
-    override fun getItemId(position: Int): Long {
-        return currentList[position].memberId
-    }
+    override fun getItemId(position: Int) = getItem(position).memberId
 
     class ViewHolder(val binding: MemberSelectItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(member: MemberSelectItem) {

@@ -42,16 +42,19 @@ class MemberSelectFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreate(savedInstanceState)
-        _binding = MemberSelectFragmentBinding.inflate(inflater, container, false)
+        _binding = MemberSelectFragmentBinding.inflate(inflater, container, false).apply {
+            vm = viewModel
+            lifecycleOwner = viewLifecycleOwner
+            allMembersItemRecycler.adapter = adapter
+            allMembersItemRecycler.addDivider(R.drawable.member_divider)
+        }
+        return binding.root
+    }
 
-        binding.vm = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-
-        binding.allMembersItemRecycler.adapter = adapter
-        binding.allMembersItemRecycler.addDivider(R.drawable.member_divider)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setListeners()
         observeData()
-        return binding.root
     }
 
     private fun setListeners() {

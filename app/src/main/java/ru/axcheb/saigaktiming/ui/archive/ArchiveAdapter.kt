@@ -17,9 +17,7 @@ class ArchiveAdapter(
         setHasStableIds(true)
     }
 
-    override fun getItemId(position: Int): Long {
-        return currentList[position].eventId
-    }
+    override fun getItemId(position: Int) = getItem(position).eventId
 
     class ViewHolder(val binding: ArchiveItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ArchiveItem) {

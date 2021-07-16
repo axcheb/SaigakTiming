@@ -23,12 +23,17 @@ class SensorsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = SensorsFragmentBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        _binding = SensorsFragmentBinding.inflate(inflater, container, false).apply {
+            viewModel = viewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         observeData()
         setListeners()
-        return binding.root
     }
 
     private fun observeData() {

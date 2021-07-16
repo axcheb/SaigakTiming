@@ -98,13 +98,13 @@ class FinishViewModel(
     /**
      * Текущий выбранный участник.
      */
-    private val _member: MutableStateFlow<Member?> = MutableStateFlow(null)
+    private val _member = MutableStateFlow<Member?>(null)
     val member get() = _member.asStateFlow()
 
     /**
      * Следующий участник.
      */
-    private val _nextMember: MutableStateFlow<Member?> = MutableStateFlow(null)
+    private val _nextMember = MutableStateFlow<Member?>(null)
     val nextMember get() = _nextMember.asStateFlow()
 
     private var timerJob: Job? = null

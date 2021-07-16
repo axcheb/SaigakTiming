@@ -43,16 +43,20 @@ class StartFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = StartFragmentBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.startRecycler.adapter = adapter
-        binding.startRecycler.addDivider(R.drawable.default_divider)
+        _binding = StartFragmentBinding.inflate(inflater, container, false).apply {
+            viewModel = viewModel
+            lifecycleOwner = viewLifecycleOwner
+            startRecycler.adapter = adapter
+            startRecycler.addDivider(R.drawable.default_divider)
+            startRecycler.setHasFixedSize(true)
+        }
+        return binding.root
+    }
 
-        binding.startRecycler.setHasFixedSize(true)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setListeners()
         observeData()
-        return binding.root
     }
 
     private fun setListeners() {

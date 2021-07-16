@@ -28,12 +28,17 @@ class NewMemberDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewMemberFragmentBinding.inflate(inflater, container, false)
-        binding.vm = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        _binding = NewMemberFragmentBinding.inflate(inflater, container, false).apply {
+            vm = viewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setListeners()
         observeData()
-        return binding.root
     }
 
     override fun onStart() {

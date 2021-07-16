@@ -56,9 +56,8 @@ class StartAdapter(
         FinishActivity.start(eventId, memberId, startId, view.context)
     }
 
-    override fun getItemId(position: Int): Long {
-        return currentList[position].id
-    }
+    override fun getItemId(position: Int) = getItem(position).id
+
 }
 
 private class StartItemDiffCallback : DiffUtil.ItemCallback<StartItem>() {

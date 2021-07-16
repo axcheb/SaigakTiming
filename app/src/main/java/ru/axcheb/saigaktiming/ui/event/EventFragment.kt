@@ -30,7 +30,7 @@ class EventFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = EventFragmentBinding.inflate(inflater, container, false)
+        _binding = EventFragmentBinding.inflate(inflater, container, false).apply {  }
         binding.eventMemberRecycler.adapter = adapter
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

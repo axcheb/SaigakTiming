@@ -12,11 +12,14 @@ import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import ru.axcheb.saigaktiming.data.SEARCH
 import ru.axcheb.saigaktiming.data.TIME
 import ru.axcheb.saigaktiming.service.BluetoothSerialBoardService.Companion.DEVICE_NAME
 import timber.log.Timber
 import java.io.BufferedReader
+import java.io.IOException
 import java.io.InputStreamReader
 import java.util.*
 
@@ -48,8 +51,9 @@ class BluetoothSerialBoardService : LifecycleService() {
 
     }
 
-    private val job = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.Main + job)
+    private val mutex = Mutex()
+
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     private var status: ServiceStatus = ServiceStatus.STOPPED
 
@@ -69,7 +73,10 @@ class BluetoothSerialBoardService : LifecycleService() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 BluetoothAdapter.ACTION_STATE_CHANGED -> {
-                    when (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)) {
+                    when (intent.getIntExtra(
+                        BluetoothAdapter.EXTRA_STATE,
+                        BluetoothAdapter.ERROR
+                    )) {
                         BluetoothAdapter.STATE_ON -> {
                             Timber.d("BluetoothAdapter.STATE_ON")
                             start()
@@ -146,21 +153,17 @@ class BluetoothSerialBoardService : LifecycleService() {
             return
         }
         scope.launch {
-            withContext(Dispatchers.Main) {
-                _requestEnableBluetooth.value = !adapter.isEnabled
-                synchronized(status) {
-                    val s = when (status) {
-                        ServiceStatus.STOPPED -> "stopped"
-                        ServiceStatus.STARTING -> "starting"
-                        else -> "started"
-                    }
-
-                    Timber.d("Status = $s")
-                    if (status == ServiceStatus.STOPPED && adapter.isEnabled && bluetoothSocketFlow.value == null) {
-                        status = ServiceStatus.STARTING
-                        setupService()
-                    }
+            _requestEnableBluetooth.value = !adapter.isEnabled
+            val mustStartService: Boolean
+            mutex.withLock {
+                mustStartService =
+                    (status == ServiceStatus.STOPPED && adapter.isEnabled && bluetoothSocketFlow.value == null)
+                if (mustStartService) {
+                    status = ServiceStatus.STARTING
                 }
+            }
+            if (mustStartService) {
+                setupService()
             }
         }
     }
@@ -198,13 +201,24 @@ class BluetoothSerialBoardService : LifecycleService() {
 
     private fun close() {
         val btSocket = bluetoothSocketFlow.value
-        btSocket?.inputStream?.close()
-        btSocket?.outputStream?.close()
-        btSocket?.close()
-        bluetoothSocketFlow.value = null
-        synchronized(status) {
-            status = ServiceStatus.STOPPED
+        try {
+            btSocket?.inputStream?.close()
+        } catch (e: IOException) {
+            //do nothing
         }
+        try {
+            btSocket?.outputStream?.close()
+        } catch (e: IOException) {
+            //do nothing
+        }
+        try {
+            btSocket?.close()
+        } catch (e: IOException) {
+            //do nothing
+        }
+
+        bluetoothSocketFlow.value = null
+        status = ServiceStatus.STOPPED
     }
 
     private fun setupService() {
@@ -221,12 +235,12 @@ class BluetoothSerialBoardService : LifecycleService() {
             if (btDevice != null) {
                 val socket = connectToDevice(btDevice)
                 onConnected(socket!!)
-                synchronized(status) {
+                mutex.withLock {
                     status = ServiceStatus.STARTED
                 }
                 Timber.d("Device connected to $DEVICE_NAME")
             } else {
-                synchronized(status) {
+                mutex.withLock {
                     status = ServiceStatus.STOPPED
                 }
                 Timber.d("Connection failed.")
